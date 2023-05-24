@@ -1,7 +1,7 @@
 # Web piano
 A piano player that runs using Tone.js with just keyboard. See keyboard [layout](keyboard-layout.png)
 
-Try out  [custap80.github.io/instruments](https://custap80.github.io/instruments)
+Try out  [custap80.github.io/instr](https://custap80.github.io/instr)
 
 ## Instruments
 - Uses Steinway D (soft)

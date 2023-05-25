@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>A square tone</title>
+	<script src="https://unpkg.com/tone"></script>
+	<script src="scripts/bindings.js"></script>
+	<script>
+		bindingOct1();
+
+
+
+		// make synth
+		const synth = new Tone.PolySynth({
+			releaseCurve: [1, 0.5,0.2,0.1, 0],
+		});
+		synth.set({
+			"volume": -30,
+			oscillator: {
+				type: "square",
+			},
+			envelope: {
+				attack: 0,
+				decay: 15,
+				sustain: 0,
+				release: 0.8,
+			},
+		}).toDestination();
+
+		function playSample(noteName) {
+			synth.triggerAttackRelease(noteName, 2);
+		}
+
+
+
+		
+		// Note on
+		var keysPressed = [];
+		var noKey=0;
+		window.addEventListener("keydown", e => {
+			let keyVal = e.code;
+
+			// give !(keyboardMap[keyVal]) because different debug error, especially synth
+			if (e.repeat || !(keyboardMap[keyVal])) { return; }
+
+			// prevent repeated keys when hold
+			var i = keysPressed.length;
+			while(i--) {
+				if(keysPressed[i]==keyVal) {
+					return false;	
+			    }
+			}
+			keysPressed.push(keyVal);
+
+			try {
+				synth.triggerAttack(keyboardMap[keyVal]);
+				console.log('Note on : '+keyboardMap[keyVal]);
+				noKey=0;
+			} catch(err) {
+				noKey=1;
+			}
+			// console.log('Online : '+keysPressed);
+		});
+
+
+
+
+		// Note off
+		window.addEventListener("keyup", e => {
+			let keyVal = e.code;
+			// give !(keyboardMap[keyVal]) because different error, especially synth
+			if (noKey==1 || !(keyboardMap[keyVal])) { return; }
+
+			var i = keysPressed.length;
+			while(i--) {
+				if(keysPressed[i]==keyVal) {
+					keysPressed.splice(i, 1);
+				}
+			}
+
+			synth.triggerRelease(keyboardMap[keyVal]);
+			console.log('Note off : '+keyboardMap[keyVal]);
+			// console.log('Online : '+keysPressed);
+		});
+	</script>
+</head>
+<body>
+	<div>
+		<code></code>
+	</div>
+	<button onclick="playSample('C5')">C5</button>
+	<button onclick="playSample('E5')">E5</button>
+	<button onclick="playSample('G5')">G5</button>
+</body>
+</html>

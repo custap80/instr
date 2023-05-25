@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>A flute</title>
+	<script src="https://unpkg.com/tone"></script>
+	<script src="scripts/bindings.js"></script>
+	<script>
+		bindingOct1();
+
+
+
+		// make effects
+		const filter = new Tone.Filter(2000, "lowpass");
+
+		// make synth
+		const synth = new Tone.PolySynth({
+			releaseCurve: [1, 0.5,0.2,0.1, 0],
+		});
+		synth.set({
+			volume: -26,
+			oscillator: {
+				type: "square",
+			},
+			envelope: {
+				attack: 0.008,
+				decay: 20,
+				sustain: 0,
+				release: 0.1,
+			},
+			detune: -40,
+		}).chain(filter, Tone.Destination);
+
+		
+
+
+		function playSample(noteName) {
+			synth.triggerAttackRelease(noteName, 1);
+		}
+
+
+
+		// Note on
+		var keysPressed = [];
+		var noKey=0;
+		window.addEventListener("keydown", e => {
+			let keyVal = e.code;
+
+			// give !(keyboardMap[keyVal]) because different debug error, especially synth
+			if (e.repeat || !(keyboardMap[keyVal])) { return; }
+
+			// prevent repeated keys when hold
+			var i = keysPressed.length;
+			while(i--) {
+				if(keysPressed[i]==keyVal) {
+					return false;	
+			    }
+			}
+			keysPressed.push(keyVal);
+
+			try {
+				synth.set({detune: -40,});
+				synth.triggerAttack(keyboardMap[keyVal]);
+
+				// alternative modulation to detune
+				var i = -40;						// default cent pitch
+				function upshift() {
+					setTimeout(function() {
+						synth.set({detune: i,});	// code
+						// console.log(i);
+						i=i+5;						// pitch upshift slowly until 20 cents
+						if (i <= 20) {
+							upshift();
+						}
+					}, 2);
+				}
+				upshift();
+
+				console.log('Note on : '+keyboardMap[keyVal]);
+				noKey=0;
+			} catch(err) {
+				noKey=1;
+			}
+			// console.log('Online : '+keysPressed);	// debug keyspressed
+		});
+
+
+
+
+		// Note off
+		window.addEventListener("keyup", e => {
+			let keyVal = e.code;
+			// give !(keyboardMap[keyVal]) because different error, especially synth
+			if (noKey==1 || !(keyboardMap[keyVal])) { return; }
+
+			var i = keysPressed.length;
+			while(i--) {
+				if(keysPressed[i]==keyVal) {
+					keysPressed.splice(i, 1);
+				}
+			}
+
+			// alternative modulation to detune
+			var i = 20;							// upshifted pitch
+			function downshift() {
+				setTimeout(function() {
+					synth.set({detune: i,});	// code
+						// console.log(i);
+						i=i-20;					// pitch downshift slowly until -40 
+						if (i >= -40) {
+							downshift();
+						}
+				}, 1);
+			}
+			downshift();
+
+			synth.triggerRelease(keyboardMap[keyVal]);
+			console.log('Note off : '+keyboardMap[keyVal]);
+			// console.log('Online : '+keysPressed);	// debug keyspressed
+		});
+	</script>
+</head>
+<body>
+	<div>
+		<code></code>
+	</div>
+	<button onclick="playSample('C5')">C5</button>
+	<button onclick="playSample('E5')">E5</button>
+	<button onclick="playSample('G5')">G5</button>
+</body>
+</html>

@@ -4,160 +4,58 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>A piano</title>
-	<script src="https://unpkg.com/tone"></script>
-	<script>
-		// Disables all keyboard buttons. Cant use keyboard for navigating
-		window.addEventListener('keydown', function(e) {
-			e.preventDefault();
-		});
-
-		// bind keyboard
-		const keyboardMap = {
-			"Tab":"C4",
-			"Digit1":"C#4",
-			"KeyQ":"D4",
-			"Digit2":"D#4",
-			"KeyW":"E4",
-			"KeyE":"F4",
-			"Digit4":"F#4",
-			"KeyR":"G4",
-			"Digit5":"G#4",
-			"KeyT":"A4",
-			"Digit6":"A#4",
-			"KeyY":"B4",
-			"KeyU":"C5",
-			"Digit8":"C#5",
-			"KeyI":"D5",
-			"Digit9":"D#5",
-			"KeyO":"E5",
-			"KeyP":"F5",
-			"Minus":"F#5",
-			"BracketLeft":"G5",
-			"Equal":"G#5",
-			"BracketRight":"A5",
-			"Backspace":"A#5",
-			"Backslash":"B5",
-		};
-
-		// Add another keyboard bindings
-		const keyboardOct1 = {
-			"CapsLock":"D#3",
-			"ShiftLeft":"E3",
-			"KeyZ":"F3",
-			"KeyS":"F#3",
-			"KeyX":"G3",
-			"KeyD":"G#3",
-			"KeyC":"A3",
-			"KeyF":"A#3",
-			"KeyV":"B3",
-			"KeyB":"C4",
-			"KeyH":"C#4",
-			"KeyN":"D4",
-			"KeyJ":"D#4",
-			"KeyM":"E4",
-			"Comma":"F4",
-			"KeyL":"F#4",
-			"Period":"G4",
-			"Semicolon":"G#4",
-			"Slash":"A4",
-			"Quote":"A#4",
-			"ShiftRight":"B4",
-		};
-
-		Object.assign(keyboardMap, keyboardOct1);
-
-		// make instrument from samples
-		const sampler = new Tone.Sampler({
-			urls: {
-				"D2": "D2.flac",
-				"E2": "E2.flac",
-				"G#2": "G-2.flac",
-				"C#3": "C-3.flac",
-				"E3": "E3.flac",
-				"G#3": "G-3.flac",
-				"B3": "B3.flac",
-				"C#4": "C-4.flac",
-				"F4": "F4.flac",
-				"A4": "A4.flac",
-				"C5": "C5.flac",
-				"D#5": "D-5.flac",
-				"F#5": "F-5.flac",
-				"A5": "A5.flac",
-				"D6": "D6.flac",
-				"F6": "F6.flac",
-				"A6": "A6.flac",
-				"C#7": "C-7.flac",
-				"E7": "E7.flac",
-			},
-			release: 3,
-			releaseCurve: [1, 0.5,0.2,0.1, 0],
-			baseUrl: "samples/",
-		}).toDestination();
-
-		function playSample(noteName) {
-			sampler.triggerAttack(noteName);
-			// piano({
-			// 	parent: document.querySelector("body"),
-			// 	noteon: note => sampler.triggerAttack(noteNow.name),
-			// 	noteoff: note => sampler.triggerRelease(noteNow.name),
-			// });
+	<title>Instruments</title>
+	<style>
+		body {
+			background: rgb(50 50 50);
+			font-family: arial;
 		}
-
-		
-		// Note on
-		var keysPressed = [];
-		var noKey=0;
-		window.addEventListener("keydown", e => {
-			// prevent repeated keys when hold
-			if (e.repeat) { return; }
-
-			let keyVal = e.code;
-
-			var i = keysPressed.length;
-			while(i--) {
-				if(keysPressed[i]==keyVal) {
-					return false;	
-			    }
-			}
-			keysPressed.push(keyVal);
-
-			try {
-				playSample(keyboardMap[keyVal]);
-				console.log('Note on : '+keyboardMap[keyVal]);
-				noKey=0;
-			} catch(err) {
-				noKey=1;
-			}
-			// console.log('Online : '+keysPressed);
-		});
-
-
-		// Note off
-		window.addEventListener("keyup", e => {
-			let keyVal = e.code;
-			if (noKey==1) { return; }
-
-			var i = keysPressed.length;
-			while(i--) {
-				if(keysPressed[i]==keyVal) {
-					keysPressed.splice(i, 1);
-				}
-			}
-
-			sampler.triggerRelease(keyboardMap[keyVal]);
-			console.log('Note off : '+keyboardMap[keyVal]);
-			// console.log('Online : '+keysPressed);
-		});
-	</script>
+		.wrapper {
+			box-shadow: 4px 10px 15px -3px #686868;
+			background: white;
+			border-radius: 5px;
+			padding: 1rem;
+			max-width: 20rem;
+			margin: 8rem auto 10rem;
+		}
+		.content {
+			margin: 0 1rem;
+		}
+		.button {
+			padding: 0.7rem;
+			background: rgb(220 220 220);
+			text-decoration: none;
+			color: black;
+			border-radius: 2px;
+			transition:100ms;
+			margin: 0.2rem 0;
+		}
+		.button:hover {
+			padding: 1rem;
+			background: gray;
+			color: white;
+		}
+		.button:focus {
+			margin: 0.6rem;
+			padding: 0.7rem 0;
+			font-size: 0.9rem;
+		}
+		.links {
+			display: flex;
+			flex-direction: column;
+			text-align: center;
+		}
+	</style>
 </head>
 <body>
-	<div>
-		<code></code>
+	<div class="content">
+		<div class="wrapper">
+			<div class="links">
+				<a href="piano.html" class="button">Piano</a>
+				<a href="square.html" class="button">Square tone</a>
+				<a href="flute.html" class="button">Flute</a>
+			</div>
+		</div>
 	</div>
-	<button onclick="playNote()">Click me to play note!</button>
-	<button onclick="playSample('C5')">C5</button>
-	<button onclick="playSample('E5')">E5</button>
-	<button onclick="playSample('G5')">G5</button>
 </body>
 </html>

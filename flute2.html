@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>A flute wave</title>
+	<script src="https://unpkg.com/tone"></script>
+	<script src="scripts/bindings.js"></script>
+	<script>
+		bindingOct1();
+
+
+
+
+		// make effects and synth
+		const filter = new Tone.Filter(2000, "lowpass").toDestination();
+
+		const synth = new Tone.Synth({
+			// detune: 200,
+		});
+		synth.detune.value = -200;
+
+		const polySynth = new Tone.PolySynth();
+		polySynth.set({
+			voices: synth,
+			volume: -26,
+			detune: -40,
+			oscillator: {
+				type: "square",
+			},
+			envelope: {
+				attack: 0.008,
+				decay: 20,
+				sustain: 0,
+				release: 0.1,
+				releaseCurve: [1, 0.5,0.2,0.1, 0],
+			},
+		});
+		polySynth.maxPolyphony=8;
+		// polySynth.options.voices.detune.value = -200;
+
+		// LFO
+		const lfo = new Tone.LFO(7,-15,15);
+		lfo.start();
+		
+		// polySynth.chain(filter, Tone.Destination);
+		polySynth.connect(filter);
+		
+
+
+
+		// Keyspressed in notes - active
+		var keysPressed = [];
+
+		// No sound if keyError=1
+		var keyError=0;
+
+		// Get individual voices from PolySynth, can be _voices[0] array
+		var voicePoly = polySynth._voices;
+
+		// Total voice played - passive
+		var voicePlayed=0;
+
+
+
+
+		function playSample(noteName) {
+			polySynth.triggerAttackRelease(noteName, 1);
+		}
+
+		// set LFO to individual voices in PolySynth
+		function setLFO() {
+			polySynth._voices.forEach((voice, index) => {
+				lfo.connect(voicePoly[index].detune);
+				// console.log("Voice "+index+" detune: "+voice.detune.value);
+			});
+		}
+
+
+
+		// Note on
+
+		window.addEventListener("keydown", e => {
+			let keyVal = e.code;
+
+			// give !(keyboardMap[keyVal]) because different debug error, especially synth
+			if (e.repeat || !(keyboardMap[keyVal])) { return; }
+
+			// prevent repeated keys when hold
+			let i = keysPressed.length;
+			while(i--) {
+				if(keysPressed[i]==keyVal) {
+					return false;	
+			    }
+			}
+			keysPressed.push(keyVal);
+
+
+			try {
+				polySynth.triggerAttack(keyboardMap[keyVal]);
+
+				// keep lfo connected when voice changed
+				if (voicePoly.length > voicePlayed) {
+					setLFO();
+					voicePlayed++;
+					
+				} else if (voicePoly.length < voicePlayed) {
+					setLFO();
+					voicePlayed--;
+				}
+
+				// alternative modulation to detune
+				// ----- Detune modulation doesn't work if there's LFO connected to detune
+
+				// let tune = -40;						// default cent pitch
+				// function upshift() {
+				// 	setTimeout(function() {
+				// 		polySynth.set({detune: tune,});	// code
+				// 		// console.log(tune);
+				// 		tune=tune+5;						// pitch upshift slowly until 20 cents
+				// 		if (tune <= 20) {
+				// 			upshift();
+				// 		}
+				// 	}, 2);
+				// }
+				// upshift();
+
+				// alternative detune modulation tricks from above
+				lfo.set({
+					frequency: 8,
+					min: -20,
+					max: 20,
+				});
+				setTimeout( () => {
+					lfo.set({
+						frequency: 6,
+						min: -5,
+						max: 35,
+					});
+				}, 30);
+
+				console.log('Note on : '+keyboardMap[keyVal]);
+				keyError=0;
+			} catch(err) {
+				setLFO();
+				lfo.start();
+				keyError=1;
+			}
+			// console.log('Online : '+keysPressed);	// debug keyspressed
+		});
+
+
+
+
+		// Note off
+		window.addEventListener("keyup", e => {
+			let keyVal = e.code;
+			// give !(keyboardMap[keyVal]) because different error, especially synth
+			if (keyError==1 || !(keyboardMap[keyVal])) { return; }
+
+			let i = keysPressed.length;
+			while(i--) {
+				if(keysPressed[i]==keyVal) {
+					keysPressed.splice(i, 1);
+				}
+			}
+
+			// alternative modulation to detune
+			// let tune = 20;							// upshifted pitch
+			// function downshift() {
+			// 	setTimeout(function() {
+			// 		polySynth.set({detune: tune,});	// code
+			// 		// console.log(tune);
+			// 		tune=tune-20;					// pitch downshift slowly until -40 
+			// 		if (tune >= -40) {
+			// 			downshift();
+			// 		}
+			// 	}, 1);
+			// }
+			// downshift();
+
+			polySynth.triggerRelease(keyboardMap[keyVal]);
+			console.log('Note off : '+keyboardMap[keyVal]);
+			// console.log('Online : '+keysPressed);	// debug keyspressed
+		});
+	</script>
+</head>
+<body>
+	<div>
+		<code></code>
+	</div>
+	<button onclick="playSample('C5')">C5</button>
+	<button onclick="playSample('E5')">E5</button>
+	<button onclick="playSample('G5')">G5</button>
+</body>
+</html>

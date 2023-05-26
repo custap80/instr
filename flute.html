@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>A flute</title>
+	<title>A flute (constant)</title>
 	<script src="https://unpkg.com/tone"></script>
 	<script src="scripts/bindings.js"></script>
 	<script>
@@ -16,9 +16,7 @@
 		const filter = new Tone.Filter(2000, "lowpass");
 
 		// make synth
-		const synth = new Tone.PolySynth({
-			releaseCurve: [1, 0.5,0.2,0.1, 0],
-		});
+		const synth = new Tone.PolySynth();
 		synth.set({
 			volume: -26,
 			oscillator: {
@@ -29,8 +27,9 @@
 				decay: 20,
 				sustain: 0,
 				release: 0.1,
+				releaseCurve: [1, 0.5,0.2,0.1, 0],
 			},
-			detune: -40,
+			detune: -50,
 		}).chain(filter, Tone.Destination);
 
 		
@@ -61,16 +60,16 @@
 			keysPressed.push(keyVal);
 
 			try {
-				synth.set({detune: -40,});
+				synth.set({detune: -50,});
 				synth.triggerAttack(keyboardMap[keyVal]);
 
 				// alternative modulation to detune
-				var i = -40;						// default cent pitch
+				var i = -50;						// default cent pitch
 				function upshift() {
 					setTimeout(function() {
 						synth.set({detune: i,});	// code
 						// console.log(i);
-						i=i+5;						// pitch upshift slowly until 20 cents
+						i=i+10;						// pitch upshift slowly until 20 cents
 						if (i <= 20) {
 							upshift();
 						}
@@ -108,13 +107,17 @@
 				setTimeout(function() {
 					synth.set({detune: i,});	// code
 						// console.log(i);
-						i=i-20;					// pitch downshift slowly until -40 
-						if (i >= -40) {
+						i=i-15;					// pitch downshift slowly until -40 
+						if (i >= -50) {
 							downshift();
 						}
 				}, 1);
 			}
-			downshift();
+
+			// release flute blow-like when no voices is online
+			if (keysPressed.length == 0) {
+				downshift();
+			}
 
 			synth.triggerRelease(keyboardMap[keyVal]);
 			console.log('Note off : '+keyboardMap[keyVal]);

@@ -1,15 +1,20 @@
 # Web piano
 A piano player that runs using Tone.js with just keyboard. See keyboard [layout](keyboard-layout.png)
+![layout](keyboard-layout.png)
 
-Try out  [custap80.github.io/instr](https://custap80.github.io/instr)
+[Try it out](https://custap80.github.io/instr)
 
 ## Instruments
-- Uses Steinway D (soft)
-- `4MB` Total sample size
+- `Piano`: Steinway D soft, `~3MB` Total size
+- `Square tone`: Plain square wave
+- `Flute`: Filtered square wave
+- `Flute2`: Same as Flute, with detune
 
 ## Development
-To use this locally. It needs localhost server, not to open html directly. It would cause CORS issue.
-- Just run `simple-server.bat` and open `127.0.0.1:8000` directly.
+To use this locally. It needs to run your own server, not to open HTML directly. Otherwise it would cause CORS issue.
+- Clone this repo
+- Run `simple-server.bat`
+- Open URL `localhost:8000` on the browser.
 
 ## References
 - [Tone.js](https://github.com/Tonejs/Tone.js)

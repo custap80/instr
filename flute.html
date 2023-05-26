@@ -64,20 +64,20 @@
 				synth.triggerAttack(keyboardMap[keyVal]);
 
 				// alternative modulation to detune
-				var i = -50;						// default cent pitch
+				var tone = -50;						// default cent pitch
 				function upshift() {
 					setTimeout(function() {
-						synth.set({detune: i,});	// code
-						// console.log(i);
-						i=i+10;						// pitch upshift slowly until 20 cents
-						if (i <= 20) {
+						synth.set({detune: tone,});	// code
+						// console.log(tone);
+						tone=tone+20;						// pitch upshift slowly until 20 cents
+						if (tone <= 20) {
 							upshift();
 						}
-					}, 2);
+					}, 5);
 				}
 				upshift();
 
-				console.log('Note on : '+keyboardMap[keyVal]);
+				// console.log('Note on : '+keyboardMap[keyVal]);
 				noKey=0;
 			} catch(err) {
 				noKey=1;
@@ -102,16 +102,16 @@
 			}
 
 			// alternative modulation to detune
-			var i = 20;							// upshifted pitch
+			var tone = 20;							// upshifted pitch
 			function downshift() {
 				setTimeout(function() {
-					synth.set({detune: i,});	// code
-						// console.log(i);
-						i=i-15;					// pitch downshift slowly until -40 
-						if (i >= -50) {
-							downshift();
-						}
-				}, 1);
+					synth.set({detune: tone,});	// code
+					// console.log(tone);
+					tone=tone-40;					// pitch downshift slowly until -50 
+					if (tone >= -60) {
+						downshift();
+					}
+				}, 5);
 			}
 
 			// release flute blow-like when no voices is online
@@ -120,7 +120,7 @@
 			}
 
 			synth.triggerRelease(keyboardMap[keyVal]);
-			console.log('Note off : '+keyboardMap[keyVal]);
+			// console.log('Note off : '+keyboardMap[keyVal]);
 			// console.log('Online : '+keysPressed);	// debug keyspressed
 		});
 	</script>

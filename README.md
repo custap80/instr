@@ -14,7 +14,7 @@ A piano player that runs using Tone.js with just keyboard. See [keyboard layout]
 
 
 ## Development
-To use this locally. It needs to run from host server, not to open HTML directly (otherwise it would cause CORS issue).
+To use this locally. I recommend to run your own server.
 - Clone this repo
 - On windows, simply run `simple-server.bat` and visit `localhost:8000` on the browser.
 

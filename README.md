@@ -20,6 +20,7 @@ To use this locally. I recommend to run your own server.
 
 
 ## Issues
+- If html opened directly and it makes no sound. That would be caused by CORS.
 - Sound delay may still be a problem. Try using [chromium portable](https://github.com/custap80/cef-builds/releases)
 - Keyboard `right-shift` and `left-shift` are not captured in firefox. Test your keyboard from [this site](https://www.toptal.com/developers/keycode) if it works
 

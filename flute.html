@@ -19,7 +19,7 @@
 		// make synth
 		const synth = new Tone.PolySynth();
 		synth.set({
-			volume: -26,
+			volume: -35,
 			oscillator: {
 				type: "square",
 			},
@@ -93,7 +93,7 @@
 
 
 
-		// Map mouse/touch
+		// Map mouse
 		var keyHold = false;
 		const keyObj = Object.keys(keyboardMap);
 		function mouseMap() {
@@ -120,7 +120,7 @@
 				startDownshift();
 				synth.releaseAll();
 			});
-			console.log('Mouse/Touch Mapped');
+			console.log('Mouse Mapped');
 		}
 
 
@@ -243,6 +243,10 @@
 					<div class="key" id="Slash">/</div>
 					<div class="key shift" id="ShiftRight">Shift</div>
 				</div>
+			</div>
+			
+			<div class="footer">
+				<small>Keyboard layout by freefrontend.com</small>
 			</div>
 		</div>
 	</div>

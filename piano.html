@@ -37,17 +37,16 @@
 				"C#7": "C-7.flac",
 				"E7": "E7.flac",
 			},
-			volume: -10,
+			volume: -15,
 			release: 3,
 			releaseCurve: [1, 0.5,0.2,0.1, 0],
 			baseUrl: "samples/",
 		}).toDestination();
 
-		// Loop checking if piano is loaded/not every 1s, if yes, stop the interval
-		let finishedLoad = false;
+
+		// Check loop if piano loaded every 1sec, if yes stop the interval
 		const loadInterval = setInterval( () => {
 			if (sampler.loaded) {
-				finishedLoad = true;
 				document.getElementById('loaded').innerHTML = "Sample Loaded!";
 
 				// stop the interval
@@ -74,7 +73,7 @@
 
 
 
-		// Map mouse/touch
+		// Map mouse
 		var keyHold = false;
 		const keyObj = Object.keys(keyboardMap);
 		function mouseMap() {
@@ -100,7 +99,7 @@
 				// instead of releasing individual note, so kill all notes!
 				sampler.releaseAll();
 			});
-			console.log('Mouse/Touch Mapped');
+			console.log('Mouse Mapped');
 		}
 
 
@@ -223,6 +222,10 @@
 					<div class="key" id="Slash">/</div>
 					<div class="key shift" id="ShiftRight">Shift</div>
 				</div>
+			</div>
+			
+			<div class="footer">
+				<small>Keyboard layout by freefrontend.com</small>
 			</div>
 		</div>
 	</div>

@@ -8,6 +8,7 @@
 	<link rel="stylesheet" type="text/css" href="scripts/keyboard.css">
 	<script src="https://unpkg.com/tone"></script>
 	<script src="scripts/bindings.js"></script>
+	<script src="scripts/example.js"></script>
 	<script>
 		bindingOct1();
 
@@ -16,7 +17,8 @@
 		// make synth
 		const synth = new Tone.PolySynth();
 		synth.set({
-			volume: -30,
+			volume: -35,
+			detune: 10,
 			oscillator: {
 				type: "square",
 			},
@@ -37,21 +39,34 @@
 
 		function attackSmp(noteName1) {
 			synth.triggerAttack(noteName1);
-			console.log('Note on : '+noteName1);
+			// console.log('Note on : '+noteName1);
 		}
 		function releaseSmp(noteName2) {
 			synth.triggerRelease(noteName2);
-			console.log('Note off : '+noteName2);
+			// console.log('Note off : '+noteName2);
+		}
+		function colorOn(argument) {
+			document.getElementById(argument).classList.add("keypress");
+		}
+		function colorOff(argument) {
+			document.getElementById(argument).classList.remove("keypress");
+		}
+		function clearKeypress() {
+			// clear all .keypress classes
+			let allNotes = document.querySelectorAll('.key');
+			for (let i=0; i<allNotes.length; i++) {
+				allNotes[i].classList.remove('keypress');
+			}
 		}
 
 
 
-		// Map mouse/touch
-		var keyHold = false;
+		// Map mouse
+		var mouseHold = false;
 		const keyObj = Object.keys(keyboardMap);
 		function mouseMap() {
 			document.getElementById('keyBase').addEventListener("mousedown", () => {
-				keyHold = true;
+				mouseHold = true;
 			});
 			keyObj.forEach((keyName, keyNote) => {
 				// first time note on
@@ -61,18 +76,18 @@
 				
 				// when mouse is dragged, do note on and off definitely
 				document.getElementById(keyName).addEventListener("mouseenter", () => {
-					if (keyHold) {attackSmp(keyboardMap[keyName]);}
+					if (mouseHold) {attackSmp(keyboardMap[keyName]);}
 				});
 				document.getElementById(keyName).addEventListener("mouseleave", () => {
-					if (keyHold) {releaseSmp(keyboardMap[keyName]);}
+					if (mouseHold) {releaseSmp(keyboardMap[keyName]);}
 				});
 			});
 			document.getElementById('keyBase').addEventListener('mouseup', () => {
-				keyHold = false;
+				mouseHold = false;
 				// instead of releasing individual note, so kill all notes!
 				synth.releaseAll();
 			});
-			console.log('Mouse/Touch Mapped');
+			console.log('Mouse Mapped');
 		}
 
 
@@ -101,7 +116,7 @@
 			try {
 				attackSmp(keyboardMap[keyVal]);
 				noKey=0;
-				document.getElementById(keyVal).classList.add("keypress");
+				colorOn(keyVal);
 			} catch(err) {
 				noKey=1;
 			}
@@ -125,10 +140,9 @@
 			}
 
 			releaseSmp(keyboardMap[keyVal]);
-			console.log('Note off : '+keyboardMap[keyVal]);
 			// console.log('Online : '+keysPressed);
 
-			document.getElementById(keyVal).classList.remove("keypress");
+			colorOff(keyVal);
 		});
 
 
@@ -143,6 +157,9 @@
 				<button onclick="playSample('C5')">C5</button>
 				<button onclick="playSample('E5')">E5</button>
 				<button onclick="playSample('G5')">G5</button>
+				<button onclick="playWhitespace()" id="wsbtn">Play Whitespace!</button>
+				<button onclick="loopWhitespace()" id="wsbtnloop">Loop Whitespace</button>
+				<span id="message"></span>
 			</div>
 			<div class="p-wrapper">
 				<div class="keyboard-base" id="keyBase">
@@ -200,6 +217,10 @@
 					<div class="key" id="Slash">/</div>
 					<div class="key shift" id="ShiftRight">Shift</div>
 				</div>
+			</div>
+
+			<div class="footer">
+				<small>Keyboard layout by freefrontend.com</small>
 			</div>
 		</div>
 	</div>

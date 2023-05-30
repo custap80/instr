@@ -17,11 +17,8 @@
 		// make effects and synth
 		const filter = new Tone.Filter(2000, "lowpass").toDestination();
 
-		const synth = new Tone.Synth();
-
-		const polySynth = new Tone.PolySynth();
-		polySynth.set({
-			voices: synth,
+		const synth = new Tone.PolySynth();
+		synth.set({
 			volume: -35,
 			detune: -40,
 			oscillator: {
@@ -35,14 +32,14 @@
 				releaseCurve: [1, 0.5,0.2,0.1, 0],
 			},
 		});
-		polySynth.maxPolyphony=8;	// max notes played
+		synth.maxPolyphony=8;	// max notes played
 
 		// LFO
 		const lfo = new Tone.LFO(7,-15,15);
 		lfo.start();
 		
-		// polySynth.chain(filter, Tone.Destination);
-		polySynth.connect(filter);
+		// synth.chain(filter, Tone.Destination);
+		synth.connect(filter);
 		
 
 
@@ -54,7 +51,7 @@
 		var keyError=0;
 
 		// Get individual voices from PolySynth, can be _voices[0] array
-		var voicePoly = polySynth._voices;
+		var voicePoly = synth._voices;
 
 		// Total voice played - passive
 		var voicePlayed=0;
@@ -63,19 +60,19 @@
 
 
 		function playSample(noteName) {
-			polySynth.triggerAttackRelease(noteName, 1);
+			synth.triggerAttackRelease(noteName, 1);
 		}
 
 		// set LFO to individual voices in PolySynth
 		function setLFO() {
-			polySynth._voices.forEach((voice, index) => {
+			synth._voices.forEach((voice, index) => {
 				lfo.connect(voicePoly[index].detune);
 				// console.log("Voice "+index+" detune: "+voice.detune.value);
 			});
 		}
 
 		function attackSmp(noteName1) {
-			polySynth.triggerAttack(noteName1);
+			synth.triggerAttack(noteName1);
 
 			// keep lfo connected dynamically when voice changed
 			if (voicePoly.length > voicePlayed) {
@@ -105,7 +102,7 @@
 			console.log('Note on : '+noteName1);
 		}
 		function releaseSmp(noteName2) {
-			polySynth.triggerRelease(noteName2);
+			synth.triggerRelease(noteName2);
 			console.log('Note off : '+noteName2);
 		}
 
@@ -137,7 +134,7 @@
 			document.getElementById('keyBase').addEventListener('mouseup', () => {
 				keyHold = false;
 				// instead of releasing individual note, so kill all notes!
-				polySynth.releaseAll();
+				synth.releaseAll();
 			});
 			console.log('Mouse Mapped');
 		}

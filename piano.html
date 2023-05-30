@@ -41,13 +41,21 @@
 			release: 3,
 			releaseCurve: [1, 0.5,0.2,0.1, 0],
 			baseUrl: "samples/",
-		}).toDestination();
+		});
+
+		const reverb = new Tone.Reverb({
+			decay: 2,
+			wet: 0.3,
+			preDelay: 0.1,
+		});
+
+		sampler.chain(reverb, Tone.Destination);
 
 
 		// Check loop if piano loaded every 1sec, if yes stop the interval
 		const loadInterval = setInterval( () => {
 			if (sampler.loaded) {
-				document.getElementById('loaded').innerHTML = "Sample Loaded!";
+				document.getElementById('loaded').innerHTML = "Loaded!";
 
 				// stop the interval
 				clearInterval(loadInterval);
@@ -112,7 +120,7 @@
 		window.addEventListener("keydown", e => {
 			let keyVal = e.code;
 
-			// give !(keyboardMap[keyVal]) because different error, especially synth
+			// give !(keyboardMap[keyVal]) because different error
 			if (e.repeat || !(keyboardMap[keyVal])) { return; }
 
 			// prevent repeated keys when hold
@@ -140,13 +148,14 @@
 		// Note off
 		window.addEventListener("keyup", e => {
 			let keyVal = e.code;
-			// give !(keyboardMap[keyVal]) because different error, especially synth
+
+			// give !(keyboardMap[keyVal]) because different error
 			if (noKey==1 || !(keyboardMap[keyVal])) { return; }
 
-			var i = keysPressed.length;
-			while(i--) {
-				if(keysPressed[i]==keyVal) {
-					keysPressed.splice(i, 1);
+			var j = keysPressed.length;
+			while(j--) {
+				if(keysPressed[j]==keyVal) {
+					keysPressed.splice(j, 1);
 				}
 			}
 

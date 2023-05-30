@@ -17,8 +17,7 @@
 		// make synth
 		const synth = new Tone.PolySynth();
 		synth.set({
-			volume: -35,
-			detune: 10,
+			volume: -31,
 			oscillator: {
 				type: "square",
 			},
@@ -29,7 +28,14 @@
 				release: 0.3,
 				releaseCurve: [1, 0.5,0.2,0.1, 0],
 			},
-		}).toDestination();
+		});
+
+		const reverb = new Tone.Reverb({
+			decay: 2,
+			wet: 0.3,
+			preDelay: 0.1,
+		});
+		synth.chain(reverb, Tone.Destination);
 
 
 
@@ -39,12 +45,14 @@
 
 		function attackSmp(noteName1) {
 			synth.triggerAttack(noteName1);
-			// console.log('Note on : '+noteName1);
 		}
-		function releaseSmp(noteName2) {
-			synth.triggerRelease(noteName2);
-			// console.log('Note off : '+noteName2);
+		function attackSmp2(noteName1, noteName2) {
+			synth.triggerAttack([noteName1, noteName2]);
 		}
+		function releaseSmp(noteName1) {
+			synth.triggerRelease(noteName1);
+		}
+
 		function colorOn(argument) {
 			document.getElementById(argument).classList.add("keypress");
 		}
@@ -69,12 +77,12 @@
 				mouseHold = true;
 			});
 			keyObj.forEach((keyName, keyNote) => {
-				// first time note on
+				// first time click, note on
 				document.getElementById(keyName).addEventListener("mousedown", () => {
 					attackSmp(keyboardMap[keyName]);
 				});
 				
-				// when mouse is dragged, do note on and off definitely
+				// second, when mouse is dragged, do note on and off definitely
 				document.getElementById(keyName).addEventListener("mouseenter", () => {
 					if (mouseHold) {attackSmp(keyboardMap[keyName]);}
 				});

@@ -2,7 +2,7 @@
 
 let queued = 0;
 let playLoop = 0;
-let beat1 = 1;
+let beat1 = 0;
 let ref1 = 0;
 
 function playWhitespace() {
@@ -18,62 +18,73 @@ function playWhitespace() {
 
 	document.getElementById('wsbtnloop').style.display = "none";
 
-	// just prevent playWhitespace() played multiple times
+	// prevent playWhitespace() played multiple times
 	if (queued == 1) { return; }
 	queued=1;
 
 	let longNote=0;
-	function playBeat1(note1, note2, note3, note01, note02, note03, noteLong, longTime) {
+	async function playBeat1(note1, note2, note3, note01, note02, note03, noteLong, longTime) {
 		// make arrangement notes, would be better with midi files
-		// give async cause delayed setTimeout violation, idk
+		// give async cause delayed setTimeout violation
 		async function playBeatFun() {
-			playNote(note1, 220);
-			await setTimeout(async function(){
-				playNote(note2, 220);
-				await setTimeout(function(){
-					playNote(note3, 220);
-				}, 580);
-			}, 580);
-
-			if (longNote==1) {
-				playNote(noteLong, longTime);
-				longNote=0;
+			if (longNote == 0) {
+				playNote2(note1, 200, note01, 280);
 			} else {
-				playNote(note01, 300);
-				await setTimeout(async function(){
-					playNote(note02, 300);
-					await setTimeout(function(){
-						playNote(note03, 300);
-					}, 580);
-				}, 580);
-				longNote++;
+				playNote1(note1, 200);
 			}
+
+			await setTimeout(async function() {
+				if (longNote == 0) {
+					playNote2(note2, 200, note02, 280);
+				} else {
+					playNote1(note2, 200);
+				}
+
+				await setTimeout(async function() {
+					if (longNote == 0) {
+						playNote2(note3, 200, note03, 280);
+					} else {
+						playNote1(note3, 200);
+					}
+
+					if (longNote==1) {
+						longNote=0;
+					} else {
+						longNote=1;
+					}
+				}, 570);
+			}, 570);
+
+			if (longNote==1) { playNote1(noteLong, longTime) }
+			
 
 
 			// loop
-			if (beat1 <= 5) {
+			if (beat1 <= 4) {
 				// if ref1 is finished, play another ref, and repeat beat
-				if (beat1==4 && ref1==0) {
+				if (beat1==3 && ref1==0) {
 					// why beat=2 not beat=1? because playBeat1() already executed below
-					beat1=2;
+					beat1=1;
 					ref1=1;
 					playRef2();
-				} else if (beat1 <= 4) {
+				} else if (beat1 <= 3) {
 					beat1++;
 					playBeat1(note1, note2, note3, note01, note02, note03, noteLong, longTime);
-				} else if (beat1==5 && ref1==1 && playLoop==1) {
-					beat1=1;
+				// if playLoop=1 so reset all ref and repeat again
+				} else if (beat1==4 && ref1==1 && playLoop==1) {
+					beat1=0;
 					ref1=0;
 					playRef1();
 				}
 			}
 		}
-		setTimeout(playBeatFun, 1740);
+		await setTimeout(playBeatFun, 1740);
 	}
 	playRef1();
 
+
 	function playRef1() {
-		playBeat1('Digit9', 'Digit8', 'KeyU', 'KeyS', 'KeyF', 'KeyH', 'KeyL', 1700);
+		playBeat1('Digit9', 'Digit8', 'KeyU', 'KeyS', 'KeyF', 'KeyH', 'KeyL', 1600);
 	}
 	function playRef2() {
 		playBeat1('Digit8', 'KeyE', 'Digit5', 'KeyZ', 'KeyD', 'KeyH', 'Comma', 470);
@@ -83,13 +94,28 @@ function playWhitespace() {
 
 
 	// sounds
-	async function playNote(keyName, long) {
+	async function playNote1(keyName, long) {
 		attackSmp(keyboardMap[keyName]);
 		document.getElementById(keyName).classList.add("keypress");
-		setTimeout(function() {
+		// console.log("key : "+noteName1+" - in : "+Math.round(Date.now()));
+		await setTimeout(function() {
 			releaseSmp(keyboardMap[keyName]);
 			document.getElementById(keyName).classList.remove("keypress");
 		}, long);
+	}
+	async function playNote2(keyName, long, keyName2, long2) {
+		attackSmp2(keyboardMap[keyName], keyboardMap[keyName2]);
+		document.getElementById(keyName).classList.add("keypress");
+		document.getElementById(keyName2).classList.add("keypress");
+		// console.log("key : "+noteName1+" - in : "+Math.round(Date.now()));
+		await setTimeout(function() {
+			releaseSmp(keyboardMap[keyName]);
+			document.getElementById(keyName).classList.remove("keypress");
+		}, long);
+		await setTimeout(function() {
+			releaseSmp(keyboardMap[keyName2]);
+			document.getElementById(keyName2).classList.remove("keypress");
+		}, long2);
 	}
 
 	if (playLoop==0) {
@@ -104,7 +130,7 @@ function stopWhitespace() {
 	// reset all
 	playLoop=0;
 	queued=0;
-	beat1=1;
+	beat1=0;
 	ref1=0;
 	document.getElementById('wsbtnloop').style.display = "inline-block";
 	let ws = document.getElementById('wsbtn');
@@ -135,3 +161,9 @@ function loopWhitespace() {
 	document.getElementById('wsbtnloop').style.display = "none";
 	playWhitespace();
 }
+
+
+// try to leave page, stop whitespace
+window.addEventListener('beforeunload', () => {
+	stopWhitespace();
+});

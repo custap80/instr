@@ -1,7 +1,7 @@
 # Web piano
 A piano player that runs using Tone.js with just keyboard. See [keyboard layout](keyboard-layout.png) for mapping guides.
 
-[Try it out](https://custap80.github.io/instr)
+[Try it](https://custap80.github.io/instr) out
 
 
 ## Instruments
@@ -10,6 +10,7 @@ A piano player that runs using Tone.js with just keyboard. See [keyboard layout]
 - `Square tone`: Plain square wave
 - `Flute`: Filtered square wave
 - `Flute wave`: Same as Flute, with detune effect
+- `Pads`: Pads synth
 
 
 ## Development
@@ -19,9 +20,9 @@ To use this locally. I recommend to run your own server. Though you can open HTM
 
 
 ## Issues
-- If html opened directly and it makes no sound (e.g piano). That would be caused by CORS.
-- Sound delay may still be a problem. Try using [chromium portable](https://github.com/custap80/cef-builds/releases), or something light browser
-- Keyboard `right-shift` and `left-shift` are not captured in firefox. Test keyboard from [this site](https://www.toptal.com/developers/keycode) if it works.
+- If html opened directly and it makes no sound (e.g piano). That could be caused by CORS.
+- Sound delay may still be a problem. So try using [chromium portable](https://github.com/custap80/cef-builds/releases), or another browser e.g firefox ESR
+- Firefox still works very well. Unfortunately both `shift` key (right and left) doesn't get captured by firefox. Test keyboard from [this site](https://www.toptal.com/developers/keycode) if it works
 
 
 ## References

@@ -4,9 +4,13 @@ window.addEventListener('keydown', function(e) {
 });
 var keyboardMap;
 var keyboardOct1;
+const notes = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
+const noteNums = [1,2,3,4,5,6,7,8,9];
+let octNow = 0;
 
 // oct 0
 function bindingOct0() {
+	octNow=0;
 	keyboardMap = {
 		"Tab":"C4",
 		"Digit1":"C#4",
@@ -67,6 +71,7 @@ function bindingOct0() {
 
 // bind keyboard
 function bindingOct1() {
+	octNow=0;
 	keyboardMap = {
 		"Tab":"C5",
 		"Digit1":"C#5",
@@ -121,3 +126,7 @@ function bindingOct1() {
 
 	Object.assign(keyboardMap, keyboardOct1);
 }
+
+
+
+

@@ -173,6 +173,14 @@
 				<button onclick="playSample('G5')">G5</button>
 				<span id="loaded">Loading piano...</span>
 			</div>
+			<div class="tests2">
+				<div class="item">
+					Octave : &nbsp;
+					<button onclick="octaveDown()">Down</button>
+					<span id="octaveMsg">0</span>
+					<button onclick="octaveUp()">Up</button>
+				</div>
+			</div>
 			<div class="p-wrapper">
 				<div class="keyboard-base" id="keyBase">
 					<div class="key disabled"></div>
@@ -240,5 +248,6 @@
 	<script type="text/javascript">
 		mouseMap();
 	</script>
+	<script src="scripts/controls.js"></script>
 </body>
 </html>

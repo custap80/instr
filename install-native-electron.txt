@@ -1,0 +1,24 @@
+> Requirements
+- index.html	(assets if required)
+- main.js	(main loader)
+- preload.js	(self-explanatory)
+
+
+
+> install to your project
+$ npm install electron@v23.3.4
+
+> set app description
+$ npm init
+
+> install electron-forge (electron builder)
+$ npm install @electron-forge/cli
+
+> convert to electron-forge compatible
+$ npx electron-forge import
+
+> build app
+$ npm run make
+
+
+> app builds inside "out" directory

@@ -55,17 +55,15 @@ function playWhitespace() {
 					// why beat=1 not beat=0? because playRef2() already executed below
 					beat1=1;
 					ref1=1;
-					requestAnimationFrame(playRef2);
+					playRef2();
 				} else if (beat1 <= 1) {
 					beat1++;
-					requestAnimationFrame( () => {
-						playBeat1(note1, note2, note3, note01, note02, note03, noteLong, longTime);
-					})
+					playBeat1(note1, note2, note3, note01, note02, note03, noteLong, longTime);
 				// if playLoop=1 so reset all ref and repeat again
 				} else if (beat1==2 && ref1==1 && playLoop==1) {
 					beat1=0;
 					ref1=0;
-					requestAnimationFrame(playRef1);
+					playRef1();
 				}
 			}
 		}
@@ -85,34 +83,73 @@ function playWhitespace() {
 
 
 	// sounds
-	function playNote1(keyName, long) {
+	async function playNote1(keyName, long) {
+
+		// There are neat solution #2. See example below commented code
+
 		attackSmp(keyboardMap[keyName]);
 		document.getElementById(keyName).classList.add("keypress");
-		setTimeout(function() {
+		await setTimeout(function() {
 			releaseSmp(keyboardMap[keyName]);
+			releaseAKey(keyName);
 			document.getElementById(keyName).classList.remove("keypress");
 		}, long);
 	}
-	function playNote2(keyName, long, keyName2, long2) {
+	async function playNote2(keyName, long, keyName2, long2) {
 		attackSmp2(keyboardMap[keyName], keyboardMap[keyName2]);
 		document.getElementById(keyName).classList.add("keypress");
 		document.getElementById(keyName2).classList.add("keypress");
-		setTimeout(function() {
+		await setTimeout(function() {
 			releaseSmp(keyboardMap[keyName]);
 			document.getElementById(keyName).classList.remove("keypress");
 		}, long);
-		setTimeout(function() {
+		await setTimeout(function() {
 			releaseSmp(keyboardMap[keyName2]);
 			document.getElementById(keyName2).classList.remove("keypress");
 		}, long2);
 	}
 
+	// This is example of neat solution #2, 
+	// (Below is vry neat than above, right?
+	// the cons : playing 2 notes at the same time would cause "out of sync" on slow devices)
+	// 
+	// function playNote1(keyName, long) {
+	// 	pressAKey(keyName);
+	// 	setTimeout(function() {
+	// 		releaseAKey(keyName);
+	// 	}, long);
+	// }
+	// function playNote2(keyName, long, keyName2, long2) {
+	// 	pressTwoKey(keyName, keyName2);
+	// 	setTimeout(function() {
+	// 		releaseAKey(keyName);
+	// 	}, long);
+	// 	setTimeout(function() {
+	// 		releaseAKey(keyName2);
+	// 	}, long2);
+	// }
+
+
+
 	if (playLoop==0) {
 		setTimeout(function(){
 			queued=0;
 			stopWhitespace();
-		}, 17000);
+		}, 19000);
 	}
+}
+
+
+// simulate keypress, 
+function pressAKey(keyName) {
+	window.dispatchEvent(new KeyboardEvent('keydown', {'code':keyName} ));
+}
+function pressTwoKey(keyName, keyName2) {
+	window.dispatchEvent(new KeyboardEvent('keydown', {'code':keyName} ));
+	window.dispatchEvent(new KeyboardEvent('keydown', {'code':keyName2} ));
+}
+function releaseAKey(keyName) {
+	window.dispatchEvent(new KeyboardEvent('keyup', {'code':keyName} ));
 }
 
 function stopWhitespace() {

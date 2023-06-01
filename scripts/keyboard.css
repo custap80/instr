@@ -2,7 +2,7 @@ body * {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: system-ui, Arial, Helvetica, sans-serif;
 }
 
 body {
@@ -89,6 +89,7 @@ small {
 	grid-template-rows: repeat(4, 49px);
 	grid-gap: 2px;
 	height: fit-content;
+	/* disable user selecting */
 	-webkit-user-select: none; /* Safari */
 	-ms-user-select: none; /* IE 10 and IE 11 */
 	user-select: none; /* Standard syntax */
@@ -101,7 +102,7 @@ small {
 	grid-column: span 2;
 	font-size: .8rem;
 	text-align: center;
-	padding-top: 17px;
+	padding-top: 15px;
 	cursor: pointer;
 	transition: 60ms;
 }

@@ -19,7 +19,6 @@ Tone.Transport.scheduleRepeat(() => {
 
 	// code for detune control arp
 	if (_noteBeat1 < 32) {
-		console.log(noteArr1[_noteBeat1]);
 		synth1.set({ detune: noteArr1[_noteBeat1], });
 		_noteBeat1++;
 	} else {
@@ -30,7 +29,6 @@ Tone.Transport.scheduleRepeat(() => {
 	if (_noteBeat2hp == 0) {
 		_noteBeat2hp=1;
 	} else if (_noteBeat2 < 32 && _noteBeat2hp == 1) {
-		console.log(noteArr2[_noteBeat2]);
 		synth2.set({ detune: noteArr2[_noteBeat2], });
 		_noteBeat2++;
 		_noteBeat2hp=0;

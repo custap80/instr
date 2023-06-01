@@ -32,7 +32,7 @@
 
 		const synth2 = new Tone.PolySynth();
 		synth2.set({
-			volume: -20,
+			volume: -18,
 			oscillator: {
 				type: "sawtooth",
 			},
@@ -70,8 +70,8 @@
 		const filter2 = new Tone.Filter(2000, "lowpass");
 
 		const reverb = new Tone.Reverb({
-			decay: 4,
-			wet: 0.3,
+			decay: 5,
+			wet: 0.2,
 			preDelay: 0,
 		});
 

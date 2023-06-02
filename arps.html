@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>An arpeggio</title>
+	<title>An arp sequencer</title>
 	<link rel="stylesheet" type="text/css" href="scripts/keyboard.css">
 	<script src="https://unpkg.com/tone"></script>
 	<script src="scripts/bindings.js"></script>
@@ -32,9 +32,11 @@
 
 		const synth2 = new Tone.PolySynth();
 		synth2.set({
-			volume: -18,
+			volume: -16,
 			oscillator: {
-				type: "sawtooth",
+				"type": "amsine",
+				"harmonicity": 0,
+				"modulationType": "sine"
 			},
 			envelope: {
 				attack: 0,
@@ -53,49 +55,50 @@
 		// const chorus = new Tone.Chorus(2.5, 3, 0.1).start(); // unison alternative
 
 		const phaser = new Tone.Phaser({
-			frequency: 0.06,
-			octaves: 2,
-			baseFrequency: 830,
+			frequency: 0.05,
+			octaves: 4,
+			baseFrequency: 880,
 			wet: 1,
 		}); // freq, octaves, basefreq, wet
 
 		const pingPong = new Tone.PingPongDelay({
 			delayTime: "6n",
-			feedback: 0.7,
-			wet: 0.3,
+			feedback: 0.5,
+			wet: 0.2,
 		}); // delayTime, feedback, maxDelay, wet
 
-		const filter = new Tone.Filter(450, "highpass");
-		const filter1 = new Tone.Filter(5000, "lowpass");
-		const filter2 = new Tone.Filter(2000, "lowpass");
+		const filter = new Tone.Filter(500, "highpass");
+		const filter1 = new Tone.Filter(15000, "lowpass");
+		const filter2 = new Tone.Filter(9000, "lowpass");
+		const filter3 = new Tone.Filter(4000, "lowpass");
 
 		const reverb = new Tone.Reverb({
 			decay: 5,
-			wet: 0.2,
-			preDelay: 0,
+			wet: 0.35,
+			preDelay: 0.1,
 		});
 
 		const lfo = new Tone.LFO({
-			frequency: "8n",
-			min: 15000,
-			max: -15000,
-			type: "sawtooth",
-			phase: -180,
+			frequency: 1,
+			min: 10,
+			max: -5,
+			type: "sine",
 		});
-		// lfo.connect(filter1.frequency).start();
+		// lfo.connect(filter1.frequency);
 
-		const lfo2 = new Tone.LFO({
-			frequency: "4n",
-			min: 15000,
-			max: -15000,
-			type: "sawtooth",
-			phase: -180,
-		});
-		// lfo2.connect(filter2.frequency).start();
+		// const lfo2 = new Tone.LFO({
+		// 	frequency: "4n",
+		// 	min: 15000,
+		// 	max: -15000,
+		// 	type: "sawtooth",
+		// 	phase: -180,
+		// 	units: "frequency",
+		// });
+		// lfo2.connect(filter2.frequency);
 
 
-		synth1.chain(phaser, pingPong, filter, filter1, reverb, Tone.Destination);
-		synth2.chain(phaser, pingPong, filter, filter2, reverb, Tone.Destination);
+		synth1.chain(filter1, phaser, pingPong, filter, reverb, Tone.Destination);
+		synth2.chain(filter2, phaser, pingPong, filter, filter3, reverb, Tone.Destination);
 		// synth1.chain(filter, filter1, Tone.Destination);
 		// synth2.chain(filter, filter2, Tone.Destination);
 
@@ -110,12 +113,13 @@
 		}
 
 		function attackSmp(noteName1) {
+			// lfo.start();
+			// lfo2.start();
 			synth1.triggerAttack(noteName1);
 			synth2.triggerAttack(noteName1);
 			startArp(noteName1);
 		}
 		function releaseSmp(noteName1) {
-			console.log(noteName1+" "+keysPressed)
 			if (keysPressed.length == 0) {
 				stopArp(noteName1);
 			}

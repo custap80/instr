@@ -11,7 +11,7 @@ A piano player that runs using Tone.js with just keyboard. See [keyboard layout]
 - `Flute`: Filtered square wave
 - `Flute wave`: Same as Flute, with detune effect
 - `Pads`: Pads synth
-- `Arps`: Song arpeggio from vital preset
+- `Arps`: Song sequencer from vital preset
 
 
 ## Development

@@ -180,8 +180,23 @@
 				<div class="item">
 					Octave : &nbsp;
 					<button onclick="octaveDown()">Down</button>
-					<span id="octaveMsg">0</span>
+					<span class="displays" id="octaveMsg">0</span>
 					<button onclick="octaveUp()">Up</button>
+				</div>
+				<div class="item">
+					Volume &nbsp;&nbsp;
+					<input class="fxvol" type="range" id="volumeOut" min="-300" max="0" value="-230">
+					<span class="displays1" id="volumeOutDis"></span>dB
+				</div>
+				<div class="item">
+					Reverb vol &nbsp;&nbsp;
+					<input class="fxrev" type="range" id="reverbWet" min="0" max="5" value="4">
+					<span class="displays1" id="reverbWetDis"></span>%
+				</div>
+				<div class="item">
+					Reverb time &nbsp;&nbsp;
+					<input class="fxrev" type="range" id="reverbTime" min="10" max="100" value="30">
+					<span class="displays1" id="reverbTimeDis"></span>s
 				</div>
 			</div>
 			<div class="p-wrapper">
@@ -252,5 +267,6 @@
 		mouseMap();
 	</script>
 	<script src="scripts/controls.js"></script>
+	<script src="scripts/pianoControls.js"></script>
 </body>
 </html>

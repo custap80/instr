@@ -2,7 +2,7 @@ body * {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
-	font-family: system-ui, Arial, Helvetica, sans-serif;
+	font-family: Arial, Helvetica, sans-serif;
 }
 
 body {
@@ -32,7 +32,8 @@ small {
 }
 .content {
 	padding: 0 2rem;
-	min-width: fit-content;
+	min-width: 70rem;
+	max-width: 90rem;
 }
 
 .p-wrapper {
@@ -53,8 +54,8 @@ small {
 	margin-bottom: 2rem;
 	display: flex;
     align-items: center;
-    gap: 0.3rem;
-/*	justify-content: space-evenly;*/
+    gap: 1rem;
+	justify-content: space-evenly;
 }
 
 .tests2 .item {
@@ -62,7 +63,27 @@ small {
 	padding: 0.5rem;
 	background: #525252;
 	box-shadow: 2px 3px 3px 1px black;
+	display: flex;
+	align-items: center;
+	height: 3.5rem;
+	min-width: fit-content;
+	flex: 1;
+	justify-content: center;
 }
+
+.displays,
+.displays1 {
+	width: 2rem;
+	text-align: center;
+}
+
+.displays1 {
+	width: 3rem;
+}
+
+.fxvol { width: 8rem; }
+
+.fxrev { width: 5rem; }
 
 #octaveMsg {
     padding: 0.4rem;

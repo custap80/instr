@@ -47,6 +47,6 @@ function octaveDown() {
 
 
 function zeroOct() {
-	octNow();
+	octNow=0;
 	document.getElementById('octaveMsg').innerHTML = octNow;
 }

@@ -1,0 +1,32 @@
+// slider controls
+let volSlider = document.getElementById("volumeOut");
+let volOut = document.getElementById("volumeOutDis");
+volOut.innerHTML = volSlider.value/10;
+
+volSlider.oninput = function() {
+	let sliderRes = volSlider.value/10;
+	volOut.innerHTML = sliderRes;
+	sampler.volume.value = sliderRes;
+}
+
+
+let revWetSlider = document.getElementById("reverbWet");
+let revWet = document.getElementById("reverbWetDis");
+revWet.innerHTML = revWetSlider.value*10;
+
+revWetSlider.oninput = function() {
+	let sliderRes = revWetSlider.value/10;
+	revWet.innerHTML = sliderRes*100;
+	reverb.set({ wet: sliderRes, });
+}
+
+
+let revTimeSlider = document.getElementById("reverbTime");
+let revTime = document.getElementById("reverbTimeDis");
+revTime.innerHTML = revTimeSlider.value/10;
+
+revTimeSlider.oninput = function() {
+	let sliderRes = revTimeSlider.value/10;
+	revTime.innerHTML = sliderRes;
+	reverb.set({ decay: sliderRes, });
+}

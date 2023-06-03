@@ -34,7 +34,7 @@
 		synth2.set({
 			volume: -16,
 			oscillator: {
-				"type": "amsine",
+				"type": "amtriangle",
 				"harmonicity": 0,
 				"modulationType": "sine"
 			},
@@ -63,14 +63,17 @@
 
 		const pingPong = new Tone.PingPongDelay({
 			delayTime: "6n",
-			feedback: 0.5,
-			wet: 0.2,
+			feedback: 0.4,
+			wet: 0.1,
 		}); // delayTime, feedback, maxDelay, wet
 
+		// highpass
 		const filter = new Tone.Filter(500, "highpass");
-		const filter1 = new Tone.Filter(15000, "lowpass");
-		const filter2 = new Tone.Filter(9000, "lowpass");
-		const filter3 = new Tone.Filter(4000, "lowpass");
+		const filterhigh = new Tone.Filter(1500, "highpass");
+
+		const filter1 = new Tone.Filter(5000, "lowpass");	// synth1
+		const filter2 = new Tone.Filter(9000, "lowpass");	// synth2
+		const filter3 = new Tone.Filter(2500, "lowpass");	// sine
 
 		const reverb = new Tone.Reverb({
 			decay: 5,
@@ -78,29 +81,9 @@
 			preDelay: 0.1,
 		});
 
-		const lfo = new Tone.LFO({
-			frequency: 1,
-			min: 10,
-			max: -5,
-			type: "sine",
-		});
-		// lfo.connect(filter1.frequency);
 
-		// const lfo2 = new Tone.LFO({
-		// 	frequency: "4n",
-		// 	min: 15000,
-		// 	max: -15000,
-		// 	type: "sawtooth",
-		// 	phase: -180,
-		// 	units: "frequency",
-		// });
-		// lfo2.connect(filter2.frequency);
-
-
-		synth1.chain(filter1, phaser, pingPong, filter, reverb, Tone.Destination);
+		synth1.chain(filterhigh, filter1, phaser, pingPong, filter, reverb, Tone.Destination);
 		synth2.chain(filter2, phaser, pingPong, filter, filter3, reverb, Tone.Destination);
-		// synth1.chain(filter, filter1, Tone.Destination);
-		// synth2.chain(filter, filter2, Tone.Destination);
 
 
 
@@ -243,14 +226,6 @@
 				<button onclick="killAll()">Release all sound!</button>
 				<span id="message"></span>
 			</div>
-			<div class="tests2">
-				<div class="item">
-					Octave : &nbsp;
-					<button onclick="octaveDown()">Down</button>
-					<span id="octaveMsg">0</span>
-					<button onclick="octaveUp()">Up</button>
-				</div>
-			</div>
 			<div class="p-wrapper">
 				<div class="keyboard-base" id="keyBase">
 					<div class="key disabled"></div>
@@ -318,6 +293,5 @@
 	<script type="text/javascript">
 		mouseMap();
 	</script>
-	<script src="scripts/controls.js"></script>
 </body>
 </html>

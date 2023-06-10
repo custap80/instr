@@ -4,10 +4,10 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>A soft piano</title>
-	<link rel="stylesheet" type="text/css" href="scripts/keyboard.css">
+	<title>A decent piano</title>
+	<link rel="stylesheet" type="text/css" href="../scripts/keyboard.css">
 	<script src="https://unpkg.com/tone"></script>
-	<script src="scripts/bindings.js"></script>
+	<script src="../scripts/bindings.js"></script>
 	<script>
 		bindingOct0();
 
@@ -18,38 +18,43 @@
 		const sampler = new Tone.Sampler({
 			urls: {
 				"D2": "D2.flac",
-				"E2": "E2.flac",
-				"G#2": "G-2.flac",
-				"C#3": "C-3.flac",
-				"E3": "E3.flac",
-				"G#3": "G-3.flac",
-				"B3": "B3.flac",
+				"F#2": "F-2.flac",
+				"C3": "C3.flac",
+				"F#3": "F-3.flac",
+				"A3": "A3.flac",
 				"C#4": "C-4.flac",
-				"F4": "F4.flac",
-				"A4": "A4.flac",
+				"D#4": "D-4.flac",
+				"F#4": "F-4.flac",
+				"G#4": "G-4.flac",
 				"C5": "C5.flac",
-				"D#5": "D-5.flac",
-				"F#5": "F-5.flac",
-				"A5": "A5.flac",
-				"D6": "D6.flac",
-				"F6": "F6.flac",
-				"A6": "A6.flac",
-				"C#7": "C-7.flac",
-				"E7": "E7.flac",
+				"D5": "D5.flac",
+				"G5": "G5.flac",
+				"B5": "B5.flac",
+				"C6": "C6.flac",
+				"G6": "G6.flac",
+				"B6": "B6.flac",
+				"C7": "C7.flac",
+				"G#7": "G-7.flac",
 			},
-			volume: -15,
-			release: 3,
+			volume: -23,
+			release: 4,
 			releaseCurve: [1, 0.5,0.2,0.1, 0],
-			baseUrl: "samples/",
+			baseUrl: "../samples/basicpiano/",
 		});
 
 		const reverb = new Tone.Reverb({
-			decay: 2,
-			wet: 0.3,
+			decay: 3,
+			wet: 0.4,
 			preDelay: 0.1,
 		});
 
-		sampler.chain(reverb, Tone.Destination);
+		const stereoWide = new Tone.StereoWidener({
+			width: 1,
+			wet: 0.65,
+		});
+
+
+		sampler.chain(stereoWide, reverb, Tone.Destination);
 
 
 		// Check loop if piano loaded every 1sec, if yes stop the interval
@@ -121,7 +126,7 @@
 		window.addEventListener("keydown", e => {
 			let keyVal = e.code;
 
-			// give !(keyboardMap[keyVal]) because different error
+			// give !(keyboardMap[keyVal]) because different error, especially synth
 			if (e.repeat || !(keyboardMap[keyVal])) { return; }
 
 			// prevent repeated keys when hold
@@ -150,7 +155,7 @@
 		window.addEventListener("keyup", e => {
 			let keyVal = e.code;
 
-			// give !(keyboardMap[keyVal]) because different error
+			// give !(keyboardMap[keyVal]) because different error, especially synth
 			if (noKey==1 || !(keyboardMap[keyVal])) { return; }
 
 			var j = keysPressed.length;
@@ -195,7 +200,7 @@
 				</div>
 				<div class="item">
 					Reverb time &nbsp;&nbsp;
-					<input class="fxrev" type="range" id="reverbTime" min="10" max="100" value="30">
+					<input class="fxrev" type="range" id="reverbTime" min="10" max="150" value="30">
 					<span class="displays1" id="reverbTimeDis"></span>s
 				</div>
 			</div>
@@ -258,15 +263,19 @@
 			</div>
 			
 			<div class="footer">
-				<small>Keyboard layout by freefrontend.com</small>
+				<button class="m-auto" onclick="changePianoMode()">Keyboard mode : &nbsp;<span id="pianoModes">Combined</span></button>
 			</div>
+
+			<!-- <div class="text-banner">
+				<small>Keyboard layout by freefrontend.com</small>
+			</div> -->
 		</div>
 	</div>
 
 	<script type="text/javascript">
 		mouseMap();
 	</script>
-	<script src="scripts/controls.js"></script>
-	<script src="scripts/pianoControls.js"></script>
+	<script src="../scripts/controls.js"></script>
+	<script src="../scripts/pianoControls.js"></script>
 </body>
 </html>

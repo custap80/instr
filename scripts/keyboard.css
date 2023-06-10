@@ -18,9 +18,16 @@ small {
 	margin-top:1rem;
 }
 
-.footer {
-	margin-top: 1rem;
+.text-banner {
+	margin-top: 0.5rem;
 	text-align: center;
+}
+
+.content {
+	padding: 0 2rem;
+	min-width: 70rem;
+	max-width: 90rem;
+	margin: auto;
 }
 
 .wrapper {
@@ -30,18 +37,14 @@ small {
 	padding: 1rem;
 	margin: 8rem auto 10rem;
 }
-.content {
-	padding: 0 2rem;
-	min-width: 70rem;
-	max-width: 90rem;
-}
 
 .p-wrapper {
 	display: flex;
 	justify-content: center;
 }
 
-.tests {
+.tests,
+.footer {
 	background: rgb(200 200 200);
 	padding: 1rem;
 	margin-bottom: 1rem;
@@ -51,18 +54,18 @@ small {
 }
 
 .tests2 {
-	margin-bottom: 2rem;
+	margin-bottom: 1.5rem;
 	display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.7rem;
 	justify-content: space-evenly;
 }
 
-.tests2 .item {
+.item {
+	background-color: #525252;
 	color: white;
 	padding: 0.5rem;
-	background: #525252;
-	box-shadow: 2px 3px 3px 1px black;
+	box-shadow: 3px 3px 4px 0 black;
 	display: flex;
 	align-items: center;
 	height: 3.5rem;
@@ -94,6 +97,13 @@ small {
 #capslock {
 	transition: .5s;
 }
+
+.footer {
+	margin: 1.5rem 0 1rem;
+	justify-content: center;
+}
+
+
 
 
 
@@ -169,4 +179,14 @@ small {
 
 .keypress {
 	background-color: rgb(241 127 28) !important;
+}
+
+
+
+
+
+
+/* other stuff */
+.m-auto {
+	margin: auto;
 }

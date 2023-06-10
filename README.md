@@ -5,8 +5,9 @@ A piano player that runs using Tone.js with just keyboard. See [keyboard layout]
 
 
 ## Instruments
-- `Piano`: Steinway D dark, `~3MB` Total size
-- `Piano Basic`: Decent light piano, `~4MB` total size
+- `Soft piano`: Steinway D dark, `3MB` size
+- `Autograph piano`: Yamaha C6 grand, `4MB` size
+- `Basic piano`: Decent light piano, `4MB` size
 - `Square tone`: Plain square wave
 - `Flute`: Filtered square wave
 - `Flute wave`: Same as Flute, with detune effect

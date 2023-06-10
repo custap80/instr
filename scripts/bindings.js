@@ -7,6 +7,7 @@ var keyboardOct1;
 const notes = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
 const noteNums = [1,2,3,4,5,6,7,8,9];
 let octNow = 0;
+let pianoMode = 0;
 
 // oct 0
 function bindingOct0() {
@@ -69,9 +70,9 @@ function bindingOct0() {
 
 
 
-// bind keyboard
+// oct 1
 function bindingOct1() {
-	octNow=0;
+	octNow=1;
 	keyboardMap = {
 		"Tab":"C5",
 		"Digit1":"C#5",
@@ -128,5 +129,76 @@ function bindingOct1() {
 }
 
 
+// another binding
+function bindingOct0type1() {
+	octNow=0;
+	keyboardMap = {
+		"Tab":"C4",
+		"Digit1":"C#4",
+		"KeyQ":"D4",
+		"Digit2":"D#4",
+		"KeyW":"E4",
+		"KeyE":"F4",
+		"Digit4":"F#4",
+		"KeyR":"G4",
+		"Digit5":"G#4",
+		"KeyT":"A4",
+		"Digit6":"A#4",
+		"KeyY":"B4",
+		"KeyU":"C5",
+		"Digit8":"C#5",
+		"KeyI":"D5",
+		"Digit9":"D#5",
+		"KeyO":"E5",
+		"KeyP":"F5",
+		"Minus":"F#5",
+		"BracketLeft":"G5",
+		"Equal":"G#5",
+		"BracketRight":"A5",
+		"Backspace":"A#5",
+		"Backslash":"B5",
+	};
+
+	// Add another keyboard bindings
+	keyboardOct1 = {
+		"CapsLock":"D#2",
+		"ShiftLeft":"E2",
+		"KeyZ":"F2",
+		"KeyS":"F#2",
+		"KeyX":"G2",
+		"KeyD":"G#2",
+		"KeyC":"A2",
+		"KeyF":"A#2",
+		"KeyV":"B2",
+		"KeyB":"C3",
+		"KeyH":"C#3",
+		"KeyN":"D3",
+		"KeyJ":"D#3",
+		"KeyM":"E3",
+		"Comma":"F3",
+		"KeyL":"F#3",
+		"Period":"G3",
+		"Semicolon":"G#3",
+		"Slash":"A3",
+		"Quote":"A#3",
+		"ShiftRight":"B3",
+	};
+
+	Object.assign(keyboardMap, keyboardOct1);
+}
 
 
+function changePianoMode() {
+	if (pianoMode == 0) {
+		bindingOct0type1();
+		octNow=0;
+		pianoMode=1;
+		document.getElementById('pianoModes').innerHTML = "Separated";
+	} else if (pianoMode == 1) {
+		bindingOct0();
+		octNow=0;
+		pianoMode=0;
+		document.getElementById('pianoModes').innerHTML = "Combined";
+	}
+	document.getElementById('octaveMsg').innerHTML = octNow;
+}

@@ -29,10 +29,10 @@ revWetSlider.oninput = function() {
 lineAt=3;
 let revTimeSlider = document.getElementById("reverbTime");
 let revTime = document.getElementById("reverbTimeDis");
-revTime.innerHTML = revTimeSlider.value/10;
+revTime.innerHTML = revTimeSlider.value;
 
 revTimeSlider.oninput = function() {
-	let sliderRes = revTimeSlider.value/10;
+	let sliderRes = revTimeSlider.value;
 	revTime.innerHTML = sliderRes;
 	reverb.set({ decay: sliderRes, });
 }

@@ -1,27 +1,25 @@
 <!DOCTYPE html>
 <html>
-
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>A flute wave</title>
-	<link rel="stylesheet" type="text/css" href="scripts/keyboard.css">
+	<title>A flute (constant)</title>
+	<link rel="stylesheet" type="text/css" href="../scripts/keyboard.css">
 	<script src="https://unpkg.com/tone"></script>
-	<script src="scripts/bindings.js"></script>
+	<script src="../scripts/bindings.js"></script>
 	<script>
 		bindingOct1();
 
 
 
+		// make effects
+		const filter = new Tone.Filter(2000, "lowpass");
 
-		// make effects and synth
-		const filter = new Tone.Filter(2000, "lowpass").toDestination();
-
+		// make synth
 		const synth = new Tone.PolySynth();
 		synth.set({
 			volume: -35,
-			detune: -40,
 			oscillator: {
 				type: "square",
 			},
@@ -30,33 +28,12 @@
 				decay: 20,
 				sustain: 0,
 				release: 0.1,
-				releaseCurve: [1, 0.5, 0.2, 0.1, 0],
+				releaseCurve: [1, 0.5,0.2,0.1, 0],
 			},
-		});
-		synth.maxPolyphony = 8;	// max notes played
+			detune: -50,
+		}).chain(filter, Tone.Destination);
 
-		// LFO
-		const lfo = new Tone.LFO(7, -15, 15);
-		lfo.start();
-
-		// synth.chain(filter, Tone.Destination);
-		synth.connect(filter);
-
-
-
-
-		// Keyspressed in notes - active
-		var keysPressed = [];
-
-		// No sound if keyError=1
-		var keyError = 0;
-
-		// Get individual voices from PolySynth, can be _voices[0] array
-		var voicePoly = synth._voices;
-
-		// Total voice played - passive
-		var voicePlayed = 0;
-
+		
 
 
 
@@ -64,47 +41,52 @@
 			synth.triggerAttackRelease(noteName, 1);
 		}
 
-		// set LFO to individual voices in PolySynth
-		function setLFO() {
-			synth._voices.forEach((voice, index) => {
-				lfo.connect(voicePoly[index].detune);
-				// console.log("Voice "+index+" detune: "+voice.detune.value);
-			});
-		}
-
 		function attackSmp(noteName1) {
+			synth.set({detune: -50,});
 			synth.triggerAttack(noteName1);
 
-			// keep lfo connected dynamically when voice changed
-			if (voicePoly.length > voicePlayed) {
-				setLFO();
-				voicePlayed++;
+			// alternative modulation to detune
+			var tone = -50;						// default cent pitch
+			function upshift() {
+				setTimeout(function() {
+					synth.set({detune: tone,});	// code
+					// console.log(tone);
+					tone=tone+20;				// pitch upshift slowly until 20 cents
+					if (tone <= 20) {
+						upshift();
+					}
+				}, 5);
+			}
+			upshift();
 
-			} else if (voicePoly.length < voicePlayed) {
-				setLFO();
-				voicePlayed--;
+			console.log('Note on : '+noteName1);
+		}
+
+		function releaseSmp(noteName2) {
+			// release flute blow-like when no voices is online
+			if (keysPressed.length == 0) {
+				startDownshift();
 			}
 
-			// alternative detune tricks
-			lfo.set({
-				frequency: 8,
-				min: -20,
-				max: 20,
-			});
-			setTimeout(() => {
-				lfo.set({
-					frequency: 6,
-					min: -5,
-					max: 35,
-				});
-			}, 30);
-
-
-			console.log('Note on : ' + noteName1);
-		}
-		function releaseSmp(noteName2) {
 			synth.triggerRelease(noteName2);
-			console.log('Note off : ' + noteName2);
+			console.log('Note off : '+noteName2);
+		}
+
+		// why nested downshift? because of "var tone=20;"
+		function startDownshift() {
+			// alternative modulation to detune
+			var tone = 20;						// upshifted pitch
+			function downshift() {
+				setTimeout(function() {
+					synth.set({detune: tone,});	// code
+					// console.log(tone);
+					tone=tone-40;					// pitch downshift slowly until -50 
+					if (tone >= -50) {
+						downshift();
+					}
+				}, 5);
+			}
+			downshift();
 		}
 
 
@@ -123,18 +105,19 @@
 				document.getElementById(keyName).addEventListener("mousedown", () => {
 					attackSmp(keyboardMap[keyName]);
 				});
-
+				
 				// when mouse is dragged, do note on and off definitely
 				document.getElementById(keyName).addEventListener("mouseenter", () => {
-					if (keyHold) { attackSmp(keyboardMap[keyName]); }
+					if (keyHold) {attackSmp(keyboardMap[keyName]);}
 				});
 				document.getElementById(keyName).addEventListener("mouseleave", () => {
-					if (keyHold) { releaseSmp(keyboardMap[keyName]); }
+					if (keyHold) {releaseSmp(keyboardMap[keyName]);}
 				});
 			});
 			document.getElementById('keyBase').addEventListener('mouseup', () => {
 				keyHold = false;
 				// instead of releasing individual note, so kill all notes!
+				startDownshift();
 				synth.releaseAll();
 			});
 			console.log('Mouse Mapped');
@@ -145,7 +128,8 @@
 
 
 		// Note on
-
+		var keysPressed = [];
+		var noKey=0;
 		window.addEventListener("keydown", e => {
 			let keyVal = e.code;
 
@@ -153,42 +137,21 @@
 			if (e.repeat || !(keyboardMap[keyVal])) { return; }
 
 			// prevent repeated keys when hold
-			let i = keysPressed.length;
-			while (i--) {
-				if (keysPressed[i] == keyVal) {
-					return false;
-				}
+			var i = keysPressed.length;
+			while(i--) {
+				if(keysPressed[i]==keyVal) {
+					return false;	
+			    }
 			}
 			keysPressed.push(keyVal);
-
 
 			try {
 				attackSmp(keyboardMap[keyVal]);
 
-				// alternative modulation to detune
-				// ----- set.detune is disabled because of LFO is connected and taking control
-
-				// let tune = -40;						// default cent pitch
-				// function upshift() {
-				// 	setTimeout(function() {
-				// 		polySynth.set({detune: tune,});	// code
-				// 		// console.log(tune);
-				// 		tune=tune+5;						// pitch upshift slowly until 20 cents
-				// 		if (tune <= 20) {
-				// 			upshift();
-				// 		}
-				// 	}, 2);
-				// }
-				// upshift();
-
-
-
-				keyError = 0;
 				document.getElementById(keyVal).classList.add("keypress");
-			} catch (err) {
-				setLFO();
-				lfo.start();
-				keyError = 1;
+				noKey=0;
+			} catch(err) {
+				noKey=1;
 			}
 			// console.log('Online : '+keysPressed);	// debug keyspressed
 		});
@@ -200,28 +163,14 @@
 		window.addEventListener("keyup", e => {
 			let keyVal = e.code;
 			// give !(keyboardMap[keyVal]) because different error, especially synth
-			if (keyError == 1 || !(keyboardMap[keyVal])) { return; }
+			if (noKey==1 || !(keyboardMap[keyVal])) { return; }
 
-			let i = keysPressed.length;
-			while (i--) {
-				if (keysPressed[i] == keyVal) {
+			var i = keysPressed.length;
+			while(i--) {
+				if(keysPressed[i]==keyVal) {
 					keysPressed.splice(i, 1);
 				}
 			}
-
-			// alternative modulation to detune
-			// let tune = 20;							// upshifted pitch
-			// function downshift() {
-			// 	setTimeout(function() {
-			// 		polySynth.set({detune: tune,});	// code
-			// 		// console.log(tune);
-			// 		tune=tune-20;					// pitch downshift slowly until -40 
-			// 		if (tune >= -40) {
-			// 			downshift();
-			// 		}
-			// 	}, 1);
-			// }
-			// downshift();
 
 			releaseSmp(keyboardMap[keyVal]);
 			// console.log('Online : '+keysPressed);	// debug keyspressed
@@ -229,7 +178,6 @@
 		});
 	</script>
 </head>
-
 <body>
 	<div class="content">
 		<div class="wrapper">
@@ -296,7 +244,7 @@
 					<div class="key shift" id="ShiftRight">Shift</div>
 				</div>
 			</div>
-
+			
 			<!-- <div class="text-banner">
 				<small>Keyboard layout by freefrontend.com</small>
 			</div> -->
@@ -307,5 +255,4 @@
 		mouseMap();
 	</script>
 </body>
-
 </html>

@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>A soft piano</title>
+	<title>A pad</title>
 	<link rel="stylesheet" type="text/css" href="../scripts/keyboard.css">
 	<script src="https://unpkg.com/tone"></script>
 	<script src="../scripts/bindings.js"></script>
@@ -13,100 +14,88 @@
 
 
 
-
-		// make instrument from samples
-		const sampler = new Tone.Sampler({
-			urls: {
-				"D2": "D2.flac",
-				"E2": "E2.flac",
-				"G#2": "G-2.flac",
-				"C#3": "C-3.flac",
-				"E3": "E3.flac",
-				"G#3": "G-3.flac",
-				"B3": "B3.flac",
-				"C#4": "C-4.flac",
-				"F4": "F4.flac",
-				"A4": "A4.flac",
-				"C5": "C5.flac",
-				"D#5": "D-5.flac",
-				"F#5": "F-5.flac",
-				"A5": "A5.flac",
-				"D6": "D6.flac",
-				"F6": "F6.flac",
-				"A6": "A6.flac",
-				"C#7": "C-7.flac",
-				"E7": "E7.flac",
-			},
-			volume: -15,
-			release: 3,
-			releaseCurve: [1, 0.5,0.2,0.1, 0],
-			baseUrl: "samples/softpiano/",
+		const filter = new Tone.Filter(1000, "lowpass");
+		filter.set({
+			rolloff: -24,
 		});
 
+		const chorus = new Tone.Chorus(2.5, 3, 0.1).start();
+		// Chorus(freq, delay, wet)
 		const reverb = new Tone.Reverb({
-			decay: 2,
-			wet: 0.3,
+			decay: 4,
+			wet: 0.4,
 			preDelay: 0.1,
 		});
 
-		sampler.chain(reverb, Tone.Destination);
+		// this might good, but sounds bad. Set manually
+		// Dont forget to place inside chain : "synth.chain(const_effects_name)"
+		// const stereoWide = new Tone.StereoWidener(0.7);
 
+		// make synth
+		const synth = new Tone.PolySynth();
+		synth.set({
+			volume: -20,
+			oscillator: {
+				type: "sawtooth",
+			},
+			envelope: {
+				attack: 1.1,
+				decay: 15,
+				sustain: 1,
+				release: 2.7,
+				releaseCurve: [1, 0.5, 0.2, 0.1, 0],
+			},
+		});
 
-		// Check loop if piano loaded every 1sec, if yes stop the interval
-		const loadInterval = setInterval( () => {
-			if (sampler.loaded) {
-				document.getElementById('loaded').innerHTML = "Loaded!";
-
-				// stop the interval
-				clearInterval(loadInterval);
-			}
-		}, 1000);
-
+		synth.chain(chorus, filter, reverb, Tone.Destination);
 
 
 
 		function playSample(noteName) {
-			sampler.triggerAttackRelease(noteName, 2);
+			synth.triggerAttackRelease(noteName, 2);
 		}
 
 		function attackSmp(noteName1) {
-			sampler.triggerAttack(noteName1);
-			console.log('Note on : '+noteName1);
+			synth.triggerAttack(noteName1);
 		}
-		function releaseSmp(noteName2) {
-			sampler.triggerRelease(noteName2);
-			console.log('Note off : '+noteName2);
+		function releaseSmp(noteName1) {
+			synth.triggerRelease(noteName1);
 		}
 
+		function colorOn(argument) {
+			document.getElementById(argument).classList.add("keypress");
+		}
+		function colorOff(argument) {
+			document.getElementById(argument).classList.remove("keypress");
+		}
 
 
 
 		// Map mouse
-		var keyHold = false;
-		// get property-name only from object
+		var mouseHold = false;
 		const keyObj = Object.keys(keyboardMap);
 		function mouseMap() {
 			document.getElementById('keyBase').addEventListener("mousedown", () => {
-				keyHold = true;
+				mouseHold = true;
 			});
 			keyObj.forEach((keyName, keyNote) => {
-				// first time note on
+				// first time click, note on
 				document.getElementById(keyName).addEventListener("mousedown", () => {
 					attackSmp(keyboardMap[keyName]);
 				});
-				
-				// when mouse is dragged, do note on and off definitely
+
+				// second, when mouse is dragged, do note on and off definitely
 				document.getElementById(keyName).addEventListener("mouseenter", () => {
-					if (keyHold) {attackSmp(keyboardMap[keyName]);}
+					if (mouseHold) { attackSmp(keyboardMap[keyName]); }
 				});
 				document.getElementById(keyName).addEventListener("mouseleave", () => {
-					if (keyHold) {releaseSmp(keyboardMap[keyName]);}
+					if (mouseHold) { releaseSmp(keyboardMap[keyName]); }
 				});
 			});
 			document.getElementById('keyBase').addEventListener('mouseup', () => {
-				keyHold = false;
+				mouseHold = false;
 				// instead of releasing individual note, so kill all notes!
-				sampler.releaseAll();
+				synth.releaseAll();
 			});
 			console.log('Mouse Mapped');
 		}
@@ -115,30 +104,31 @@
 
 
 
+
 		// Note on
 		var keysPressed = [];
-		var noKey=0;
+		var noKey = 0;
 		window.addEventListener("keydown", e => {
 			let keyVal = e.code;
 
-			// give !(keyboardMap[keyVal]) because different error, especially synth
+			// give !(keyboardMap[keyVal]) because different debug error, especially synth
 			if (e.repeat || !(keyboardMap[keyVal])) { return; }
 
 			// prevent repeated keys when hold
 			var i = keysPressed.length;
-			while(i--) {
-				if(keysPressed[i]==keyVal) {
-					return false;	
-			    }
+			while (i--) {
+				if (keysPressed[i] == keyVal) {
+					return false;
+				}
 			}
 			keysPressed.push(keyVal);
 
 			try {
 				attackSmp(keyboardMap[keyVal]);
-				noKey=0;
-				document.getElementById(keyVal).classList.add("keypress");
-			} catch(err) {
-				noKey=1;
+				colorOn(keyVal);
+				noKey = 0;
+			} catch (err) {
+				noKey = 1;
 			}
 			// console.log('Online : '+keysPressed);
 		});
@@ -149,23 +139,27 @@
 		// Note off
 		window.addEventListener("keyup", e => {
 			let keyVal = e.code;
-
 			// give !(keyboardMap[keyVal]) because different error, especially synth
-			if (noKey==1 || !(keyboardMap[keyVal])) { return; }
+			if (noKey == 1 || !(keyboardMap[keyVal])) { return; }
 
-			var j = keysPressed.length;
-			while(j--) {
-				if(keysPressed[j]==keyVal) {
-					keysPressed.splice(j, 1);
+			var i = keysPressed.length;
+			while (i--) {
+				if (keysPressed[i] == keyVal) {
+					keysPressed.splice(i, 1);
 				}
 			}
 
 			releaseSmp(keyboardMap[keyVal]);
 			// console.log('Online : '+keysPressed);
-			document.getElementById(keyVal).classList.remove("keypress");
+
+			colorOff(keyVal);
 		});
+
+
+
 	</script>
 </head>
+
 <body>
 	<div class="content">
 		<div class="wrapper">
@@ -174,29 +168,15 @@
 				<button onclick="playSample('C5')">C5</button>
 				<button onclick="playSample('E5')">E5</button>
 				<button onclick="playSample('G5')">G5</button>
-				<span id="loaded">Loading piano...</span>
+				<button onclick="synth.releaseAll()">Release all sound!</button>
+				<span id="message"></span>
 			</div>
 			<div class="tests2">
 				<div class="item">
 					Octave : &nbsp;
 					<button onclick="octaveDown()">Down</button>
-					<span class="displays" id="octaveMsg">0</span>
+					<span id="octaveMsg">0</span>
 					<button onclick="octaveUp()">Up</button>
-				</div>
-				<div class="item">
-					Volume &nbsp;&nbsp;
-					<input class="fxvol" type="range" id="volumeOut" min="-300" max="0" value="-230">
-					<span class="displays1" id="volumeOutDis"></span>dB
-				</div>
-				<div class="item">
-					Reverb vol &nbsp;&nbsp;
-					<input class="fxrev" type="range" id="reverbWet" min="0" max="5" value="3">
-					<span class="displays1" id="reverbWetDis"></span>%
-				</div>
-				<div class="item">
-					Reverb time &nbsp;&nbsp;
-					<input class="fxrev" type="range" id="reverbTime" min="1" max="15" value="2">
-					<span class="displays1" id="reverbTimeDis"></span>s
 				</div>
 			</div>
 			<div class="p-wrapper">
@@ -257,14 +237,9 @@
 				</div>
 			</div>
 
-			<div class="footer">
-				<button class="m-auto" onclick="changePianoMode()">Keyboard mode : &nbsp;<span id="pianoModes">Combined</span></button>
-			</div>
-
 			<!-- <div class="text-banner">
 				<small>Keyboard layout by freefrontend.com</small>
 			</div> -->
-		</div>
 		</div>
 	</div>
 
@@ -272,6 +247,6 @@
 		mouseMap();
 	</script>
 	<script src="../scripts/controls.js"></script>
-	<script src="../scripts/pianoControls.js"></script>
 </body>
+
 </html>

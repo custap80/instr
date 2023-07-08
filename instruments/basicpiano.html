@@ -39,7 +39,7 @@
 			volume: -23,
 			release: 4,
 			releaseCurve: [1, 0.5,0.2,0.1, 0],
-			baseUrl: "../samples/basicpiano/",
+			baseUrl: "samples/basicpiano/",
 		});
 
 		const reverb = new Tone.Reverb({
@@ -261,6 +261,8 @@
 					<div class="key shift" id="ShiftRight">Shift</div>
 				</div>
 			</div>
+
+			<div id="content"></div>
 			
 			<div class="footer">
 				<button class="m-auto" onclick="changePianoMode()">Keyboard mode : &nbsp;<span id="pianoModes">Combined</span></button>
@@ -277,5 +279,14 @@
 	</script>
 	<script src="../scripts/controls.js"></script>
 	<script src="../scripts/pianoControls.js"></script>
+	<script src="../scripts/toneui.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		piano({
+			parent: document.querySelector("#content"),
+			polyphonic: true,
+			noteon: note => sampler.triggerAttack(note.name),
+			noteoff: note => sampler.triggerRelease(note.name)
+		});
+	</script>
 </body>
 </html>

@@ -4,120 +4,95 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>A flute (constant)</title>
-	<link rel="stylesheet" type="text/css" href="scripts/keyboard.css">
+	<title>A square tone</title>
+	<link rel="stylesheet" type="text/css" href="../scripts/keyboard.css">
 	<script src="https://unpkg.com/tone"></script>
-	<script src="scripts/bindings.js"></script>
+	<script src="../scripts/bindings.js"></script>
+	<script src="../scripts/example.js"></script>
 	<script>
-		bindingOct1();
+		bindingOct0();
 
 
-
-		// make effects
-		const filter = new Tone.Filter(2000, "lowpass");
 
 		// make synth
 		const synth = new Tone.PolySynth();
 		synth.set({
-			volume: -35,
+			volume: -31,
 			oscillator: {
 				type: "square",
 			},
 			envelope: {
-				attack: 0.008,
-				decay: 20,
+				attack: 0,
+				decay: 15,
 				sustain: 0,
-				release: 0.1,
+				release: 0.3,
 				releaseCurve: [1, 0.5,0.2,0.1, 0],
 			},
-			detune: -50,
-		}).chain(filter, Tone.Destination);
+		});
 
-		
+		const reverb = new Tone.Reverb({
+			decay: 2,
+			wet: 0.3,
+			preDelay: 0.1,
+		});
+		synth.chain(reverb, Tone.Destination);
 
 
 
 		function playSample(noteName) {
-			synth.triggerAttackRelease(noteName, 1);
+			synth.triggerAttackRelease(noteName, 2);
 		}
 
 		function attackSmp(noteName1) {
-			synth.set({detune: -50,});
 			synth.triggerAttack(noteName1);
-
-			// alternative modulation to detune
-			var tone = -50;						// default cent pitch
-			function upshift() {
-				setTimeout(function() {
-					synth.set({detune: tone,});	// code
-					// console.log(tone);
-					tone=tone+20;				// pitch upshift slowly until 20 cents
-					if (tone <= 20) {
-						upshift();
-					}
-				}, 5);
-			}
-			upshift();
-
-			console.log('Note on : '+noteName1);
+		}
+		function attackSmp2(noteName1, noteName2) {
+			synth.triggerAttack([noteName1, noteName2]);
+		}
+		function releaseSmp(noteName1) {
+			synth.triggerRelease(noteName1);
 		}
 
-		function releaseSmp(noteName2) {
-			// release flute blow-like when no voices is online
-			if (keysPressed.length == 0) {
-				startDownshift();
-			}
-
-			synth.triggerRelease(noteName2);
-			console.log('Note off : '+noteName2);
+		function colorOn(argument) {
+			document.getElementById(argument).classList.add("keypress");
 		}
-
-		// why nested downshift? because of "var tone=20;"
-		function startDownshift() {
-			// alternative modulation to detune
-			var tone = 20;						// upshifted pitch
-			function downshift() {
-				setTimeout(function() {
-					synth.set({detune: tone,});	// code
-					// console.log(tone);
-					tone=tone-40;					// pitch downshift slowly until -50 
-					if (tone >= -50) {
-						downshift();
-					}
-				}, 5);
-			}
-			downshift();
+		function colorOff(argument) {
+			document.getElementById(argument).classList.remove("keypress");
 		}
-
-
+		function clearKeypress() {
+			// clear all .keypress classes
+			let allNotes = document.querySelectorAll('.key');
+			for (let i=0; i<allNotes.length; i++) {
+				allNotes[i].classList.remove('keypress');
+			}
+		}
 
 
 
 		// Map mouse
-		var keyHold = false;
+		var mouseHold = false;
 		const keyObj = Object.keys(keyboardMap);
 		function mouseMap() {
 			document.getElementById('keyBase').addEventListener("mousedown", () => {
-				keyHold = true;
+				mouseHold = true;
 			});
 			keyObj.forEach((keyName, keyNote) => {
-				// first time note on
+				// first time click, note on
 				document.getElementById(keyName).addEventListener("mousedown", () => {
 					attackSmp(keyboardMap[keyName]);
 				});
 				
-				// when mouse is dragged, do note on and off definitely
+				// second, when mouse is dragged, do note on and off definitely
 				document.getElementById(keyName).addEventListener("mouseenter", () => {
-					if (keyHold) {attackSmp(keyboardMap[keyName]);}
+					if (mouseHold) {attackSmp(keyboardMap[keyName]);}
 				});
 				document.getElementById(keyName).addEventListener("mouseleave", () => {
-					if (keyHold) {releaseSmp(keyboardMap[keyName]);}
+					if (mouseHold) {releaseSmp(keyboardMap[keyName]);}
 				});
 			});
 			document.getElementById('keyBase').addEventListener('mouseup', () => {
-				keyHold = false;
+				mouseHold = false;
 				// instead of releasing individual note, so kill all notes!
-				startDownshift();
 				synth.releaseAll();
 			});
 			console.log('Mouse Mapped');
@@ -127,6 +102,7 @@
 
 
 
+		
 		// Note on
 		var keysPressed = [];
 		var noKey=0;
@@ -147,13 +123,12 @@
 
 			try {
 				attackSmp(keyboardMap[keyVal]);
-
-				document.getElementById(keyVal).classList.add("keypress");
+				colorOn(keyVal);
 				noKey=0;
 			} catch(err) {
 				noKey=1;
 			}
-			// console.log('Online : '+keysPressed);	// debug keyspressed
+			// console.log('Online : '+keysPressed);
 		});
 
 
@@ -173,9 +148,13 @@
 			}
 
 			releaseSmp(keyboardMap[keyVal]);
-			// console.log('Online : '+keysPressed);	// debug keyspressed
-			document.getElementById(keyVal).classList.remove("keypress");
+			// console.log('Online : '+keysPressed);
+
+			colorOff(keyVal);
 		});
+
+
+
 	</script>
 </head>
 <body>
@@ -186,6 +165,23 @@
 				<button onclick="playSample('C5')">C5</button>
 				<button onclick="playSample('E5')">E5</button>
 				<button onclick="playSample('G5')">G5</button>
+				<button onclick="synth.releaseAll();">Release all sound!</button>
+				<button onclick="playWhitespace()" id="wsbtn">Play Whitespace!</button>
+				<button onclick="loopWhitespace()" id="wsbtnloop">Loop Whitespace</button>
+				<span id="message"></span>
+			</div>
+			<div class="tests2">
+				<div class="item">
+					Octave : &nbsp;
+					<button onclick="octaveDown()">Down</button>
+					<span class="displays" id="octaveMsg">0</span>
+					<button onclick="octaveUp()">Up</button>
+				</div>
+				<div class="item">
+					Volume &nbsp;&nbsp;
+					<input class="fxvol" type="range" id="volumeOut" min="-300" max="0" value="-230">
+					<span class="displays1" id="volumeOutDis"></span>dB
+				</div>
 			</div>
 			<div class="p-wrapper">
 				<div class="keyboard-base" id="keyBase">
@@ -244,15 +240,33 @@
 					<div class="key shift" id="ShiftRight">Shift</div>
 				</div>
 			</div>
-			
+
+			<div class="footer">
+				<button class="m-auto" onclick="changePianoMode();octaveUp();">Keyboard mode : &nbsp;<span id="pianoModes">Combined</span></button>
+			</div>
+
 			<!-- <div class="text-banner">
 				<small>Keyboard layout by freefrontend.com</small>
 			</div> -->
 		</div>
 	</div>
 
+	<script src="../scripts/controls.js"></script>
 	<script type="text/javascript">
 		mouseMap();
+		octaveUp();
+
+		let volSlider = document.getElementById("volumeOut");
+		let volOut = document.getElementById("volumeOutDis");
+		volOut.innerHTML = volSlider.value/10;
+
+		volSlider.oninput = function() {
+			let sliderRes = volSlider.value/10;
+			volOut.innerHTML = sliderRes;
+			synth.set({
+				volume: sliderRes,
+			});
+		}
 	</script>
 </body>
 </html>

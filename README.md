@@ -7,7 +7,7 @@ Virtual piano that you can play with just PC keyboard. It runs on browser, also 
 ## Instruments
 - `Soft piano`: Steinway D dark, `3MB` size
 - `Autograph piano`: Yamaha C6 grand, `4MB` size
-- `Basic piano`: Decent light piano, `4MB` size
+- `Decent piano`: Light piano, `4MB` size
 - `Maris piano`: Piano used in mari's theme
 - `Octaved bell`: Music box and bells
 - `Square tone`: Plain square wave

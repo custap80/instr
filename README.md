@@ -1,7 +1,7 @@
 # Web piano
-Just a piano player that you can play with just pc keyboard. It runs using Tone.js library. See [keyboard layout](keyboard-layout.png) for mapping guides.
+Virtual piano that you can play with just PC keyboard. It runs on browser, also cross-platform.
 
-[Try it](https://custap80.github.io/instr) out
+[Try it](https://custap80.github.io/instr) out live. See [keyboard layout](keyboard-layout.png) for mapping guides.
 
 
 ## Instruments
@@ -9,6 +9,7 @@ Just a piano player that you can play with just pc keyboard. It runs using Tone.
 - `Autograph piano`: Yamaha C6 grand, `4MB` size
 - `Basic piano`: Decent light piano, `4MB` size
 - `Maris piano`: Piano used in mari's theme
+- `Octaved bell`: Music box and bells
 - `Square tone`: Plain square wave
 
 ### Discontinued
@@ -34,18 +35,18 @@ To use this locally. I recommend to run your own server. Though you can open HTM
 
 
 ## Issues
-- If html is opened directly and there is no sound (e.g piano). It could be caused by CORS.
-- If sound is delayed, try using [chromium portable](https://github.com/custap80/cef-builds/releases), or another light browser e.g firefox ESR
-- Tried on firefox works very well. Unfortunately both `shift` key (right and left) doesn't get captured by firefox. Test keyboard from [toptal sites](https://www.toptal.com/developers/keycode) if it works
+- Samplers may causing CORS, if HTML opened directly.
+- This uses heavy graphics resources, hence why it runs on browser engine. Advised to use [chromium portable](https://github.com/custap80/cef-builds/releases), Firefox ESR or SeaMonkey
+- Shift key doesn't work on Firefox. Test keyboard from [Toptal website](https://www.toptal.com/developers/keycode) if it works
 
 
 ### Plans
 - [ ] Migrate to JQuery
-- [x] Live-display 88 piano keys (thanks to Alang for the idea)
+- [x] Live-display 88 piano keys (thanks to `Alang` for the idea)
 - [x] MIDI Support
 
 
 ## References
-- See SOURCES file for instrument sources
+- See `SOURCES` file for instrument sources
 - [Tone.js](https://github.com/Tonejs/Tone.js)
 - [Simple Server](https://github.com/syntaqx/serve)

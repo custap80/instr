@@ -81,89 +81,7 @@
 
 
 
-		// Map mouse
-		var keyHold = false;
-		// get property-name only from object
-		const keyObj = Object.keys(keyboardMap);
-		function mouseMap() {
-			document.getElementById('keyBase').addEventListener("mousedown", () => {
-				keyHold = true;
-			});
-			keyObj.forEach((keyName, keyNote) => {
-				// first time note on
-				document.getElementById(keyName).addEventListener("mousedown", () => {
-					attackSmp(keyboardMap[keyName]);
-				});
-				
-				// when mouse is dragged, do note on and off definitely
-				document.getElementById(keyName).addEventListener("mouseenter", () => {
-					if (keyHold) {attackSmp(keyboardMap[keyName]);}
-				});
-				document.getElementById(keyName).addEventListener("mouseleave", () => {
-					if (keyHold) {releaseSmp(keyboardMap[keyName]);}
-				});
-			});
-			document.getElementById('keyBase').addEventListener('mouseup', () => {
-				keyHold = false;
-				// instead of releasing individual note, so kill all notes!
-				sampler.releaseAll();
-			});
-			console.log('Mouse Mapped');
-		}
-
-
-
-
-
-		// Note on
-		var keysPressed = [];
-		var noKey=0;
-		window.addEventListener("keydown", e => {
-			let keyVal = e.code;
-
-			// give !(keyboardMap[keyVal]) because different error, especially synth
-			if (e.repeat || !(keyboardMap[keyVal])) { return; }
-
-			// prevent repeated keys when hold
-			var i = keysPressed.length;
-			while(i--) {
-				if(keysPressed[i]==keyVal) {
-					return false;	
-			    }
-			}
-			keysPressed.push(keyVal);
-
-			try {
-				attackSmp(keyboardMap[keyVal]);
-				noKey=0;
-				document.getElementById(keyVal).classList.add("keypress");
-			} catch(err) {
-				noKey=1;
-			}
-			// console.log('Online : '+keysPressed);
-		});
-
-
-
-
-		// Note off
-		window.addEventListener("keyup", e => {
-			let keyVal = e.code;
-
-			// give !(keyboardMap[keyVal]) because different error, especially synth
-			if (noKey==1 || !(keyboardMap[keyVal])) { return; }
-
-			var j = keysPressed.length;
-			while(j--) {
-				if(keysPressed[j]==keyVal) {
-					keysPressed.splice(j, 1);
-				}
-			}
-
-			releaseSmp(keyboardMap[keyVal]);
-			// console.log('Online : '+keysPressed);
-			document.getElementById(keyVal).classList.remove("keypress");
-		});
+		
 	</script>
 </head>
 <body>
@@ -185,7 +103,7 @@
 				</div>
 				<div class="item">
 					Volume &nbsp;&nbsp;
-					<input class="fxvol" type="range" id="volumeOut" min="-300" max="0" value="-230">
+					<input class="fxvol" type="range" id="volumeOut" min="-250" max="100" value="-230">
 					<span class="displays1" id="volumeOutDis"></span>dB
 				</div>
 				<div class="item">
@@ -257,6 +175,8 @@
 				</div>
 			</div>
 
+			<div id="content"></div>
+
 			<div class="footer">
 				<button class="m-auto" onclick="changePianoMode()">Keyboard mode : &nbsp;<span id="pianoModes">Combined</span></button>
 			</div>
@@ -268,10 +188,109 @@
 		</div>
 	</div>
 
-	<script type="text/javascript">
-		mouseMap();
-	</script>
 	<script src="../scripts/controls.js"></script>
 	<script src="../scripts/pianoControls.js"></script>
+	<script src="../scripts/toneui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../scripts/pianoMon.js"></script>
+	<script type="text/javascript">
+		displayPianoKeys(sampler);
+
+
+		// Map mouse
+		var keyHold = false;
+		// get property-name only from object
+		const keyObj = Object.keys(keyboardMap);
+		function mouseMap() {
+			document.getElementById('keyBase').addEventListener("mousedown", () => {
+				keyHold = true;
+			});
+			keyObj.forEach((keyName, keyNote) => {
+				// first time note on
+				document.getElementById(keyName).addEventListener("mousedown", () => {
+					attackSmp(keyboardMap[keyName]);
+					setPianoDisplay(keyboardMap[keyName]);
+				});
+				
+				// when mouse is dragged, do note on and off definitely
+				document.getElementById(keyName).addEventListener("mouseenter", () => {
+					if (keyHold) {
+						attackSmp(keyboardMap[keyName]);
+						setPianoDisplay(keyboardMap[keyName]);
+					}
+				});
+				document.getElementById(keyName).addEventListener("mouseleave", () => {
+					if (keyHold) { releaseSmp(keyboardMap[keyName]); }
+					removePianoDisplay(keyboardMap[keyName]);
+				});
+			});
+			document.getElementById('keyBase').addEventListener('mouseup', () => {
+				keyHold = false;
+				// instead of releasing individual note, so kill all notes!
+				sampler.releaseAll();
+			});
+			console.log('Mouse Mapped');
+		}
+		mouseMap();
+
+
+
+
+
+		// Note on
+		var keysPressed = [];
+		var noKey=0;
+		window.addEventListener("keydown", e => {
+			let keyVal = e.code;
+
+			// give !(keyboardMap[keyVal]) because different error, especially synth
+			if (e.repeat || !(keyboardMap[keyVal])) { return; }
+
+			// prevent repeated keys when hold
+			var i = keysPressed.length;
+			while(i--) {
+				if(keysPressed[i]==keyVal) {
+					return false;	
+			    }
+			}
+			keysPressed.push(keyVal);
+
+			try {
+				attackSmp(keyboardMap[keyVal]);
+				noKey=0;
+
+				// highlight
+				document.getElementById(keyVal).classList.add("keypress");
+				setPianoDisplay(keyboardMap[keyVal]);
+			} catch(err) {
+				noKey=1;
+			}
+			// console.log('Online : '+keysPressed);
+		});
+
+
+
+
+		// Note off
+		window.addEventListener("keyup", e => {
+			let keyVal = e.code;
+
+			// give !(keyboardMap[keyVal]) because different error, especially synth
+			if (noKey==1 || !(keyboardMap[keyVal])) { return; }
+
+			var j = keysPressed.length;
+			while(j--) {
+				if(keysPressed[j]==keyVal) {
+					keysPressed.splice(j, 1);
+				}
+			}
+
+			releaseSmp(keyboardMap[keyVal]);
+			// console.log('Online : '+keysPressed);
+
+			// remove highlight
+			document.getElementById(keyVal).classList.remove("keypress");
+			removePianoDisplay(keyboardMap[keyVal]);
+		});
+	</script>
 </body>
 </html>

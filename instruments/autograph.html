@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Mari's theme</title>
+	<title>An autograph piano</title>
 	<link rel="stylesheet" type="text/css" href="../scripts/keyboard.css">
 	<script src="https://unpkg.com/tone"></script>
 	<script src="../scripts/bindings.js"></script>
@@ -17,27 +17,33 @@
 		// make instrument from samples
 		const sampler = new Tone.Sampler({
 			urls: {
+				"E2": "E2.flac",
+				"A2": "A2.flac",
+				"D3": "D3.flac",
+				"G#3": "G-3.flac",
 				"C4": "C4.flac",
+				"E4": "E4.flac",
+				"G#4": "G-4.flac",
+				"C5": "C5.flac",
+				"F5": "F5.flac",
+				"A#5": "A-5.flac",
+				"F6": "F6.flac",
+				"C7": "C7.flac",
+				"F#7": "F-7.flac",
 			},
-			volume: -23,
-			release: 6,
+			volume: -15,
+			release: 3,
 			releaseCurve: [1, 0.5,0.2,0.1, 0],
-			baseUrl: "samples/maripiano/",
+			baseUrl: "samples/autograph/",
 		});
 
 		const reverb = new Tone.Reverb({
 			decay: 3,
-			wet: 0.4,
+			wet: 0.3,
 			preDelay: 0.1,
 		});
 
-		const stereoWide = new Tone.StereoWidener({
-			width: 1,
-			wet: 0.65,
-		});
-
-
-		sampler.chain(stereoWide, reverb, Tone.Destination);
+		sampler.chain(reverb, Tone.Destination);
 
 
 		// Check loop if piano loaded every 1sec, if yes stop the interval
@@ -59,11 +65,11 @@
 
 		function attackSmp(noteName1) {
 			sampler.triggerAttack(noteName1);
-			// console.log('Note on : '+noteName1);
+			console.log('Note on : '+noteName1);
 		}
 		function releaseSmp(noteName2) {
 			sampler.triggerRelease(noteName2);
-			// console.log('Note off : '+noteName2);
+			console.log('Note off : '+noteName2);
 		}
 	</script>
 </head>
@@ -91,7 +97,7 @@
 				</div>
 				<div class="item">
 					Reverb vol &nbsp;&nbsp;
-					<input class="fxrev" type="range" id="reverbWet" min="0" max="5" value="4">
+					<input class="fxrev" type="range" id="reverbWet" min="0" max="5" value="3">
 					<span class="displays1" id="reverbWetDis"></span>%
 				</div>
 				<div class="item">
@@ -159,7 +165,7 @@
 			</div>
 
 			<div id="content"></div>
-			
+
 			<div class="footer">
 				<button class="m-auto" onclick="changePianoMode()">Keyboard mode : &nbsp;<span id="pianoModes">Combined</span></button>
 			</div>
@@ -177,7 +183,6 @@
 	<script type="text/javascript">
 		displayPianoKeys(sampler);
 
-
 		// Map mouse
 		var keyHold = false;
 		// get property-name only from object
@@ -190,19 +195,14 @@
 				// first time note on
 				document.getElementById(keyName).addEventListener("mousedown", () => {
 					attackSmp(keyboardMap[keyName]);
-					setPianoDisplay(keyboardMap[keyName]);
 				});
 				
 				// when mouse is dragged, do note on and off definitely
 				document.getElementById(keyName).addEventListener("mouseenter", () => {
-					if (keyHold) {
-						attackSmp(keyboardMap[keyName]);
-						setPianoDisplay(keyboardMap[keyName]);
-					}
+					if (keyHold) {attackSmp(keyboardMap[keyName]);}
 				});
 				document.getElementById(keyName).addEventListener("mouseleave", () => {
-					if (keyHold) { releaseSmp(keyboardMap[keyName]); }
-					removePianoDisplay(keyboardMap[keyName]);
+					if (keyHold) {releaseSmp(keyboardMap[keyName]);}
 				});
 			});
 			document.getElementById('keyBase').addEventListener('mouseup', () => {
@@ -213,6 +213,9 @@
 			console.log('Mouse Mapped');
 		}
 		mouseMap();
+
+
+
 
 
 		// Note on

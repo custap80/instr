@@ -1,12 +1,16 @@
 
 
 // Map Piano Live-display
-piano({
-	parent: document.querySelector("#content"),
-	polyphonic: true,
-	noteon: note => sampler.triggerAttack(note.name),
-	noteoff: note => sampler.triggerRelease(note.name)
-});
+
+function displayPianoKeys(instrument) {
+	piano({
+		parent: document.querySelector("#content"),
+		polyphonic: true,
+		noteon: note => instrument.triggerAttack(note.name),
+		noteoff: note => instrument.triggerRelease(note.name)
+	});
+}
+
 
 let pianoArray;
 let _arrayToken = { name:0 };

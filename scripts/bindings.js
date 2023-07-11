@@ -9,7 +9,7 @@ const noteNums = [1,2,3,4,5,6,7,8,9];
 let octNow = 0;
 let pianoMode = 0;
 
-// oct 0
+// key mapping
 function bindingOct0() {
 	octNow=0;
 	keyboardMap = {
@@ -70,7 +70,7 @@ function bindingOct0() {
 
 
 
-// oct 1
+// key mapping compatibility reason
 function bindingOct1() {
 	octNow=1;
 	keyboardMap = {

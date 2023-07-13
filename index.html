@@ -41,6 +41,15 @@
 			font-size: 0.9rem;
 			background: rgb(90 90 90);
 		}
+		.button-disabled {
+			padding: 0.7rem;
+			background: rgb(245 245 245);
+			text-decoration: none;
+			color: rgb(140 140 140);
+			border-radius: 2px;
+			transition:100ms;
+			margin: 0.2rem 0;
+		}
 		.links {
 			display: flex;
 			flex-direction: column;
@@ -62,11 +71,11 @@
 				<a href="instruments/maripiano.html" class="button">Mari's Piano</a>
 				<a href="instruments/octavedbell.html" class="button">Octaved Bells</a>
 				<a href="synths/square.html" class="button">Square tone</a>
-				<p>Discontinued below :</p>
-				<a href="synths/flute.html" class="button">Flute - real</a>
-				<a href="synths/flute2.html" class="button">Flute wave</a>
-				<a href="synths/pads.html" class="button">Pads</a>
-				<a href="synths/arps.html" class="button">Arpeggio</a>
+				<p>Discontinued :</p>
+				<a href="synths/flute.html" class="button-disabled">Flute - real</a>
+				<a href="synths/flute2.html" class="button-disabled">Flute wave</a>
+				<a href="synths/pads.html" class="button-disabled">Pads</a>
+				<a href="synths/arps.html" class="button-disabled">Arpeggio</a>
 				<small>Game reference</small>
 			</div>
 		</div>

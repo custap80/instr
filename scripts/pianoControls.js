@@ -7,6 +7,7 @@ lineAt=1;
 let volSlider = document.getElementById("volumeOut");
 let volOut = document.getElementById("volumeOutDis");
 volOut.innerHTML = volSlider.value/10;
+sampler.volume.value = volSlider.value/10;
 
 volSlider.oninput = function() {
 	let sliderRes = volSlider.value/10;
@@ -19,6 +20,7 @@ lineAt=2;
 let revWetSlider = document.getElementById("reverbWet");
 let revWet = document.getElementById("reverbWetDis");
 revWet.innerHTML = revWetSlider.value*10;
+reverb.set({ wet: revWetSlider.value/10, });
 
 revWetSlider.oninput = function() {
 	let sliderRes = revWetSlider.value/10;
@@ -30,6 +32,7 @@ lineAt=3;
 let revTimeSlider = document.getElementById("reverbTime");
 let revTime = document.getElementById("reverbTimeDis");
 revTime.innerHTML = revTimeSlider.value;
+reverb.set({ decay: revTimeSlider.value, });
 
 revTimeSlider.oninput = function() {
 	let sliderRes = revTimeSlider.value;

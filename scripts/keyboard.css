@@ -51,6 +51,7 @@ small {
 	display: flex;
     align-items: center;
     gap: 0.3rem;
+    justify-content: space-between;
 }
 
 .tests2 {
@@ -84,9 +85,9 @@ small {
 	width: 3rem;
 }
 
-.fxvol { width: 8rem; }
+.fxvol { width: 8rem; height: 3.5rem; }
 
-.fxrev { width: 5rem; }
+.fxrev { width: 5rem; height: 3.5rem; }
 
 #octaveMsg {
     padding: 0.4rem;

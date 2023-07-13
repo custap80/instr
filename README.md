@@ -44,6 +44,7 @@ To use this locally. I recommend to run your own server. Though you can open HTM
 - [ ] Migrate to JQuery
 - [x] Live-display 88 piano keys (thanks to `Alang` for the idea)
 - [x] MIDI Support
+- [x] Touch support (not advised)
 
 
 ## References

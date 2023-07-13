@@ -71,18 +71,20 @@
 	<div class="content">
 		<div class="wrapper">
 			<div class="tests">
-				<span>Test buttons (sustained) : </span>
-				<button onclick="playSample('C5')">C5</button>
-				<button onclick="playSample('E5')">E5</button>
-				<button onclick="playSample('G5')">G5</button>
-				<span id="loaded">Loading piano...</span>
+				<div>
+					<span>Test buttons (sustained) : </span>
+					<button onclick="playSample('C5')">C5</button>
+					<button onclick="playSample('E5')">E5</button>
+					<button onclick="playSample('G5')">G5</button>
+					<span id="loaded">Loading piano...</span>
+				</div>
 			</div>
 			<div class="tests2">
 				<div class="item">
 					Octave : &nbsp;
-					<button onclick="octaveDown()">Down</button>
+					<button onclick="octaveDown(1)">Down</button>
 					<span class="displays" id="octaveMsg">0</span>
-					<button onclick="octaveUp()">Up</button>
+					<button onclick="octaveUp(2)">Up</button>
 				</div>
 				<div class="item">
 					Volume &nbsp;&nbsp;

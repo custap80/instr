@@ -1,8 +1,8 @@
 // there is no built-in octave control in Tone.js
 // so made own octave function
 
-function octaveUp() {
-	if (octNow >= 2) {
+function octaveUp(limit=1) {
+	if (octNow >= limit) {
 		return;
 	}
 	let keyboardTemp = {};
@@ -23,8 +23,8 @@ function octaveUp() {
 	console.log("Octave up : "+octNow);
 }
 
-function octaveDown() {
-	if (octNow <= -2) {
+function octaveDown(limit=1) {
+	if (octNow <= -limit) {
 		return;
 	}
 	let keyboardTemp = {};
@@ -46,6 +46,7 @@ function octaveDown() {
 }
 
 
+// debug purpose
 function zeroOct() {
 	octNow=0;
 	document.getElementById('octaveMsg').innerHTML = octNow;

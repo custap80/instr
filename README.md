@@ -4,6 +4,14 @@ Virtual piano that you can play with just PC keyboard. It runs on browser, also 
 [Try it](https://custap80.github.io/instr) out live. See [keyboard layout](keyboard-layout.png) for mapping guides.
 
 
+# Features
+- Live piano keys display
+- MIDI Support
+- Touch support (on live piano display)
+- Volume and reverb adjustment
+- PC Keyboard mode (Combined and separated)
+
+
 ## Instruments
 - `Soft piano`: Steinway D dark, `3MB` size
 - `Autograph piano`: Yamaha C6 grand, `4MB` size
@@ -36,7 +44,7 @@ To use this locally. I recommend to run your own server. Though you can open HTM
 
 ## Issues
 - Samplers may causing CORS, if HTML opened directly.
-- This uses heavy graphics resources, hence why it runs on browser engine. Advised to use [chromium portable](https://github.com/custap80/cef-builds/releases), Firefox ESR or SeaMonkey
+- This may use heavy graphics resources. Advised to use [chromium portable](https://github.com/custap80/cef-builds/releases), Firefox ESR or SeaMonkey
 - Shift key doesn't work on Firefox. Test keyboard from [Toptal website](https://www.toptal.com/developers/keycode) if it works
 
 

@@ -13,6 +13,7 @@ Virtual piano that you can play with just PC keyboard. It runs on browser, also 
 
 
 ## Instruments
+
 |Name|Instrument|Samples amount|
 |--|--|--|
 |Soft piano|Steinway D dark|~ 3mb|
@@ -24,6 +25,7 @@ Virtual piano that you can play with just PC keyboard. It runs on browser, also 
 
 ### Deprecated
 > Will not receive new features, only bug fixes
+
 |Name|Instrument|
 |--|--|
 |Flute|Filtered square wave|

@@ -66,22 +66,6 @@
 				clearInterval(loadInterval);
 			}
 		}, 1000);
-
-
-
-
-		function playSample(noteName) {
-			sampler.triggerAttackRelease(noteName, 2);
-		}
-
-		function attackSmp(noteName1) {
-			sampler.triggerAttack(noteName1);
-			// console.log('Note on : '+noteName1);
-		}
-		function releaseSmp(noteName2) {
-			sampler.triggerRelease(noteName2);
-			// console.log('Note off : '+noteName2);
-		}
 	</script>
 </head>
 <body>
@@ -90,9 +74,9 @@
 			<div class="tests">
 				<div>
 					<span>Test buttons (sustained) : </span>
-					<button onclick="playSample('C5')">C5</button>
-					<button onclick="playSample('E5')">E5</button>
-					<button onclick="playSample('G5')">G5</button>
+					<button onclick="playSample(sampler, 'C5')">C5</button>
+					<button onclick="playSample(sampler, 'E5')">E5</button>
+					<button onclick="playSample(sampler, 'G5')">G5</button>
 					<span id="loaded">Loading piano...</span>
 				</div>
 			</div>
@@ -190,50 +174,12 @@
 	</div>
 
 	<script src="../scripts/controls.js"></script>
-	<script src="../scripts/pianoControls.js"></script>
+	<script src="../scripts/instrControls.js"></script>
 	<script src="../scripts/toneui.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../scripts/pianoMon.js"></script>
 	<script type="text/javascript">
 		displayPianoKeys(sampler);
-
-
-		// Map mouse
-		var keyHold = false;
-		// get property-name only from object
-		const keyObj = Object.keys(keyboardMap);
-		function mouseMap() {
-			document.getElementById('keyBase').addEventListener("mousedown", () => {
-				keyHold = true;
-			});
-			keyObj.forEach((keyName, keyNote) => {
-				// first time note on
-				document.getElementById(keyName).addEventListener("mousedown", () => {
-					attackSmp(keyboardMap[keyName]);
-					setPianoDisplay(keyboardMap[keyName]);
-				});
-				
-				// when mouse is dragged, do note on and off definitely
-				document.getElementById(keyName).addEventListener("mouseenter", () => {
-					if (keyHold) {
-						attackSmp(keyboardMap[keyName]);
-						setPianoDisplay(keyboardMap[keyName]);
-					}
-				});
-				document.getElementById(keyName).addEventListener("mouseleave", () => {
-					if (keyHold) { releaseSmp(keyboardMap[keyName]); }
-					removePianoDisplay(keyboardMap[keyName]);
-				});
-			});
-			document.getElementById('keyBase').addEventListener('mouseup', () => {
-				keyHold = false;
-				// instead of releasing individual note, so kill all notes!
-				sampler.releaseAll();
-			});
-			console.log('Mouse Mapped');
-		}
-		mouseMap();
-
-
+		mouseMap(sampler);
 
 
 
@@ -256,12 +202,10 @@
 			keysPressed.push(keyVal);
 
 			try {
-				attackSmp(keyboardMap[keyVal]);
+				attackSmp(sampler, keyboardMap[keyVal]);
 				noKey=0;
 
-				// highlight
 				document.getElementById(keyVal).classList.add("keypress");
-				setPianoDisplay(keyboardMap[keyVal]);
 			} catch(err) {
 				noKey=1;
 			}
@@ -285,12 +229,10 @@
 				}
 			}
 
-			releaseSmp(keyboardMap[keyVal]);
+			releaseSmp(sampler, keyboardMap[keyVal]);
 			// console.log('Online : '+keysPressed);
 
-			// remove highlight
 			document.getElementById(keyVal).classList.remove("keypress");
-			removePianoDisplay(keyboardMap[keyVal]);
 		});
 	</script>
 </body>

@@ -18,6 +18,7 @@
 		const synth = new Tone.PolySynth();
 		synth.set({
 			volume: -31,
+			detune: 15.5,
 			oscillator: {
 				type: "square",
 			},
@@ -38,21 +39,6 @@
 		synth.chain(reverb, Tone.Destination);
 
 
-
-		function playSample(noteName) {
-			synth.triggerAttackRelease(noteName, 2);
-		}
-
-		function attackSmp(noteName1) {
-			synth.triggerAttack(noteName1);
-		}
-		function attackSmp2(noteName1, noteName2) {
-			synth.triggerAttack([noteName1, noteName2]);
-		}
-		function releaseSmp(noteName1) {
-			synth.triggerRelease(noteName1);
-		}
-
 		function colorOn(argument) {
 			document.getElementById(argument).classList.add("keypress");
 		}
@@ -66,109 +52,22 @@
 				allNotes[i].classList.remove('keypress');
 			}
 		}
-
-
-
-		// Map mouse
-		var mouseHold = false;
-		const keyObj = Object.keys(keyboardMap);
-		function mouseMap() {
-			document.getElementById('keyBase').addEventListener("mousedown", () => {
-				mouseHold = true;
-			});
-			keyObj.forEach((keyName, keyNote) => {
-				// first time click, note on
-				document.getElementById(keyName).addEventListener("mousedown", () => {
-					attackSmp(keyboardMap[keyName]);
-				});
-				
-				// second, when mouse is dragged, do note on and off definitely
-				document.getElementById(keyName).addEventListener("mouseenter", () => {
-					if (mouseHold) {attackSmp(keyboardMap[keyName]);}
-				});
-				document.getElementById(keyName).addEventListener("mouseleave", () => {
-					if (mouseHold) {releaseSmp(keyboardMap[keyName]);}
-				});
-			});
-			document.getElementById('keyBase').addEventListener('mouseup', () => {
-				mouseHold = false;
-				// instead of releasing individual note, so kill all notes!
-				synth.releaseAll();
-			});
-			console.log('Mouse Mapped');
-		}
-
-
-
-
-
-		
-		// Note on
-		var keysPressed = [];
-		var noKey=0;
-		window.addEventListener("keydown", e => {
-			let keyVal = e.code;
-
-			// give !(keyboardMap[keyVal]) because different debug error, especially synth
-			if (e.repeat || !(keyboardMap[keyVal])) { return; }
-
-			// prevent repeated keys when hold
-			var i = keysPressed.length;
-			while(i--) {
-				if(keysPressed[i]==keyVal) {
-					return false;	
-			    }
-			}
-			keysPressed.push(keyVal);
-
-			try {
-				attackSmp(keyboardMap[keyVal]);
-				colorOn(keyVal);
-				noKey=0;
-			} catch(err) {
-				noKey=1;
-			}
-			// console.log('Online : '+keysPressed);
-		});
-
-
-
-
-		// Note off
-		window.addEventListener("keyup", e => {
-			let keyVal = e.code;
-			// give !(keyboardMap[keyVal]) because different error, especially synth
-			if (noKey==1 || !(keyboardMap[keyVal])) { return; }
-
-			var i = keysPressed.length;
-			while(i--) {
-				if(keysPressed[i]==keyVal) {
-					keysPressed.splice(i, 1);
-				}
-			}
-
-			releaseSmp(keyboardMap[keyVal]);
-			// console.log('Online : '+keysPressed);
-
-			colorOff(keyVal);
-		});
-
-
-
 	</script>
 </head>
 <body>
 	<div class="content">
 		<div class="wrapper">
 			<div class="tests">
-				<span>Test buttons (sustained) : </span>
-				<button onclick="playSample('C5')">C5</button>
-				<button onclick="playSample('E5')">E5</button>
-				<button onclick="playSample('G5')">G5</button>
-				<button onclick="synth.releaseAll();">Release all sound!</button>
-				<button onclick="playWhitespace()" id="wsbtn">Play Whitespace!</button>
-				<button onclick="loopWhitespace()" id="wsbtnloop">Loop Whitespace</button>
-				<span id="message"></span>
+				<div>
+					<span>Test buttons (sustained) : </span>
+					<button onclick="playSample(synth, 'C5')">C5</button>
+					<button onclick="playSample(synth, 'E5')">E5</button>
+					<button onclick="playSample(synth, 'G5')">G5</button>
+					<button onclick="synth.releaseAll();">Release all sound!</button>
+					<button onclick="playWhitespace()" id="wsbtn">Play Whitespace!</button>
+					<button onclick="loopWhitespace()" id="wsbtnloop">Loop Whitespace</button>
+					<span id="message"></span>
+				</div>
 			</div>
 			<div class="tests2">
 				<div class="item">
@@ -241,6 +140,8 @@
 				</div>
 			</div>
 
+			<div id="content"></div>
+
 			<div class="footer">
 				<button class="m-auto" onclick="changePianoMode();octaveUp();">Keyboard mode : &nbsp;<span id="pianoModes">Combined</span></button>
 			</div>
@@ -252,9 +153,65 @@
 	</div>
 
 	<script src="../scripts/controls.js"></script>
+	<script src="../scripts/toneui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../scripts/pianoMon.js"></script>
 	<script type="text/javascript">
-		mouseMap();
+		displayPianoKeys(synth);
+		mouseMap(synth);
 		octaveUp();
+
+
+
+		// Note on
+		var keysPressed = [];
+		var noKey=0;
+		window.addEventListener("keydown", e => {
+			let keyVal = e.code;
+
+			// give !(keyboardMap[keyVal]) because different debug error, especially synth
+			if (e.repeat || !(keyboardMap[keyVal])) { return; }
+
+			// prevent repeated keys when hold
+			var i = keysPressed.length;
+			while(i--) {
+				if(keysPressed[i]==keyVal) {
+					return false;	
+			    }
+			}
+			keysPressed.push(keyVal);
+
+			try {
+				attackSmp(synth, keyboardMap[keyVal]);
+				colorOn(keyVal);
+				noKey=0;
+			} catch(err) {
+				noKey=1;
+			}
+			// console.log('Online : '+keysPressed);
+		});
+
+
+
+
+		// Note off
+		window.addEventListener("keyup", e => {
+			let keyVal = e.code;
+			// give !(keyboardMap[keyVal]) because different error, especially synth
+			if (noKey==1 || !(keyboardMap[keyVal])) { return; }
+
+			var i = keysPressed.length;
+			while(i--) {
+				if(keysPressed[i]==keyVal) {
+					keysPressed.splice(i, 1);
+				}
+			}
+
+			releaseSmp(synth, keyboardMap[keyVal]);
+			// console.log('Online : '+keysPressed);
+
+			colorOff(keyVal);
+		});
+
 
 		let volSlider = document.getElementById("volumeOut");
 		let volOut = document.getElementById("volumeOutDis");

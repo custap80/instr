@@ -85,9 +85,14 @@ small {
 	width: 3rem;
 }
 
-.fxvol { width: 8rem; height: 3.5rem; }
+.fxvol,
+.fxrev {
+	height: 3.5rem;
+}
 
-.fxrev { width: 5rem; height: 3.5rem; }
+.fxvol { width: 8rem; }
+
+.fxrev { width: 5rem; }
 
 #octaveMsg {
     padding: 0.4rem;

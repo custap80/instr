@@ -11,23 +11,23 @@ function displayPianoKeys(instrument) {
 	});
 }
 
-
 let pianoArray;
-let _arrayToken = { name:0 };
-
-function getPianoArrayOneTime() {
-	if (_arrayToken.name == 1) {return;}
-	_arrayToken.name=1;
-	Object.freeze(_arrayToken);
-
+let _intcheck = 1;
+// check highest note recursively, and set pianoArray
+const pianoInterval = setInterval(function() {
 	pianoArray = document.querySelector('tone-piano').shadowRoot.querySelector('#container').querySelector('tone-keyboard').shadowRoot.querySelector('#container').querySelectorAll('tone-keyboard-octave');
-};
+	_intcheck++;
+	try {
+		pianoArray[7].shadowRoot.querySelector('#container').querySelector('div').querySelector('tone-keyboard-note').shadowRoot.querySelector('#container').querySelector('button');
+		clearInterval(pianoInterval);
+		console.log('Live piano ready')
+	} catch (e) {}
+}, 100)
 
 
-// uhh make piano monitor, check every note recursively
+
+// yeah make a piano monitor, check every note recursively
 function setPianoDisplay(noteName) {
-	getPianoArrayOneTime();
-
 	let getNoteMidi = Tone.Frequency(noteName).toMidi();
 
 	for (var i=0; i<pianoArray.length; i++) {

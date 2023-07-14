@@ -87,24 +87,24 @@ function playWhitespace() {
 
 		// There are neat solution #2. See example below commented code
 
-		attackSmp(keyboardMap[keyName]);
+		attackSmp(synth, keyboardMap[keyName]);
 		document.getElementById(keyName).classList.add("keypress");
 		await setTimeout(function() {
-			releaseSmp(keyboardMap[keyName]);
+			releaseSmp(synth, keyboardMap[keyName]);
 			releaseAKey(keyName);
 			document.getElementById(keyName).classList.remove("keypress");
 		}, long);
 	}
 	async function playNote2(keyName, long, keyName2, long2) {
-		attackSmp2(keyboardMap[keyName], keyboardMap[keyName2]);
+		attackSmp2(synth, keyboardMap[keyName], keyboardMap[keyName2]);
 		document.getElementById(keyName).classList.add("keypress");
 		document.getElementById(keyName2).classList.add("keypress");
 		await setTimeout(function() {
-			releaseSmp(keyboardMap[keyName]);
+			releaseSmp(synth, keyboardMap[keyName]);
 			document.getElementById(keyName).classList.remove("keypress");
 		}, long);
 		await setTimeout(function() {
-			releaseSmp(keyboardMap[keyName2]);
+			releaseSmp(synth, keyboardMap[keyName2]);
 			document.getElementById(keyName2).classList.remove("keypress");
 		}, long2);
 	}

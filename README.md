@@ -13,39 +13,45 @@ Virtual piano that you can play with just PC keyboard. It runs on browser, also 
 
 
 ## Instruments
-- `Soft piano`: Steinway D dark, `3MB` size
-- `Autograph piano`: Yamaha C6 grand, `4MB` size
-- `Decent piano`: Light piano, `4MB` size
-- `Maris piano`: Piano used in mari's theme
-- `Octaved bell`: Music box and bells
-- `Square tone`: Plain square wave
+|Name|Instrument|Samples amount|
+|--|--|--|
+|Soft piano|Steinway D dark|~ 3mb|
+|Autograph piano|Yamaha C6 grand|~ 4mb|
+|Decent piano|Light piano|~ 4mb|
+|Mari's piano|Piano used in mari's theme|_(oneshot)_|
+|Octaved bell|Music box and bells|_(oneshot)_|
+|Square tone|Plain square wave|_(synth)_|
 
-### Discontinued
-- `Flute`: Filtered square wave
-- `Flute wave`: Same as Flute, with detune effect
-- `Pads`: Pads synth
-- `Arps`: Song sequencer from vital preset
+### Deprecated
+> Will not receive new features, only bug fixes
+|Name|Instrument|
+|--|--|
+|Flute|Filtered square wave|
+|Flute wave|Same as Flute, with detune effect|
+|Pads|Pads synth|
+|Arps|Sequencer from vital preset|
 
 
 ## Development
 To use this locally. I recommend to run your own server. Though you can open HTML directly (see issues).
 
 ### Windows
-- Clone this repo
-- Run `serve.exe` and visit `localhost:8080` on browser
+- Easily clone repo `git clone https://github.com/custap80/instr.git`
+- And run `serve.exe` then visit `localhost:8080` on browser
 
-### Linux (or any platform)
-- Clone this repo
-- Install python
-- Run `python -m http.server 8080`
-- Or if you have python3 `python3 -m http.server 8080`
-- visit `localhost:8080`
+### Linux (or any other platform)
+- Clone repo `git clone https://github.com/custap80/instr.git`
+- `cd instr`
+- Install python `sudo apt install python3`
+- Run `python3 -m http.server 8080`
+- Or if you have python on windows `python -m http.server 8080`
+- Finally visit `localhost:8080`
 
 
 ## Issues
-- Samplers may causing CORS, if HTML opened directly.
-- This may use heavy graphics resources. Advised to use [chromium portable](https://github.com/custap80/cef-builds/releases), Firefox ESR or SeaMonkey
-- Shift key doesn't work on Firefox. Test keyboard from [Toptal website](https://www.toptal.com/developers/keycode) if it works
+- Samplers (not synths) may cause CORS, if HTML opened directly.
+- This may use heavy graphics resources, especially on reverb. Advised to use [chromium portable](https://github.com/custap80/cef-builds/releases), Firefox ESR or SeaMonkey
+- Shift key doesn't work on Firefox. Test keyboard from [toptal keycode](https://www.toptal.com/developers/keycode) if it works
 
 
 ### Plans

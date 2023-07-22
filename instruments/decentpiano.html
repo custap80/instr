@@ -7,6 +7,7 @@
 	<title>A decent piano</title>
 	<link rel="stylesheet" type="text/css" href="../scripts/keyboard.css">
 	<script src="https://unpkg.com/tone"></script>
+	<script>window.Tone || document.write('<script src="../scripts/Tone.js"><\/script>')</script>
 	<script src="../scripts/bindings.js"></script>
 	<script>
 		bindingOct0();
@@ -45,7 +46,6 @@
 		const reverb = new Tone.Reverb({
 			decay: 3,
 			wet: 0.4,
-			preDelay: 0.1,
 		});
 
 		const stereoWide = new Tone.StereoWidener({
@@ -178,7 +178,7 @@
 	<script src="../scripts/toneui.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../scripts/pianoMon.js"></script>
 	<script type="text/javascript">
-		displayPianoKeys(sampler);
+		showPianoKeys(sampler);
 		mouseMap(sampler);
 
 

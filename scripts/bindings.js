@@ -2,6 +2,10 @@
 window.addEventListener('keydown', function(e) {
 	e.preventDefault();
 });
+
+// Disable lookAhead
+Tone.context.lookAhead = 0;
+
 var keyboardMap;
 var keyboardOct1;
 const notes = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];

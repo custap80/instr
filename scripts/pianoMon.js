@@ -2,7 +2,7 @@
 
 // Map Piano Live-display
 
-function displayPianoKeys(instrument) {
+function showPianoKeys(instrument) {
 	piano({
 		parent: document.querySelector("#content"),
 		polyphonic: true,

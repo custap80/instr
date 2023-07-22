@@ -34,7 +34,6 @@
 		const reverb = new Tone.Reverb({
 			decay: 2,
 			wet: 0.3,
-			preDelay: 0.1,
 		});
 		synth.chain(reverb, Tone.Destination);
 
@@ -156,7 +155,7 @@
 	<script src="../scripts/toneui.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../scripts/pianoMon.js"></script>
 	<script type="text/javascript">
-		displayPianoKeys(synth);
+		showPianoKeys(synth);
 		mouseMap(synth);
 		octaveUp();
 

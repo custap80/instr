@@ -1,7 +1,7 @@
 # Web piano
-Virtual piano that you can play with just PC keyboard. It runs on browser, and cross-platform. [Try it](https://custap80.github.io/instr) out live. See [keyboard layout](keyboard-layout.png) for mapping guides.
+Virtual piano that you can play with just PC keyboard.
 
-
+[Just Play](https://custap80.github.io/instr)
 
 ### Features
 - Live note keypress
@@ -48,7 +48,7 @@ Since this is just static HTML, I recommend to run on a server (see issues)
 
 ## Issues
 - Samplers (not synths) may cause CORS, if HTML opened directly.
-- This may use heavy resources, especially on reverb. Light browsers are [chromium portable](https://github.com/custap80/cef-builds/releases), Firefox ESR or SeaMonkey
+- This may use heavy resources, especially on reverb.
 - Shift key doesn't work on Firefox. Test keyboard from [toptal keycode](https://www.toptal.com/developers/keycode) if it works
 
 
@@ -62,7 +62,7 @@ Since this is just static HTML, I recommend to run on a server (see issues)
 
 ### Notes
 - No live notes display for MIDI keyboard. It would cause lags, if its enabled.
-- MIDI velocity sensitive isn't implemented, it needs to capture MIDI events
+- MIDI velocity is not yet implemented, it needs to capture MIDI events
 
 
 ## References

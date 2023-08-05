@@ -4,7 +4,7 @@ window.addEventListener('keydown', function(e) {
 });
 
 // Disable lookAhead
-Tone.context.lookAhead = 0;
+// Tone.context.lookAhead = 0;
 
 var keyboardMap;
 var keyboardOct1;

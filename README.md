@@ -17,6 +17,7 @@ Virtual piano that you can play with just PC keyboard.
 |Autograph piano|Yamaha C6 grand|~ 4mb|
 |Decent piano|Light piano|~ 4mb|
 |Mari's piano|Piano used in mari's theme|_(oneshot)_|
+|Fog piano|Muted soft piano (bass)|~ 1mb|
 |Octaved bell|Music box and bells|_(oneshot)_|
 |Square tone|Plain square wave|_(synth)_|
 

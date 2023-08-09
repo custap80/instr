@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>A decent piano</title>
+	<title>Piano #3</title>
 	<link rel="stylesheet" type="text/css" href="../scripts/keyboard.css">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.slim.min.js" integrity="sha512-5NqgLBAYtvRsyAzAvEBWhaW+NoB+vARl6QiA02AFMhCWvPpi7RWResDcTGYvQtzsHVCfiUhwvsijP+3ixUk1xw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script src="https://unpkg.com/tone"></script>
@@ -19,43 +19,35 @@
 		// make instrument from samples
 		const sampler = new Tone.Sampler({
 			urls: {
-				"D2": "D2.flac",
-				"F#2": "F-2.flac",
-				"C3": "C3.flac",
-				"F#3": "F-3.flac",
-				"A3": "A3.flac",
-				"C#4": "C-4.flac",
-				"D#4": "D-4.flac",
-				"F#4": "F-4.flac",
-				"G#4": "G-4.flac",
-				"C5": "C5.flac",
-				"D5": "D5.flac",
-				"G5": "G5.flac",
-				"B5": "B5.flac",
-				"C6": "C6.flac",
-				"G6": "G6.flac",
-				"B6": "B6.flac",
-				"C7": "C7.flac",
-				"G#7": "G-7.flac",
+				"A1": "A1.mp3",
+				"A6": "A6.mp3",
+				"B4": "B4.mp3",
+				"B6": "B6.mp3",
+				"C4": "C4.mp3",
+				"C6": "C6.mp3",
+				"D#3": "D-3.mp3",
+				"D#4": "D-4.mp3",
+				"D#5": "D-5.mp3",
+				"D#6": "D-6.mp3",
+				"D#7": "D-7.mp3",
+				"E2": "E2.mp3",
+				"G#2": "G-2.mp3",
+				"G#3": "G-3.mp3",
+				"G#5": "G-5.mp3",
+				"G4": "G4.mp3",
 			},
-			volume: -23,
-			release: 4,
+			volume: -15,
+			release: 11,
 			releaseCurve: [1, 0.5,0.2,0.1, 0],
-			baseUrl: "samples/basicpiano/",
+			baseUrl: "samples/fogpiano/",
 		});
 
 		const reverb = new Tone.Reverb({
-			decay: 3,
-			wet: 0.4,
+			decay: 2,
+			wet: 0.3,
 		});
 
-		const stereoWide = new Tone.StereoWidener({
-			width: 1,
-			wet: 0.65,
-		});
-
-
-		sampler.chain(stereoWide, reverb, Tone.Destination);
+		sampler.chain(reverb, Tone.Destination);
 
 
 		// Check loop if piano loaded every 1sec, if yes stop the interval
@@ -90,17 +82,17 @@
 				</div>
 				<div class="item">
 					Volume &nbsp;&nbsp;
-					<input class="fxvol" type="range" id="volumeOut" min="-300" max="0" value="-230">
+					<input class="fxvol" type="range" id="volumeOut" min="-250" max="100" value="-230">
 					<span class="displays1" id="volumeOutDis"></span>dB
 				</div>
 				<div class="item">
 					Reverb vol &nbsp;&nbsp;
-					<input class="fxrev" type="range" id="reverbWet" min="0" max="5" value="4">
+					<input class="fxrev" type="range" id="reverbWet" min="0" max="5" value="3">
 					<span class="displays1" id="reverbWetDis"></span>%
 				</div>
 				<div class="item">
 					Reverb time &nbsp;&nbsp;
-					<input class="fxrev" type="range" id="reverbTime" min="1" max="15" value="3">
+					<input class="fxrev" type="range" id="reverbTime" min="1" max="15" value="5">
 					<span class="displays1" id="reverbTimeDis"></span>s
 				</div>
 			</div>
@@ -163,7 +155,7 @@
 			</div>
 
 			<div id="content"></div>
-			
+
 			<div class="footer">
 				<button class="m-auto" onclick="changePianoMode()">Keyboard mode : &nbsp;<span id="pianoModes">Combined</span></button>
 			</div>
@@ -171,6 +163,7 @@
 			<!-- <div class="text-banner">
 				<small>Keyboard layout by freefrontend.com</small>
 			</div> -->
+		</div>
 		</div>
 	</div>
 

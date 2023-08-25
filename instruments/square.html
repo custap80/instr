@@ -38,13 +38,6 @@
 		});
 		synth.chain(reverb, Tone.Destination);
 
-
-		function colorOn(argument) {
-			document.getElementById(argument).classList.add("keypress");
-		}
-		function colorOff(argument) {
-			document.getElementById(argument).classList.remove("keypress");
-		}
 		function clearKeypress() {
 			// clear all .keypress classes
 			let allNotes = document.querySelectorAll('.key');
@@ -159,58 +152,7 @@
 		showPianoKeys(synth);
 		mouseMap(synth);
 		octaveUp();
-
-
-
-		// Note on
-		var keysPressed = [];
-		var noKey=0;
-		window.addEventListener("keydown", e => {
-			let keyVal = e.code;
-
-			// give !(keyboardMap[keyVal]) because different debug error, especially synth
-			if (e.repeat || !(keyboardMap[keyVal])) { return; }
-
-			// prevent repeated keys when hold
-			var i = keysPressed.length;
-			while(i--) {
-				if(keysPressed[i]==keyVal) {
-					return false;	
-			    }
-			}
-			keysPressed.push(keyVal);
-
-			try {
-				attackSmp(synth, keyboardMap[keyVal]);
-				colorOn(keyVal);
-				noKey=0;
-			} catch(err) {
-				noKey=1;
-			}
-			// console.log('Online : '+keysPressed);
-		});
-
-
-
-
-		// Note off
-		window.addEventListener("keyup", e => {
-			let keyVal = e.code;
-			// give !(keyboardMap[keyVal]) because different error, especially synth
-			if (noKey==1 || !(keyboardMap[keyVal])) { return; }
-
-			var i = keysPressed.length;
-			while(i--) {
-				if(keysPressed[i]==keyVal) {
-					keysPressed.splice(i, 1);
-				}
-			}
-
-			releaseSmp(synth, keyboardMap[keyVal]);
-			// console.log('Online : '+keysPressed);
-
-			colorOff(keyVal);
-		});
+		keyboardMapping(synth);
 
 
 		let volSlider = document.getElementById("volumeOut");

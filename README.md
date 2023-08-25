@@ -13,16 +13,17 @@ Virtual piano that you can play with just PC keyboard.
 
 |Name|Instrument|Samples amount|
 |--|--|--|
-|Soft piano|Steinway D dark|~ 3mb|
-|Autograph piano|Yamaha C6 grand|~ 4mb|
-|Decent piano|Light piano|~ 4mb|
+|Soft piano|Steinway D dark|~ 3MB|
+|Autograph piano|Yamaha C6 grand|~ 4MB|
+|Decent piano|Light piano|~ 4MB|
 |Mari's piano|Piano used in mari's theme|_(oneshot)_|
-|Fog piano|Muted soft piano (bass)|~ 1mb|
+|Fog piano|Muted soft piano (bass)|~ 1MB|
 |Octaved bell|Music box and bells|_(oneshot)_|
+|Memories|Guitaret|~ 1MB|
 |Square tone|Plain square wave|_(synth)_|
 
 ### Deprecated
-> Will not receive new features
+> Will be removed soon but still can be downloaded from previous releases.
 
 |Name|Instrument|
 |--|--|
@@ -33,24 +34,23 @@ Virtual piano that you can play with just PC keyboard.
 
 
 ## Development
-Since this is just static HTML, I recommend to run on a server (see issues)
+Since this is just static HTML, I recommend to deploy it on a server (see issues #1)
 
-### Windows
-- Run `git clone https://github.com/custap80/instr`
-- Open `serve.exe` then visit `localhost:8080` on browser
-
-### Linux (or any platform)
-- Run `git clone https://github.com/custap80/instr`
-- `cd instr`
-- Install python `sudo apt install python3`
-- Start local server `python3 -m http.server 8080`
-- Finally visit `localhost:8080`
+- For windows, just download this repository, open `serve.exe` and then visit `localhost:8080` on browser
+- For linux, use python3 built-in `http.server` or whatever http-server app you prefer
 
 
 ## Issues
-- Samplers (not synths) may cause CORS, if HTML opened directly.
-- This may use heavy resources, especially on reverb.
-- Shift key doesn't work on Firefox. Test keyboard from [toptal keycode](https://www.toptal.com/developers/keycode) if it works
+1. Never try to open HTML file directly (for samplers-only) it will be blocked by CORS.
+2. Instr will use heavy resources, especially on reverb.
+3. Shift key doesn't work on Firefox sometimes. Test keyboard from [toptal keycode](https://www.toptal.com/developers/keycode) if it works
+4. Most major browsers starting from around v110 above, they consume more resources than it's predecessor, especially on low-end devices. If you have such device, try at least chromium v85 or v80. They should still have decent features, also lightweight.
+
+### Chromium binaries (optional)
+> This chromium has no installation. They will create a new profile. But if you have deleted chromium, the profile/history/logins still remains on chromium data folder. You need to manually remove them
+- chromium windows x86 : [v85.0.4183.121](https://github.com/macchrome/winchrome/releases/download/v85.0.4183.121-r782793-Win64/Ungoogled-Chromium-85.0.4183.121-1_Win32.7z)
+- chromium windows x86 : [v80.0.3987.163](https://github.com/macchrome/winchrome/releases/download/v80.0.3987.163-r722274-Win64/Ungoogled-Chromium-80.0.3987.163-Win32.7z)
+- chromium linux x64 : [v85.0.4183.121](https://github.com/macchrome/linchrome/releases/download/v85.0.4183.121-r782793-portable-ungoogled-Lin64/ungoogled-chromium_85.0.4183.121_1.vaapi_linux.tar.xz)
 
 
 ### Plans
@@ -61,12 +61,9 @@ Since this is just static HTML, I recommend to run on a server (see issues)
 - [ ] Full screen piano on mobile devices (seems to be changed)
 
 
-### Notes
-- No live notes display for MIDI keyboard. It would cause lags, if its enabled.
-- MIDI velocity is not yet implemented, it needs to capture MIDI events
-
-
 ## References
-- See `SOURCES` file for instrument sources
+- See `SOURCES` file for list instrument sources
 - [Tone.js](https://github.com/Tonejs/Tone.js)
 - [Simple Server](https://github.com/syntaqx/serve)
+- [Chromium windows](https://github.com/macchrome/winchrome)
+- [Chromium linux](https://github.com/macchrome/linchrome)

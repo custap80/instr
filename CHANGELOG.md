@@ -1,4 +1,10 @@
 
+### v1.20b
+- Added : Memories
+- Changed : Set `lookAhead` back to `0` to reduce latencies, see README issue #4 for more info
+
+
+
 ### v1.16
 - Added : Fog piano
 

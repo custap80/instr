@@ -1,4 +1,4 @@
-// Octave, ADSR, Mouse mapping
+// Octave, ADSR, Mouse mapping, Keyboard mapping
 
 
 // there is no built-in octave control in Tone.js
@@ -115,3 +115,53 @@ function mouseMap(instrument) {
 }
 
 
+
+// Keyboard mapping
+
+// Note on
+var keysPressed = [];
+var noKey=0;
+let keybFin=false;
+function keyboardMapping(instrument) {
+	if (keybFin==true){return;}
+	keybFin=true;
+
+	window.addEventListener("keydown", e => {
+		let keyVal = e.code;
+
+		// prevent repeated keys when hold
+		if (e.repeat || !(keyboardMap[keyVal])) { return; }
+		var i = keysPressed.length;
+		while(i--) {
+			if(keysPressed[i]==keyVal) {
+				return false;	
+		    }
+		} keysPressed.push(keyVal);
+
+		try {
+			attackSmp(instrument, keyboardMap[keyVal]);
+			noKey=0;
+			document.getElementById(keyVal).classList.add("keypress");
+		} catch(err) {
+			noKey=1;
+		}
+		// console.log('Online : '+keysPressed);
+	});
+
+
+	window.addEventListener("keyup", e => {
+		let keyVal = e.code;
+
+		if (noKey==1 || !(keyboardMap[keyVal])) { return; }
+		var j = keysPressed.length;
+		while(j--) {
+			if(keysPressed[j]==keyVal) {
+				keysPressed.splice(j, 1);
+			}
+		}
+
+		releaseSmp(instrument, keyboardMap[keyVal]);
+		document.getElementById(keyVal).classList.remove("keypress");
+		// console.log('Online : '+keysPressed);
+	});
+}

@@ -34,7 +34,7 @@
 
 		const stereoWide = new Tone.StereoWidener({
 			width: 1,
-			wet: 0.65,
+			wet: 0.75,
 		});
 
 
@@ -164,60 +164,9 @@
 	<script type="text/javascript">
 		showPianoKeys(sampler);
 		mouseMap(sampler);
+		keyboardMapping(sampler);
 
 
-
-		// Note on
-		var keysPressed = [];
-		var noKey=0;
-		window.addEventListener("keydown", e => {
-			let keyVal = e.code;
-
-			// give !(keyboardMap[keyVal]) because different error, especially synth
-			if (e.repeat || !(keyboardMap[keyVal])) { return; }
-
-			// prevent repeated keys when hold
-			var i = keysPressed.length;
-			while(i--) {
-				if(keysPressed[i]==keyVal) {
-					return false;	
-			    }
-			}
-			keysPressed.push(keyVal);
-
-			try {
-				attackSmp(sampler, keyboardMap[keyVal]);
-				noKey=0;
-
-				document.getElementById(keyVal).classList.add("keypress");
-			} catch(err) {
-				noKey=1;
-			}
-			// console.log('Online : '+keysPressed);
-		});
-
-
-
-
-		// Note off
-		window.addEventListener("keyup", e => {
-			let keyVal = e.code;
-
-			// give !(keyboardMap[keyVal]) because different error, especially synth
-			if (noKey==1 || !(keyboardMap[keyVal])) { return; }
-
-			var j = keysPressed.length;
-			while(j--) {
-				if(keysPressed[j]==keyVal) {
-					keysPressed.splice(j, 1);
-				}
-			}
-
-			releaseSmp(sampler, keyboardMap[keyVal]);
-			// console.log('Online : '+keysPressed);
-
-			document.getElementById(keyVal).classList.remove("keypress");
-		});
 	</script>
 </body>
 </html>

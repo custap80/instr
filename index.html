@@ -5,24 +5,44 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Instruments</title>
-	<link rel="stylesheet" type="text/css" href="unused/inst.css">
+	<link rel="stylesheet" type="text/css" href="ins.css">
 </head>
 <body>
 	<div class="content">
 		<div class="wrapper">
 			<div class="links">
-				<a href="instruments/softpiano.html" class="button">Soft Piano</a>
-				<a href="instruments/autograph.html" class="button">Autograph Piano</a>
-				<a href="instruments/decentpiano.html" class="button">Decent Piano</a>
-				<a href="instruments/maripiano.html" class="button">Mari's Piano</a>
-				<a href="instruments/fogpiano.html" class="button">Fog Piano</a>
-				<a href="instruments/octavedbell.html" class="button">Octaved Bells</a>
-				<a href="instruments/memories.html" class="button">Memories</a>
-				<a href="instruments/square.html" class="button">Square tone</a>
-				<a href="unused" class="button-disabled">View Deprecated</a>
+				<button class="button dw dw-fx" onclick="expShow()">Experimental ⯆</button>
+				<div class="collapse">
+					<a href="instruments/realpiano.html" class="button focus dw-sub dw-fx">Real Piano</a>
+				</div>
+				<a href="instruments/decentpiano.html" class="button b-fx">Decent Piano</a>
+				<a href="instruments/maripiano.html" class="button b-fx">Mari's Piano</a>
+				<a href="instruments/fogpiano.html" class="button b-fx">Fog Piano</a>
+				<a href="instruments/octavedbell.html" class="button b-fx">Octaved Bells</a>
+				<a href="instruments/memories.html" class="button b-fx">Memories</a>
+				<a href="instruments/square.html" class="button b-fx">Square tone</a>
+				<!-- <a href="unused" class="button-disabled">Deprecated</a> -->
 				<small>Game reference</small>
 			</div>
 		</div>
 	</div>
+
+	<script>
+		let colHeight = document.querySelector('.collapse').offsetHeight;
+
+		let _expshow=0;
+		function expShow() {
+			let z = document.querySelector(".collapse");
+			if (_expshow == 0) {
+				z.style.height = colHeight+'px';
+				z.style.paddingBottom = '.4rem';
+				_expshow=1;
+			} else {
+				z.style.height = 0;
+				z.style.paddingBottom = 0;
+				_expshow=0;
+			}
+		}expShow();expShow();
+	</script>
 </body>
 </html>

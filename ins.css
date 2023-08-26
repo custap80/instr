@@ -1,0 +1,89 @@
+body {
+	background: rgb(50 50 50);
+	font-family: arial;
+	-ms-overflow-style: none;
+}
+body::-webkit-scrollbar {
+	display: none;
+	width: 0 !important;
+}
+html{scrollbar-width: none;}
+
+.wrapper {
+	box-shadow: 4px 10px 15px -3px #686868;
+	background: white;
+	border-radius: 5px;
+	padding: 1rem;
+	max-width: 20rem;
+	margin: 5rem auto;
+}
+.content {
+	margin: 0 1rem;
+}
+.button {
+	padding: 0.7rem;
+	background-color: rgb(220 220 220);
+	text-decoration: none;
+	color: black;
+	border-radius: 2px;
+	transition: 100ms;
+	margin: 0.2rem 0;
+	font-size: 1rem;
+	border: none;
+	cursor: pointer;
+}
+.b-fx:hover {
+	background: rgb(120 120 120);
+	color: white;
+}
+
+.b-fx:focus{
+	background: rgb(90 90 90);
+	color: white;
+}
+
+.button-disabled {
+	padding: 0.7rem;
+	background-color: rgb(245 245 245);
+	text-decoration: none;
+	color: rgb(140 140 140);
+	border-radius: 2px;
+	transition:100ms;
+	margin: 0.2rem 0;
+}
+.links {
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+}
+small {
+	font-size:xx-small;
+	margin-top:1rem;
+}
+
+
+
+.collapse {
+	display: flex;
+	flex-direction: column;
+	height: auto;
+	padding: 0 .3rem;
+	transition: 200ms;
+	overflow: hidden;
+}
+
+.dw {
+	width: 100%;
+	background-color: rgb(217, 194, 242);
+}
+
+.dw-fx:hover {
+	background: rgb(162, 102, 223);
+	color: white;
+}
+.dw-fx:active{
+	background: rgb(139, 82, 198);
+	color: white;
+}
+
+.dw-sub {background-color: rgb(202, 169, 230);}

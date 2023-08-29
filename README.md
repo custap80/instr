@@ -13,7 +13,9 @@ Virtual piano that you can play with a PC keyboard.
 
 |Name|Instrument|Samples amount|
 |--|--|--|
-|Real piano|Steinway D-274|~ 3MB|
+|Piano C|Yamaha Grand|~ 3MB|
+|Piano D|Steinway Grand|~ 2MB|
+|Flutes|Long Flute 7s|~ 2MB|
 |Decent piano|Light piano|~ 4MB|
 |Mari's piano|Piano used in mari's theme|_(oneshot)_|
 |Fog piano|Muted soft piano (bass)|~ 1MB|

@@ -11,7 +11,7 @@
 	<script>window.Tone || document.write('<script src="../scripts/Tone.js"><\/script>')</script>
 	<script src="../scripts/bindings.js"></script>
 	<script>
-		bindingOct0();
+		bindingOctCom();
 
 
 
@@ -75,15 +75,20 @@
 					<button onclick="playSample(sampler, 'C5')">C5</button>
 					<button onclick="playSample(sampler, 'E5')">E5</button>
 					<button onclick="playSample(sampler, 'G5')">G5</button>
+					<button onclick="sampler.releaseAll();">Release all sound!</button>
 					<span id="loaded">Loading bells...</span>
+				</div>
+				<div>
+					<button onclick="keyboardSwitch()" id="hideKeyboard">Hide Keyboard</button>
+					<button onclick="pianoSwitch()" id="hidePiano">Hide Piano</button>
 				</div>
 			</div>
 			<div class="tests2">
 				<div class="item">
 					Octave : &nbsp;
-					<button onclick="octaveDown(1)">Down</button>
+					<button onclick="octaveDown(0)">Down</button>
 					<span class="displays" id="octaveMsg">0</span>
-					<button onclick="octaveUp(2)">Up</button>
+					<button onclick="octaveUp(1)">Up</button>
 				</div>
 				<div class="item">
 					Volume &nbsp;&nbsp;

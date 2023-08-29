@@ -1,3 +1,12 @@
+### v1.29b
+- Added : Flutes
+- Added : Piano D
+- Added : You can set custom keyboard mapping by concat `keyboardMap` with json format
+- Added : Hide/show piano toggle
+- Changed : Rename real piano to Piano C
+- Changed : Volume rebalance
+- Changed : Remove unused keymapping
+
 ### v1.23b
 - Added : Real piano
 - Changed : Removing all deprecated instruments : Autograph, Soft piano, and most synth (except Square wave)

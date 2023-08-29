@@ -7,15 +7,21 @@ window.addEventListener('keydown', function(e) {
 Tone.context.lookAhead = 0;
 
 var keyboardMap;
-var keyboardOct1;
 const notes = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
-const noteNums = [1,2,3,4,5,6,7,8,9];
+const noteOct = [1,2,3,4,5,6,7,8,9];
 let octNow = 0;
 let pianoMode = 0;
 
-// key mapping
-function bindingOct0() {
+// Notes:
+// - [Tab] key is middle C4
+// - I'm adding [PageUp] key as secondary C6 optionally
+
+
+// Combined mode, default
+function bindingOctCom() {
 	octNow=0;
+
+	// Top row
 	keyboardMap = {
 		"Tab":"C4",
 		"Digit1":"C#4",
@@ -41,10 +47,11 @@ function bindingOct0() {
 		"BracketRight":"A5",
 		"Backspace":"A#5",
 		"Backslash":"B5",
+		"PageUp":"C6",
 	};
 
-	// Add another keyboard bindings
-	keyboardOct1 = {
+	// Bottom row
+	let keyboardMap2 = {
 		"CapsLock":"D#3",
 		"ShiftLeft":"E3",
 		"KeyZ":"F3",
@@ -68,73 +75,12 @@ function bindingOct0() {
 		"ShiftRight":"B4",
 	};
 
-	Object.assign(keyboardMap, keyboardOct1);
+	Object.assign(keyboardMap, keyboardMap2);
 }
 
 
-
-
-// key mapping compatibility reason
-function bindingOct1() {
-	octNow=1;
-	keyboardMap = {
-		"Tab":"C5",
-		"Digit1":"C#5",
-		"KeyQ":"D5",
-		"Digit2":"D#5",
-		"KeyW":"E5",
-		"KeyE":"F5",
-		"Digit4":"F#5",
-		"KeyR":"G5",
-		"Digit5":"G#5",
-		"KeyT":"A5",
-		"Digit6":"A#5",
-		"KeyY":"B5",
-		"KeyU":"C6",
-		"Digit8":"C#6",
-		"KeyI":"D6",
-		"Digit9":"D#6",
-		"KeyO":"E6",
-		"KeyP":"F6",
-		"Minus":"F#6",
-		"BracketLeft":"G6",
-		"Equal":"G#6",
-		"BracketRight":"A6",
-		"Backspace":"A#6",
-		"Backslash":"B6",
-	};
-
-	// Add another keyboard bindings
-	keyboardOct1 = {
-		"CapsLock":"D#4",
-		"ShiftLeft":"E4",
-		"KeyZ":"F4",
-		"KeyS":"F#4",
-		"KeyX":"G4",
-		"KeyD":"G#4",
-		"KeyC":"A4",
-		"KeyF":"A#4",
-		"KeyV":"B4",
-		"KeyB":"C5",
-		"KeyH":"C#5",
-		"KeyN":"D5",
-		"KeyJ":"D#5",
-		"KeyM":"E5",
-		"Comma":"F5",
-		"KeyL":"F#5",
-		"Period":"G5",
-		"Semicolon":"G#5",
-		"Slash":"A5",
-		"Quote":"A#5",
-		"ShiftRight":"B5",
-	};
-
-	Object.assign(keyboardMap, keyboardOct1);
-}
-
-
-// another binding
-function bindingOct0type1() {
+// Separated mode
+function bindingOctSep() {
 	octNow=0;
 	keyboardMap = {
 		"Tab":"C4",
@@ -161,10 +107,10 @@ function bindingOct0type1() {
 		"BracketRight":"A5",
 		"Backspace":"A#5",
 		"Backslash":"B5",
+		"PageUp":"C6",
 	};
 
-	// Add another keyboard bindings
-	keyboardOct1 = {
+	let keyboardMap2 = {
 		"CapsLock":"D#2",
 		"ShiftLeft":"E2",
 		"KeyZ":"F2",
@@ -188,18 +134,18 @@ function bindingOct0type1() {
 		"ShiftRight":"B3",
 	};
 
-	Object.assign(keyboardMap, keyboardOct1);
+	Object.assign(keyboardMap, keyboardMap2);
 }
 
 
 function changePianoMode() {
 	if (pianoMode == 0) {
-		bindingOct0type1();
+		bindingOctSep();
 		octNow=0;
 		pianoMode=1;
 		document.getElementById('pianoModes').innerHTML = "Separated";
 	} else if (pianoMode == 1) {
-		bindingOct0();
+		bindingOctCom();
 		octNow=0;
 		pianoMode=0;
 		document.getElementById('pianoModes').innerHTML = "Combined";

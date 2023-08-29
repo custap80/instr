@@ -4,14 +4,14 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Piano #4</title>
+	<title>Piano C</title>
 	<link rel="stylesheet" type="text/css" href="../scripts/keyboard.css">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.slim.min.js" integrity="sha512-5NqgLBAYtvRsyAzAvEBWhaW+NoB+vARl6QiA02AFMhCWvPpi7RWResDcTGYvQtzsHVCfiUhwvsijP+3ixUk1xw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script src="https://unpkg.com/tone"></script>
 	<script>window.Tone || document.write('<script src="../scripts/Tone.js"><\/script>')</script>
 	<script src="../scripts/bindings.js"></script>
 	<script>
-		bindingOct0();
+		bindingOctCom();
 
 
 
@@ -52,7 +52,7 @@
 			volume: -15,
 			release: 11,
 			releaseCurve: [1, 0.5,0.2,0.1, 0],
-			baseUrl: "samples/realpiano/",
+			baseUrl: "samples/pianoc/",
 		});
 
 		const reverb = new Tone.Reverb({
@@ -83,7 +83,12 @@
 					<button onclick="playSample(sampler, 'C5')">C5</button>
 					<button onclick="playSample(sampler, 'E5')">E5</button>
 					<button onclick="playSample(sampler, 'G5')">G5</button>
+					<button onclick="sampler.releaseAll();">Release all sound!</button>
 					<span id="loaded">Loading piano...</span>
+				</div>
+				<div>
+					<button onclick="keyboardSwitch()" id="hideKeyboard">Hide Keyboard</button>
+					<button onclick="pianoSwitch()" id="hidePiano">Hide Piano</button>
 				</div>
 			</div>
 			<div class="tests2">
@@ -95,7 +100,7 @@
 				</div>
 				<div class="item">
 					Volume &nbsp;&nbsp;
-					<input class="fxvol" type="range" id="volumeOut" min="-250" max="100" value="-230">
+					<input class="fxvol" type="range" id="volumeOut" min="-25" max="10" value="-23">
 					<span class="displays1" id="volumeOutDis"></span>dB
 				</div>
 				<div class="item">

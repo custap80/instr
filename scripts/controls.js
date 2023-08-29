@@ -1,4 +1,4 @@
-// Octave, ADSR, Mouse mapping, Keyboard mapping
+// Octave, ADSR, Mouse mapping, Keyboard mapping, Display control
 
 
 // there is no built-in octave control in Tone.js
@@ -11,9 +11,9 @@ function octaveUp(limit=1) {
 
 	for (const prop in keyboardMap) {
 		for (var i=0; i<notes.length; i++) {
-			for (var j=0; j<noteNums.length; j++) {
-				if (notes[i]+noteNums[j] === keyboardMap[prop]) {
-					let resultn = notes[i]+(noteNums[j]+1);
+			for (var j=0; j<noteOct.length; j++) {
+				if (notes[i]+noteOct[j] === keyboardMap[prop]) {
+					let resultn = notes[i]+(noteOct[j]+1);
 					keyboardTemp[prop] = resultn;
 				}
 			}
@@ -33,9 +33,9 @@ function octaveDown(limit=1) {
 
 	for (const prop in keyboardMap) {
 		for (var i=notes.length; i>=0; i--) {
-			for (var j=noteNums.length; j>=0; j--) {
-				if (notes[i]+noteNums[j] === keyboardMap[prop]) {
-					let resultn = notes[i]+(noteNums[j]-1);
+			for (var j=noteOct.length; j>=0; j--) {
+				if (notes[i]+noteOct[j] === keyboardMap[prop]) {
+					let resultn = notes[i]+(noteOct[j]-1);
 					keyboardTemp[prop] = resultn;
 				}
 			}
@@ -52,6 +52,7 @@ function zeroOct() {
 	octNow=0;
 	document.getElementById('octaveMsg').innerHTML = octNow;
 }
+
 
 
 
@@ -78,9 +79,11 @@ function releaseSmp(instrument, noteName) {
 
 
 
+
 // Mouse mapping
 let mouseHold = false;
 let _mouseNote;
+let invisibleKeys=[];
 // get property-name only from object
 const keyObj = Object.keys(keyboardMap);
 function mouseMap(instrument) {
@@ -88,22 +91,28 @@ function mouseMap(instrument) {
 		mouseHold = true;
 	});
 	keyObj.forEach((keyName, keyNote) => {
-		// first time note on
-		document.getElementById(keyName).addEventListener("mousedown", () => {
-			attackSmp(instrument, keyboardMap[keyName]);
-			_mouseNote = keyboardMap[keyName];
-		});
-		
-		// when mouse is dragged, do note on and off definitely
-		document.getElementById(keyName).addEventListener("mouseenter", () => {
-			if (mouseHold) {
+		try {
+			// first time note on
+			document.getElementById(keyName).addEventListener("mousedown", () => {
 				attackSmp(instrument, keyboardMap[keyName]);
 				_mouseNote = keyboardMap[keyName];
-			}
-		});
-		document.getElementById(keyName).addEventListener("mouseleave", () => {
-			releaseSmp(instrument, keyboardMap[keyName]);
-		});
+			});
+			
+			// when mouse is dragged, do note on and off definitely
+			document.getElementById(keyName).addEventListener("mouseenter", () => {
+				if (mouseHold) {
+					attackSmp(instrument, keyboardMap[keyName]);
+					_mouseNote = keyboardMap[keyName];
+				}
+			});
+			document.getElementById(keyName).addEventListener("mouseleave", () => {
+				releaseSmp(instrument, keyboardMap[keyName]);
+			});
+		} catch(e) {
+			// Invisible keys
+			console.log("key : ["+keyName+"] invisible");
+			invisibleKeys.push(keyName);
+		}
 	});
 	document.getElementById('keyBase').addEventListener('mouseup', () => {
 		mouseHold = false;
@@ -116,15 +125,15 @@ function mouseMap(instrument) {
 
 
 
+
 // Keyboard mapping
 
-// Note on
 var keysPressed = [];
 var noKey=0;
 let keybFin=false;
 function keyboardMapping(instrument) {
-	if (keybFin==true){return;}
-	keybFin=true;
+	// if (keybFin==true){return;}
+	// keybFin=true;
 
 	window.addEventListener("keydown", e => {
 		let keyVal = e.code;
@@ -141,7 +150,10 @@ function keyboardMapping(instrument) {
 		try {
 			attackSmp(instrument, keyboardMap[keyVal]);
 			noKey=0;
-			document.getElementById(keyVal).classList.add("keypress");
+
+			if (!invisibleKeys.includes(keyVal)) {
+				document.getElementById(keyVal).classList.add("keypress");
+			}
 		} catch(err) {
 			noKey=1;
 		}
@@ -152,6 +164,7 @@ function keyboardMapping(instrument) {
 	window.addEventListener("keyup", e => {
 		let keyVal = e.code;
 
+		// Various error prevention
 		if (noKey==1 || !(keyboardMap[keyVal])) { return; }
 		var j = keysPressed.length;
 		while(j--) {
@@ -161,7 +174,42 @@ function keyboardMapping(instrument) {
 		}
 
 		releaseSmp(instrument, keyboardMap[keyVal]);
-		document.getElementById(keyVal).classList.remove("keypress");
+
+		if (!invisibleKeys.includes(keyVal)) {
+			document.getElementById(keyVal).classList.remove("keypress");
+		}
 		// console.log('Online : '+keysPressed);
 	});
+}
+
+
+
+
+// Display control
+let hidek = false;
+let hidep = false;
+function keyboardSwitch() {
+	let element = document.getElementById('hideKeyboard');
+	if (hidek) {
+		element.innerHTML = "Hide Keyboard";
+		document.getElementById('keyBase').classList.remove("d-none");
+		hidek = false;
+	} else {
+		element.innerHTML = "Show Keyboard";
+		document.getElementById('keyBase').classList.add("d-none");
+		hidek = true;
+	}
+}
+
+function pianoSwitch() {
+	let element = document.getElementById('hidePiano');
+	if (hidep) {
+		element.innerHTML = "Hide Piano";
+		document.getElementById('content').classList.remove("d-none");
+		hidep = false;
+	} else {
+		element.innerHTML = "Show Piano";
+		document.getElementById('content').classList.add("d-none");
+		hidep = true;
+	}
 }

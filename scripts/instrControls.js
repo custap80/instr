@@ -6,11 +6,11 @@ try {
 lineAt=1;
 let volSlider = document.getElementById("volumeOut");
 let volOut = document.getElementById("volumeOutDis");
-volOut.innerHTML = volSlider.value/10;
-sampler.volume.value = volSlider.value/10;
+volOut.innerHTML = volSlider.value;
+sampler.volume.value = volSlider.value;
 
 volSlider.oninput = function() {
-	let sliderRes = volSlider.value/10;
+	let sliderRes = volSlider.value;
 	volOut.innerHTML = sliderRes;
 	sampler.volume.value = sliderRes;
 }

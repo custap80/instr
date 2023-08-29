@@ -74,7 +74,8 @@ small {
 
 .dw {
 	width: 100%;
-	background-color: rgb(217, 194, 242);
+	background-color: rgb(222, 202, 242);
+	color: rgb(93, 52, 142);
 }
 
 .dw-fx:hover {
@@ -86,4 +87,11 @@ small {
 	color: white;
 }
 
-.dw-sub {background-color: rgb(202, 169, 230);}
+.dw-sub {
+	background-color: rgb(202, 169, 230);
+	color: rgb(48, 0, 106);
+}
+
+.piano {background-color: rgb(255, 201, 201);}
+.bell {background-color: rgb(198, 212, 247);}
+.other {background-color: rgb(184, 236, 170);}

@@ -4,47 +4,78 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>A square tone</title>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.slim.min.js" integrity="sha512-5NqgLBAYtvRsyAzAvEBWhaW+NoB+vARl6QiA02AFMhCWvPpi7RWResDcTGYvQtzsHVCfiUhwvsijP+3ixUk1xw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<title>Piano D</title>
 	<link rel="stylesheet" type="text/css" href="../scripts/keyboard.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.slim.min.js" integrity="sha512-5NqgLBAYtvRsyAzAvEBWhaW+NoB+vARl6QiA02AFMhCWvPpi7RWResDcTGYvQtzsHVCfiUhwvsijP+3ixUk1xw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script src="https://unpkg.com/tone"></script>
+	<script>window.Tone || document.write('<script src="../scripts/Tone.js"><\/script>')</script>
 	<script src="../scripts/bindings.js"></script>
-	<script src="../scripts/example.js"></script>
 	<script>
 		bindingOctCom();
 
 
 
-		// make synth
-		const synth = new Tone.PolySynth();
-		synth.set({
-			volume: -31,
-			detune: 15.5,
-			oscillator: {
-				type: "square",
+
+		// make instrument from samples
+		const sampler = new Tone.Sampler({
+			urls: {
+				"A#3": "A-3.mp3",
+				"A#5": "A-5.mp3",
+				"A4": "A4.mp3",
+				"A5": "A5.mp3",
+				"B4": "B4.mp3",
+				"B6": "B6.mp3",
+				"C1": "C1.mp3",
+				"C2": "C2.mp3",
+				"C3": "C3.mp3",
+				"C4": "C4.mp3",
+				"C5": "C5.mp3",
+				"C6": "C6.mp3",
+				"C7": "C7.mp3",
+				"C8": "C8.mp3",
+				"D#5": "D-5.mp3",
+				"D#6": "D-6.mp3",
+				"D3": "D3.mp3",
+				"D5": "D5.mp3",
+				"E1": "E1.mp3",
+				"E2": "E2.mp3",
+				"E3": "E3.mp3",
+				"E4": "E4.mp3",
+				"E5": "E5.mp3",
+				"E7": "E7.mp3",
+				"F#3": "F-3.mp3",
+				"F#4": "F-4.mp3",
+				"F#6": "F-6.mp3",
+				"F5": "F5.mp3",
+				"G#1": "G-1.mp3",
+				"G#2": "G-2.mp3",
+				"G#3": "G-3.mp3",
+				"G#7": "G-7.mp3",
+				"G5": "G5.mp3",
 			},
-			envelope: {
-				attack: 0,
-				decay: 15,
-				sustain: 0,
-				release: 0.3,
-				releaseCurve: [1, 0.5,0.2,0.1, 0],
-			},
+			volume: -15,
+			release: 11,
+			releaseCurve: [1, 0.5,0.2,0.1, 0],
+			baseUrl: "samples/pianod/",
 		});
 
 		const reverb = new Tone.Reverb({
 			decay: 2,
 			wet: 0.3,
 		});
-		synth.chain(reverb, Tone.Destination);
 
-		function clearKeypress() {
-			// clear all .keypress classes
-			let allNotes = document.querySelectorAll('.key');
-			for (let i=0; i<allNotes.length; i++) {
-				allNotes[i].classList.remove('keypress');
+		sampler.chain(reverb, Tone.Destination);
+
+
+		// Check loop if piano loaded every 1sec, if yes stop the interval
+		const loadInterval = setInterval( () => {
+			if (sampler.loaded) {
+				document.getElementById('loaded').innerHTML = "Loaded!";
+
+				// stop the interval
+				clearInterval(loadInterval);
 			}
-		}
+		}, 1000);
 	</script>
 </head>
 <body>
@@ -53,13 +84,11 @@
 			<div class="tests">
 				<div>
 					<span>Test buttons (sustained) : </span>
-					<button onclick="playSample(synth, 'C5')">C5</button>
-					<button onclick="playSample(synth, 'E5')">E5</button>
-					<button onclick="playSample(synth, 'G5')">G5</button>
-					<button onclick="synth.releaseAll();">Release all sound!</button>
-					<button onclick="playWhitespace()" id="wsbtn">Play Whitespace!</button>
-					<button onclick="loopWhitespace()" id="wsbtnloop">Loop Whitespace</button>
-					<span id="message"></span>
+					<button onclick="playSample(sampler, 'C5')">C5</button>
+					<button onclick="playSample(sampler, 'E5')">E5</button>
+					<button onclick="playSample(sampler, 'G5')">G5</button>
+					<button onclick="sampler.releaseAll();">Release all sound!</button>
+					<span id="loaded">Loading piano...</span>
 				</div>
 				<div>
 					<button onclick="keyboardSwitch()" id="hideKeyboard">Hide Keyboard</button>
@@ -75,8 +104,18 @@
 				</div>
 				<div class="item">
 					Volume &nbsp;&nbsp;
-					<input class="fxvol" type="range" id="volumeOut" min="-30" max="0" value="-23">
+					<input class="fxvol" type="range" id="volumeOut" min="-25" max="10" value="-23">
 					<span class="displays1" id="volumeOutDis"></span>dB
+				</div>
+				<div class="item">
+					Reverb vol &nbsp;&nbsp;
+					<input class="fxrev" type="range" id="reverbWet" min="0" max="5" value="3">
+					<span class="displays1" id="reverbWetDis"></span>%
+				</div>
+				<div class="item">
+					Reverb time &nbsp;&nbsp;
+					<input class="fxrev" type="range" id="reverbTime" min="1" max="15" value="5">
+					<span class="displays1" id="reverbTimeDis"></span>s
 				</div>
 			</div>
 			<div class="p-wrapper">
@@ -140,36 +179,26 @@
 			<div id="content"></div>
 
 			<div class="footer">
-				<button class="m-auto" onclick="changePianoMode();octaveUp();">Keyboard mode : &nbsp;<span id="pianoModes">Combined</span></button>
+				<button class="m-auto" onclick="changePianoMode()">Keyboard mode : &nbsp;<span id="pianoModes">Combined</span></button>
 			</div>
 
 			<!-- <div class="text-banner">
 				<small>Keyboard layout by freefrontend.com</small>
 			</div> -->
 		</div>
+		</div>
 	</div>
 
 	<script src="../scripts/controls.js"></script>
+	<script src="../scripts/instrControls.js"></script>
 	<script src="../scripts/toneui.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../scripts/pianoMon.js"></script>
 	<script type="text/javascript">
-		showPianoKeys(synth);
-		mouseMap(synth);
-		octaveUp();
-		keyboardMapping(synth);
+		showPianoKeys(sampler);
+		mouseMap(sampler);
+		keyboardMapping(sampler);
 
 
-		let volSlider = document.getElementById("volumeOut");
-		let volOut = document.getElementById("volumeOutDis");
-		volOut.innerHTML = volSlider.value;
-
-		volSlider.oninput = function() {
-			let sliderRes = volSlider.value;
-			volOut.innerHTML = sliderRes;
-			synth.set({
-				volume: sliderRes,
-			});
-		}
 	</script>
 </body>
 </html>

@@ -11,7 +11,7 @@
 	<script>window.Tone || document.write('<script src="../scripts/Tone.js"><\/script>')</script>
 	<script src="../scripts/bindings.js"></script>
 	<script>
-		bindingOct0();
+		bindingOctCom();
 
 
 
@@ -72,7 +72,12 @@
 					<button onclick="playSample(sampler, 'C5')">C5</button>
 					<button onclick="playSample(sampler, 'E5')">E5</button>
 					<button onclick="playSample(sampler, 'G5')">G5</button>
+					<button onclick="sampler.releaseAll();">Release all sound!</button>
 					<span id="loaded">Loading piano...</span>
+				</div>
+				<div>
+					<button onclick="keyboardSwitch()" id="hideKeyboard">Hide Keyboard</button>
+					<button onclick="pianoSwitch()" id="hidePiano">Hide Piano</button>
 				</div>
 			</div>
 			<div class="tests2">
@@ -84,7 +89,7 @@
 				</div>
 				<div class="item">
 					Volume &nbsp;&nbsp;
-					<input class="fxvol" type="range" id="volumeOut" min="-300" max="0" value="-230">
+					<input class="fxvol" type="range" id="volumeOut" min="-30" max="0" value="-23">
 					<span class="displays1" id="volumeOutDis"></span>dB
 				</div>
 				<div class="item">

@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>A square tone</title>
+	<title>A synth</title>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.slim.min.js" integrity="sha512-5NqgLBAYtvRsyAzAvEBWhaW+NoB+vARl6QiA02AFMhCWvPpi7RWResDcTGYvQtzsHVCfiUhwvsijP+3ixUk1xw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<link rel="stylesheet" type="text/css" href="../scripts/keyboard.css">
 	<script src="https://unpkg.com/tone"></script>
@@ -56,12 +56,18 @@
 					<button onclick="playSample(synth, 'C5')">C5</button>
 					<button onclick="playSample(synth, 'E5')">E5</button>
 					<button onclick="playSample(synth, 'G5')">G5</button>
-					<button onclick="synth.releaseAll();">Release all sound!</button>
-					<button onclick="playWhitespace()" id="wsbtn">Play Whitespace!</button>
-					<button onclick="loopWhitespace()" id="wsbtnloop">Loop Whitespace</button>
+					<button onclick="synth.releaseAll();">Release sound</button>
+					<button onclick="playWhitespace()" id="wsbtn">Play example!</button>
+					<button onclick="loopWhitespace()" id="wsbtnloop">Loop example</button>
 					<span id="message"></span>
 				</div>
 				<div>
+					<select id="wavef" class="btn-head" onchange="changetone(this)">
+						<option value="square">Square</option>
+						<option value="sine">Sine</option>
+						<option value="sawtooth">Sawtooth</option>
+						<option value="triangle">Triangle</option>
+					</select> 
 					<button onclick="keyboardSwitch()" id="hideKeyboard">Hide Keyboard</button>
 					<button onclick="pianoSwitch()" id="hidePiano">Hide Piano</button>
 				</div>
@@ -169,6 +175,14 @@
 			synth.set({
 				volume: sliderRes,
 			});
+		}
+
+		function changetone(toneName) {
+			synth.set({
+				"oscillator" : {
+					"type" : toneName.value
+				}
+			})
 		}
 	</script>
 </body>

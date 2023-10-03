@@ -54,6 +54,10 @@ small {
     justify-content: space-between;
 }
 
+.btn-head {
+	padding: .5rem;
+}
+
 .tests2 {
 	margin-bottom: 1.5rem;
 	display: flex;

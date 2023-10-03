@@ -21,7 +21,7 @@ Virtual piano that you can play on browser with a PC keyboard.
 |Fog piano|Muted soft piano (bass)|~ 1MB|
 |Octaved bell|Music box and bells|_(oneshot)_|
 |Memories|Guitaret|~ 1MB|
-|Square tone|Plain square wave|_(synth)_|
+|Synth tone|Oscillator Waveforms|_(synth)_|
 
 > Deleted instrument still can be downloaded from previous releases.
 
@@ -44,14 +44,6 @@ Since this is just static HTML, I recommend to deploy it on a server (see issues
 - chromium windows x86 : [v85.0.4183.121](https://github.com/macchrome/winchrome/releases/download/v85.0.4183.121-r782793-Win64/Ungoogled-Chromium-85.0.4183.121-1_Win32.7z)
 - chromium windows x86 : [v80.0.3987.163](https://github.com/macchrome/winchrome/releases/download/v80.0.3987.163-r722274-Win64/Ungoogled-Chromium-80.0.3987.163-Win32.7z)
 - chromium linux x64 : [v85.0.4183.121](https://github.com/macchrome/linchrome/releases/download/v85.0.4183.121-r782793-portable-ungoogled-Lin64/ungoogled-chromium_85.0.4183.121_1.vaapi_linux.tar.xz)
-
-
-### Plans
-- [ ] Migrate to JQuery
-- [x] Live note display (thanks to `Alang` for the idea)
-- [x] MIDI Support
-- [x] Touch support (not advised, piano on the bottom)
-- [ ] Full screen piano on mobile devices (seems to be changed)
 
 
 ## References

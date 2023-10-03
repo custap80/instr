@@ -1,3 +1,6 @@
+### v1.32b
+- Changed : Square tone to multiple tones (+ sine, sawtooth, triangle)
+
 ### v1.29b
 - Added : Flutes
 - Added : Piano D

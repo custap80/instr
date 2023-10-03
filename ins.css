@@ -51,6 +51,7 @@ html{scrollbar-width: none;}
 	transition:100ms;
 	margin: 0.2rem 0;
 }
+
 .links {
 	display: flex;
 	flex-direction: column;
@@ -67,7 +68,7 @@ small {
 	display: flex;
 	flex-direction: column;
 	height: auto;
-	padding: 0 .3rem;
+	padding: 0 .3rem .4rem;
 	transition: 200ms;
 	overflow: hidden;
 }
@@ -75,6 +76,7 @@ small {
 .dw {
 	width: 100%;
 	background-color: rgb(222, 202, 242);
+	fill: rgb(93, 52, 142);
 	color: rgb(93, 52, 142);
 }
 

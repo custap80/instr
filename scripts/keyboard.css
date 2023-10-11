@@ -59,10 +59,10 @@ small {
 }
 
 .tests2 {
-	margin-bottom: 1.5rem;
+	margin-bottom: .7rem;
 	display: flex;
     align-items: center;
-    gap: 0.7rem;
+    gap: .7rem;
 	justify-content: space-evenly;
 }
 
@@ -70,7 +70,7 @@ small {
 	background-color: #525252;
 	color: white;
 	padding: 0.5rem;
-	box-shadow: 3px 3px 4px 0 black;
+	box-shadow: 3px 3px 0 0 black;
 	display: flex;
 	align-items: center;
 	height: 3.5rem;
@@ -79,10 +79,16 @@ small {
 	justify-content: center;
 }
 
+.item-ex {
+	background-color: #79252c;
+	box-shadow: 3px 3px 0 0 rgb(63, 11, 11);
+}
+
 .displays,
 .displays1 {
 	width: 2rem;
 	text-align: center;
+/*	font-family: monospace;*/
 }
 
 .displays1 {
@@ -100,16 +106,29 @@ small {
 
 #octaveMsg {
     padding: 0.4rem;
-    font-family: monospace;
-    font-size: 1rem;
+/*    font-size: 1.5rem;*/
 }
 
 #capslock {
 	transition: .5s;
 }
 
+.full-scr {
+	position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 100%;
+    overflow-x: auto;
+    background-color: white;
+    text-align: center;
+    vertical-align: middle;
+    display: table-cell;
+}
+
 .footer {
-	margin: 1.5rem 0 1rem;
+	margin: 1rem 0 0;
 	justify-content: center;
 }
 
@@ -202,4 +221,8 @@ small {
 
 .d-none {
 	display: none;
+}
+
+.fixed {
+	position: fixed;
 }

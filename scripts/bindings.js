@@ -7,8 +7,9 @@ window.addEventListener('keydown', function(e) {
 Tone.context.lookAhead = 0;
 
 var keyboardMap;
-const notes = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
-const noteOct = [1,2,3,4,5,6,7,8,9];
+const notes = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"]; // 0-11
+const noteOct = [1,2,3,4,5,6,7,8,9]; // 0-8
+let pitchNow = 0;
 let octNow = 0;
 let pianoMode = 0;
 
@@ -143,12 +144,15 @@ function changePianoMode() {
 		bindingOctSep();
 		octNow=0;
 		pianoMode=1;
+		pitchNow = 0;
 		document.getElementById('pianoModes').innerHTML = "Separated";
 	} else if (pianoMode == 1) {
 		bindingOctCom();
 		octNow=0;
 		pianoMode=0;
+		pitchNow = 0;
 		document.getElementById('pianoModes').innerHTML = "Combined";
 	}
 	document.getElementById('octaveMsg').innerHTML = octNow;
+	document.getElementById('pitchMsg').innerHTML = pitchNow;
 }

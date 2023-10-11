@@ -1,4 +1,4 @@
-// Octave, ADSR, Mouse mapping, Keyboard mapping, Display control
+// Octave, Pitch, ADSR, Mouse mapping, Keyboard mapping, Display control, Mobile mode
 
 
 // there is no built-in octave control in Tone.js
@@ -12,7 +12,7 @@ function octaveUp(limit=1) {
 	for (const prop in keyboardMap) {
 		for (var i=0; i<notes.length; i++) {
 			for (var j=0; j<noteOct.length; j++) {
-				if (notes[i]+noteOct[j] === keyboardMap[prop]) {
+				if (keyboardMap[prop] === notes[i]+noteOct[j]) {
 					let resultn = notes[i]+(noteOct[j]+1);
 					keyboardTemp[prop] = resultn;
 				}
@@ -34,7 +34,7 @@ function octaveDown(limit=1) {
 	for (const prop in keyboardMap) {
 		for (var i=notes.length; i>=0; i--) {
 			for (var j=noteOct.length; j>=0; j--) {
-				if (notes[i]+noteOct[j] === keyboardMap[prop]) {
+				if (keyboardMap[prop] === notes[i]+noteOct[j]) {
 					let resultn = notes[i]+(noteOct[j]-1);
 					keyboardTemp[prop] = resultn;
 				}
@@ -51,6 +51,57 @@ function octaveDown(limit=1) {
 function zeroOct() {
 	octNow=0;
 	document.getElementById('octaveMsg').innerHTML = octNow;
+}
+
+// note pitch
+function pitchUp() {
+	if (pitchNow >= 12) {
+		return;
+	}
+	let keyboardTemp = {};
+
+	for (const prop in keyboardMap) {
+		for (var i=0; i<notes.length; i++) {
+			for (var j=0; j<noteOct.length; j++) {
+				if (keyboardMap[prop] === notes[i]+noteOct[j]) {
+					keyboardTemp[prop] = notes[i+1]+noteOct[j];
+					if (keyboardMap[prop] == "B"+noteOct[j]) {
+						keyboardTemp[prop] = "C"+noteOct[j+1];
+					}
+				}
+			}
+		}
+	}
+
+	Object.assign(keyboardMap, keyboardTemp);
+	pitchNow++;
+	document.getElementById('pitchMsg').innerHTML = pitchNow;
+	console.log("Pitch up : "+pitchNow);
+}
+
+function pitchDown() {
+	if (pitchNow <= -12) {
+		return;
+	}
+	let keyboardTemp = {};
+
+	for (const prop in keyboardMap) {
+		for (var i=0; i<notes.length; i++) {
+			for (var j=0; j<noteOct.length; j++) {
+				if (keyboardMap[prop] === notes[i]+noteOct[j]) {
+					keyboardTemp[prop] = notes[i-1]+noteOct[j];
+					if (keyboardMap[prop] == "C"+noteOct[j]) {
+						keyboardTemp[prop] = "B"+noteOct[j-1];
+					}
+				}
+			}
+		}
+	}
+
+	Object.assign(keyboardMap, keyboardTemp);
+	pitchNow--;
+	document.getElementById('pitchMsg').innerHTML = pitchNow;
+	console.log("Pitch down : "+pitchNow);
 }
 
 
@@ -211,5 +262,65 @@ function pianoSwitch() {
 		element.innerHTML = "Show Piano";
 		document.getElementById('content').classList.add("d-none");
 		hidep = true;
+	}
+}
+
+
+
+
+
+// Mobile mode
+
+let _fullScr = 0;
+function fullScr() {
+	let pianoContainer = document.querySelector('tone-piano').shadowRoot.querySelector('#container').querySelector('tone-keyboard').shadowRoot.querySelector('#container');
+	let _tonePiano = document.querySelector('tone-piano');
+	let contentSC = document.getElementById('content-scroll');
+	let contentAG = document.getElementById('content');
+	contentAG.classList.remove('d-none');
+	let pianoWidth = contentAG.offsetWidth;
+
+	if (_fullScr == 0) {
+		contentSC.style.width = screen.width+"px";
+		contentAG.classList.add("full-scr");
+		_tonePiano.style.width = pianoWidth+"px";
+		pianoContainer.style.height = (document.documentElement.clientHeight-34-50)+"px";
+		pianoContainer.style.maxHeight = "10rem";
+
+		const divDrag = document.createElement("div");
+		const textd = document.createTextNode("<- Drag ->");
+		divDrag.appendChild(textd);
+		divDrag.setAttribute('id', 'divScroll');
+		divDrag.style.width = pianoWidth+"px";
+		divDrag.style.height = "45px";
+		divDrag.style.textAlign = "center";
+		divDrag.style.verticalAlign = "bottom";
+		divDrag.style.display = "flex";
+		divDrag.style.justifyContent = "space-between";
+		divDrag.style.alignItems = "center";
+		divDrag.style.fontFamily = "monospace";
+		contentAG.insertBefore(divDrag, document.querySelector('tone-piano'));
+
+		const span = document.createElement('div');
+		divDrag.appendChild(span);
+
+		const closeMobile = document.createElement('button');
+		const textClose = document.createTextNode('Close mobile mode');
+		closeMobile.setAttribute('onclick', 'fullScr()');
+		closeMobile.appendChild(textClose);
+		divDrag.insertBefore(closeMobile, divDrag.firstChild);
+
+		document.body.classList.add('fixed');
+
+		_fullScr = 1;
+	} else {
+		contentSC.style.width = "auto";
+		_tonePiano.style.width = "auto";
+		contentAG.classList.remove("full-scr");
+		pianoContainer.removeAttribute('style');
+		document.getElementById('divScroll').remove();
+		document.body.classList.remove('fixed');
+
+		_fullScr = 0;
 	}
 }

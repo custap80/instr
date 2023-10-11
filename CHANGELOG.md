@@ -1,3 +1,8 @@
+### v1.36b
+- Added : Keyboard pitch bend feature
+- Added : Experimental MOBILE mode (focused piano)
+- Changed : Refactor layouts
+
 ### v1.32b
 - Changed : Square tone to multiple tones (+ sine, sawtooth, triangle)
 

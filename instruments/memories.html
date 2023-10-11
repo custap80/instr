@@ -79,6 +79,7 @@
 					<span id="loaded">Loading bells...</span>
 				</div>
 				<div>
+					<button onclick="fullScr()" id="fullScreen">Mobile mode</button>
 					<button onclick="keyboardSwitch()" id="hideKeyboard">Hide Keyboard</button>
 					<button onclick="pianoSwitch()" id="hidePiano">Hide Piano</button>
 				</div>
@@ -95,12 +96,20 @@
 					<input class="fxvol" type="range" id="volumeOut" min="-25" max="10" value="-23">
 					<span class="displays1" id="volumeOutDis"></span>dB
 				</div>
-				<div class="item">
+			</div>
+			<div class="tests2">
+				<div class="item item-ex">
+					Pitch : &nbsp;
+					<button onclick="pitchDown()">Down</button>
+					<span class="displays" id="pitchMsg">0</span>
+					<button onclick="pitchUp()">Up</button>
+				</div>
+				<div class="item item-ex">
 					Reverb vol &nbsp;&nbsp;
 					<input class="fxrev" type="range" id="reverbWet" min="0" max="5" value="4">
 					<span class="displays1" id="reverbWetDis"></span>%
 				</div>
-				<div class="item">
+				<div class="item item-ex">
 					Reverb time &nbsp;&nbsp;
 					<input class="fxrev" type="range" id="reverbTime" min="1" max="15" value="3">
 					<span class="displays1" id="reverbTimeDis"></span>s
@@ -164,7 +173,9 @@
 				</div>
 			</div>
 
-			<div id="content"></div>
+			<div id="content-scroll">
+				<div id="content"></div>
+			</div>
 			
 			<div class="footer">
 				<button class="m-auto" onclick="changePianoMode()">Keyboard mode : &nbsp;<span id="pianoModes">Combined</span></button>

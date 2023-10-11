@@ -62,6 +62,11 @@ small {
 	margin-top:1rem;
 }
 
+small span {
+	background-color: #79252c;
+	color: white;
+}
+
 
 
 .collapse {
@@ -95,5 +100,13 @@ small {
 }
 
 .piano {background-color: rgb(255, 201, 201);}
+.piano-fx:hover {background-color: rgb(213 124 124); color:white;}
+.piano-fx:active {background-color: rgb(159 91 91); color:white;}
+
 .bell {background-color: rgb(198, 212, 247);}
+.bell-fx:hover {background-color: rgb(113 138 195); color:white;}
+.bell-fx:active {background-color: rgb(92 109 149); color:white;}
+
 .other {background-color: rgb(184, 236, 170);}
+.other-fx:hover {background-color: rgb(122 179 108); color: white;}
+.other-fx:active {background-color: rgb(99 143 87); color: white;}

@@ -7,6 +7,8 @@ Virtual piano that you can play on browser with a PC keyboard.
 - Live note keypress
 - MIDI Support
 - Volume and reverb adjustment
+- Octave and Pitch control (not through MIDI)
+- Mobile mode (limited view, experimental)
 
 
 ## Instruments

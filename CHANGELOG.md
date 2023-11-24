@@ -1,3 +1,8 @@
+### v1.40a
+- Changed : Refactor CSS mouse mapping to JS
+- Added : Keyboard animations (heavy resources, demo stage)
+- Added : Barline indicator accessibility (keyboard map indicator)
+
 ### v1.36b
 - Added : Keyboard pitch bend feature
 - Added : Experimental MOBILE mode (focused piano)
@@ -21,7 +26,7 @@
 
 ### v1.20b
 - Added : Memories
-- Changed : Set `lookAhead` back to `0` to reduce latencies, see README issue #4 for more info
+- Changed : Set `lookAhead` back to `0` to reduce latencies, see README issues for more info
 
 ### v1.16
 - Added : Fog piano

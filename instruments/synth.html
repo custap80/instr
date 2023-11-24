@@ -67,7 +67,7 @@
 						<option value="sine">Sine</option>
 						<option value="sawtooth">Sawtooth</option>
 						<option value="triangle">Triangle</option>
-					</select> 
+					</select>
 					<button onclick="keyboardSwitch()" id="hideKeyboard">Hide Keyboard</button>
 					<button onclick="pianoSwitch()" id="hidePiano">Hide Piano</button>
 				</div>
@@ -81,8 +81,16 @@
 				</div>
 				<div class="item">
 					Volume &nbsp;&nbsp;
-					<input class="fxvol" type="range" id="volumeOut" min="-30" max="0" value="-23">
+					<input class="fxvol" type="range" id="volumeOut" min="-31" max="0" value="-31">
 					<span class="displays1" id="volumeOutDis"></span>dB
+				</div>
+			</div>
+			<div class="tests2">
+				<div class="item item-ex">
+					Pitch : &nbsp;
+					<button onclick="pitchDown()">Down</button>
+					<span class="displays" id="pitchMsg">0</span>
+					<button onclick="pitchUp()">Up</button>
 				</div>
 			</div>
 			<div class="p-wrapper">
@@ -143,7 +151,10 @@
 				</div>
 			</div>
 
-			<div id="content"></div>
+			<div id="content-scroll">
+				<div id="content"></div>
+				<div id="lineindicator"></div>
+			</div>
 
 			<div class="footer">
 				<button class="m-auto" onclick="changePianoMode();octaveUp();">Keyboard mode : &nbsp;<span id="pianoModes">Combined</span></button>

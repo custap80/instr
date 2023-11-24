@@ -155,4 +155,5 @@ function changePianoMode() {
 	}
 	document.getElementById('octaveMsg').innerHTML = octNow;
 	document.getElementById('pitchMsg').innerHTML = pitchNow;
+	barlinePiano();
 }

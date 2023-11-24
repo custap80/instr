@@ -1,4 +1,5 @@
-// Octave, Pitch, ADSR, Mouse mapping, Keyboard mapping, Display control, Mobile mode
+// Octave, Pitch, ADSR, Mouse mapping, Keyboard mapping
+// Display control, Mobile mode
 
 
 // there is no built-in octave control in Tone.js
@@ -23,6 +24,7 @@ function octaveUp(limit=1) {
 	octNow++;
 	document.getElementById('octaveMsg').innerHTML = octNow;
 	console.log("Octave up : "+octNow);
+	barlinePiano();
 }
 
 function octaveDown(limit=1) {
@@ -45,6 +47,7 @@ function octaveDown(limit=1) {
 	octNow--;
 	document.getElementById('octaveMsg').innerHTML = octNow;
 	console.log("Octave down : "+octNow);
+	barlinePiano();
 }
 
 // debug purpose
@@ -77,6 +80,7 @@ function pitchUp() {
 	pitchNow++;
 	document.getElementById('pitchMsg').innerHTML = pitchNow;
 	console.log("Pitch up : "+pitchNow);
+	barlinePiano();
 }
 
 function pitchDown() {
@@ -102,6 +106,7 @@ function pitchDown() {
 	pitchNow--;
 	document.getElementById('pitchMsg').innerHTML = pitchNow;
 	console.log("Pitch down : "+pitchNow);
+	barlinePiano();
 }
 
 
@@ -143,35 +148,63 @@ function mouseMap(instrument) {
 	});
 	keyObj.forEach((keyName, keyNote) => {
 		try {
+			let keyId = document.getElementById(keyName);
 			// first time note on
-			document.getElementById(keyName).addEventListener("mousedown", () => {
+			keyId.addEventListener("mousedown", () => {
+				keyId.classList.add("transite-0");
+				keyId.classList.add("keypress");
 				attackSmp(instrument, keyboardMap[keyName]);
 				_mouseNote = keyboardMap[keyName];
 			});
 			
 			// when mouse is dragged, do note on and off definitely
-			document.getElementById(keyName).addEventListener("mouseenter", () => {
+			keyId.addEventListener("mouseenter", () => {
 				if (mouseHold) {
+					keyId.classList.add("transite-0");
+					keyId.classList.add("keypress");
 					attackSmp(instrument, keyboardMap[keyName]);
 					_mouseNote = keyboardMap[keyName];
 				}
 			});
-			document.getElementById(keyName).addEventListener("mouseleave", () => {
+
+			keyId.addEventListener("mouseleave", () => {
+				if (mouseHold) {
+					keyId.classList.remove("keypress");
+					keyId.classList.remove("transite-0");
+					releaseSmp(instrument, keyboardMap[keyName]);
+				}
+			});
+
+			// mouse unclicked
+			keyId.addEventListener("mouseup", () => {
+				keyId.classList.remove("keypress");
+				keyId.classList.remove("transite-0");
 				releaseSmp(instrument, keyboardMap[keyName]);
 			});
 		} catch(e) {
 			// Invisible keys
-			console.log("key : ["+keyName+"] invisible");
+			console.log("key : "+keyboardMap[keyName]+" ["+keyName+"] invisible");
 			invisibleKeys.push(keyName);
 		}
 	});
-	document.getElementById('keyBase').addEventListener('mouseup', () => {
+
+	// release all samples attached on window instead of id=keyBase
+	window.addEventListener('mouseup', () => {
 		mouseHold = false;
+		// resetDisplays();
 		releaseSmp(instrument, _mouseNote);
 		// instead of releasing individual note, so kill all notes!
 		instrument.releaseAll();
 	});
 	console.log('Mouse Mapped');
+}
+
+function resetDisplays() {
+	const allKeysId = document.querySelectorAll('.key');
+	allKeysId.forEach(keys => {
+		keys.classList.remove('keypress');
+		keys.classList.remove('transite-0');
+	});
 }
 
 
@@ -203,7 +236,9 @@ function keyboardMapping(instrument) {
 			noKey=0;
 
 			if (!invisibleKeys.includes(keyVal)) {
-				document.getElementById(keyVal).classList.add("keypress");
+				let keyId = document.getElementById(keyVal);
+				keyId.classList.add("transite-0");
+				keyId.classList.add("keypress");
 			}
 		} catch(err) {
 			noKey=1;
@@ -227,7 +262,9 @@ function keyboardMapping(instrument) {
 		releaseSmp(instrument, keyboardMap[keyVal]);
 
 		if (!invisibleKeys.includes(keyVal)) {
-			document.getElementById(keyVal).classList.remove("keypress");
+			let keyId = document.getElementById(keyVal);
+			keyId.classList.remove("keypress");
+			keyId.classList.remove("transite-0");
 		}
 		// console.log('Online : '+keysPressed);
 	});

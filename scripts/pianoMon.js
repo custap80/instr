@@ -1,6 +1,6 @@
 
 
-// Map Piano Live-display
+// Map Piano Live-display, Barline piano
 
 function showPianoKeys(instrument) {
 	piano({
@@ -58,3 +58,29 @@ function removePianoDisplay(noteName) {
 		}
 	}
 }
+
+function barlinePiano() {
+	document.getElementById('lineindicator').innerHTML='';
+	// 12-107
+	let _barp = document.createDocumentFragment();
+
+	for (var j=12; j<=107; j++) {
+		let div1 = document.createElement('div');
+		div1.setAttribute("id", j);
+		_barp.appendChild(div1);
+	}
+	document.getElementById('lineindicator').appendChild(_barp);
+
+	let keymapObj = Object.values(keyboardMap);
+	let barList = document.getElementById('lineindicator').getElementsByTagName('div');
+	for (var k=0; k<barList.length; k++) {
+		for (const keyd in keyboardMap) {
+			if (Tone.Frequency(keyboardMap[keyd]).toMidi() == barList[k].id) {
+				barList[k].classList.add('p-indicator');
+			} else {
+				barList[k].classList.add('p-none');
+			}
+		}
+	}
+}
+barlinePiano();

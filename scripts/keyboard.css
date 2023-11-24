@@ -137,6 +137,7 @@ small {
 
 
 
+
 /* Keyboard layout */
 
 .keyboard-base {
@@ -164,6 +165,7 @@ small {
 	text-align: center;
 	padding-top: 15px;
 	cursor: pointer;
+	transition: 700ms;
 }
 
 .tab {
@@ -197,16 +199,37 @@ small {
 
 .key:hover {
 	background-color: rgb(245 172 75);
+	transition: 0s;
 }
 
-.keypress,
+/*.keypress,
 .keyboard-base:hover:active .key:hover{
+	background-color: rgb(241 127 28);
+	box-shadow: inset 1px 1px 0 2px rgb(25 25 25);
+}*/
+
+.keypress {
 	background-color: rgb(241 127 28);
 	box-shadow: inset 1px 1px 0 2px rgb(25 25 25);
 }
 
-.keypress {
-	background-color: rgb(241 127 28) !important;
+.transite-0 { transition: 0s; }
+.transite { transition: 1s; }
+
+#lineindicator {
+	display: flex;
+	padding: 0 7px;
+}
+
+.p-none {
+	width: 8%;
+	height: 6px;
+}
+
+.p-indicator {
+	background-color: rgb(173, 24, 28);
+	width: 8%;
+	height: 6px;
 }
 
 

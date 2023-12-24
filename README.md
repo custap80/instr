@@ -1,5 +1,5 @@
 # Web piano
-Virtual piano that you can play on browser with a PC keyboard.
+Instruments that you can play on browser with a PC keyboard.
 
 [Play it online](https://custap80.github.io/instr)
 

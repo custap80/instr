@@ -1,5 +1,5 @@
 # Web piano
-Instruments that you can play on browser with a PC keyboard.
+Experimental and fun way to play instruments on browser with a PC keyboard. Built with Tonejs
 
 [Play it online](https://custap80.github.io/instr)
 
@@ -35,13 +35,13 @@ This code only contains static HTML, recommended to deploy it on a localhost ser
 - For linux, use python3 built-in `http.server`
 
 
-## Issues
+## Known issues
 1. Never try to open HTML directly (sampler-only), it will blocked by CORS.
 2. Requires considerable resources. For low-end devices, try a browser with an older version.
 3. Shift key doesn't work on Firefox windows. Test keyboard from [Toptal keycode](https://www.toptal.com/developers/keycode) to see if it works
-4. Pitching down keyboard to C0, causing the keyboard lower keys makes no sound (midi doesn't affected)
+4. Pitching down keyboard until C0, causing them to stuck on C0 (midi doesn't affected)
 
-### Chromium binaries (optional)
+### Chromium binaries (not needed incase)
 > This chromium desktop has no installation, very useful if you want an older version of chrome without replacing the existing installation. Not intended for daily use
 - chromium windows x86 : [v85.0.4183.121](https://github.com/macchrome/winchrome/releases/download/v85.0.4183.121-r782793-Win64/Ungoogled-Chromium-85.0.4183.121-1_Win32.7z)
 - chromium windows x86 : [v80.0.3987.163](https://github.com/macchrome/winchrome/releases/download/v80.0.3987.163-r722274-Win64/Ungoogled-Chromium-80.0.3987.163-Win32.7z)

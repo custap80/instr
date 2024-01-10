@@ -1,5 +1,5 @@
 # Web piano
-Experimental and fun way to play instruments on browser with a PC keyboard. Built with Tonejs
+Play instruments on browser with a PC keyboard, still experimental. Built with Tonejs
 
 [Play it online](https://custap80.github.io/instr)
 
@@ -36,13 +36,13 @@ This code only contains static HTML, recommended to deploy it on a localhost ser
 
 
 ## Known issues
-1. Never try to open HTML directly (sampler-only), it will blocked by CORS.
+1. By opening HTML directly (sampler-only), will be blocked by CORS.
 2. Requires considerable resources. For low-end devices, try a browser with an older version.
 3. Shift key doesn't work on Firefox windows. Test keyboard from [Toptal keycode](https://www.toptal.com/developers/keycode) to see if it works
-4. Pitching down keyboard until C0, causing them to stuck on C0 (midi doesn't affected)
+4. Pitching down keyboard until C0, causing them to stuck on (midi doesn't affected), see barline indicator for more
 
 ### Chromium binaries (not needed incase)
-> This chromium desktop has no installation, very useful if you want an older version of chrome without replacing the existing installation. Not intended for daily use
+> This chromium desktop has no installation, very useful if you want an older version of chrome without interfere the existing installation. Not intended for daily use
 - chromium windows x86 : [v85.0.4183.121](https://github.com/macchrome/winchrome/releases/download/v85.0.4183.121-r782793-Win64/Ungoogled-Chromium-85.0.4183.121-1_Win32.7z)
 - chromium windows x86 : [v80.0.3987.163](https://github.com/macchrome/winchrome/releases/download/v80.0.3987.163-r722274-Win64/Ungoogled-Chromium-80.0.3987.163-Win32.7z)
 - chromium linux x64 : [v85.0.4183.121](https://github.com/macchrome/linchrome/releases/download/v85.0.4183.121-r782793-portable-ungoogled-Lin64/ungoogled-chromium_85.0.4183.121_1.vaapi_linux.tar.xz)

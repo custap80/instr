@@ -2,6 +2,23 @@
 // Display control, Mobile mode
 
 
+
+// Workarounds
+
+// Checks if instrument is MonoSynth, default is false
+// Run function manually
+
+let is_monosynth = false;
+function instrCheck(instrument) {
+	// Cuz PolySynth doesn't have getLevelAtTime function
+	if (typeof instrument.getLevelAtTime == 'function')
+	{
+		is_monosynth = true;
+	}
+}
+
+
+
 // there is no built-in octave control in Tone.js
 // so made own octave function
 function octaveUp(limit=1) {
@@ -128,7 +145,12 @@ function attackSmp2(instrument, noteName1, noteName2) {
 	instrument.triggerAttack([noteName1, noteName2]);
 }
 function releaseSmp(instrument, noteName) {
-	instrument.triggerRelease(noteName);
+	// Workaround if instrument is OTHER THAN "PolySynth"
+	if (is_monosynth) {
+		instrument.triggerRelease();
+	} else {
+		instrument.triggerRelease(noteName);
+	}
 	removePianoDisplay(noteName);
 	// console.log('Note off : '+noteName2);
 }
@@ -194,7 +216,9 @@ function mouseMap(instrument) {
 		// resetDisplays();
 		releaseSmp(instrument, _mouseNote);
 		// instead of releasing individual note, so kill all notes!
-		instrument.releaseAll();
+		if (!is_monosynth) {
+			instrument.releaseAll();
+		}
 	});
 	console.log('Mouse Mapped');
 }

@@ -1,3 +1,6 @@
+### v1.40.1a
+- Added : MonoSynth, with portamento
+
 ### v1.40a
 - Changed : Refactor CSS mouse mapping to JS
 - Added : Keyboard animations (heavy resources, demo stage)

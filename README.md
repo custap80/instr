@@ -24,7 +24,7 @@ Play instruments on browser with a PC keyboard, still experimental. Built with T
 |Octaved bell|Music box and bells|_(oneshot)_|
 |Memories|Guitaret|~ 1MB|
 |Synth tone|Oscillator Waveforms|_(synth)_|
-|Mono Synth|Short portamento|_(synth)_|
+|Mono Synth|[Short portamento](https://custap80.github.io/instr/instruments/monosynth.html)|_(synth)_|
 
 > Deleted instrument still can be downloaded from previous releases.
 
